@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getPayload } from 'payload';
 import config from '@payload-config';
 import { SEED_EVENTS } from '@/lib/calendar';
+import { pushDevSchema } from '@payloadcms/drizzle';
 
 export const dynamic = 'force-dynamic';
 export const maxDuration = 300;
@@ -26,16 +27,11 @@ export async function POST(req: NextRequest) {
     const payload = await getPayload({ config });
     steps.push('payload-init: ok');
 
-    const pushFn = (payload.db as unknown as { push?: () => Promise<unknown> }).push;
-    if (typeof pushFn === 'function') {
-      try {
-        await pushFn.call(payload.db);
-        steps.push('schema-push: ok');
-      } catch (e) {
-        errors.push(`schema-push: ${(e as Error).message}`);
-      }
-    } else {
-      steps.push('schema-push: skipped (push() not available)');
+    try {
+      await pushDevSchema(payload.db as unknown as Parameters<typeof pushDevSchema>[0]);
+      steps.push('schema-push: ok');
+    } catch (e) {
+      errors.push(`schema-push: ${(e as Error).message}`);
     }
 
     const adminEmail = process.env.SEED_ADMIN_EMAIL ?? 'admin@dmcschools.org';
