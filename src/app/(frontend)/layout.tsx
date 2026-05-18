@@ -7,6 +7,8 @@ import { SiteHeader } from '@/components/SiteHeader';
 import type { Header as HeaderCfg, Footer as FooterCfg } from '../../../payload-types';
 import { SiteFooter } from '@/components/SiteFooter';
 import { MaintenanceBanner } from '@/components/MaintenanceBanner';
+import { LivePreviewBridge } from '@/components/LivePreviewBridge';
+import { mediaUrl, type MediaRef } from '@/lib/media';
 import '../globals.css';
 
 const inter = Inter({
@@ -19,6 +21,8 @@ const inter = Inter({
 export const generateMetadata = async (): Promise<Metadata> => {
   const payload = await getPayload({ config });
   const settings = await payload.findGlobal({ slug: 'site-settings' });
+  const faviconUrl = mediaUrl((settings as { favicon?: MediaRef }).favicon, '/logos/lion-head-blue-transparent.png', 'thumbnail');
+  const ogImageUrl = mediaUrl((settings as { defaultOgImage?: MediaRef }).defaultOgImage, undefined, 'feature');
   return {
     title: {
       default: settings.siteName ?? 'DMC Lions Wrestling Club',
@@ -28,8 +32,9 @@ export const generateMetadata = async (): Promise<Metadata> => {
     openGraph: {
       type: 'website',
       siteName: settings.siteName ?? 'DMC Lions Wrestling Club',
+      images: ogImageUrl ? [{ url: ogImageUrl }] : undefined,
     },
-    icons: { icon: '/logos/lion-head-blue-transparent.png' },
+    icons: { icon: faviconUrl },
   };
 };
 
@@ -56,9 +61,20 @@ const FrontendLayout = async ({ children }: { children: React.ReactNode }) => {
           <MaintenanceBanner />
         ) : (
           <div className="page-card">
-            <SiteHeader cfg={headerCfg as unknown as HeaderCfg} />
+            <LivePreviewBridge />
+            <SiteHeader
+              cfg={headerCfg as unknown as HeaderCfg}
+              logoUrl={mediaUrl((settings as { siteLogo?: MediaRef }).siteLogo, '/logos/lion-head-white-transparent.png', 'card')}
+            />
             <main id="main">{children}</main>
-            <SiteFooter cfg={footerCfg as unknown as FooterCfg} />
+            <SiteFooter
+              cfg={footerCfg as unknown as FooterCfg}
+              logoUrl={mediaUrl(
+                (settings as { footerLogo?: MediaRef }).footerLogo ?? (settings as { siteLogo?: MediaRef }).siteLogo,
+                '/logos/lion-head-white-transparent.png',
+                'card',
+              )}
+            />
           </div>
         )}
         {settings.cloudflareAnalyticsToken ? (

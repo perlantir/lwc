@@ -26,7 +26,7 @@ const FacebookIcon = () => (
   </svg>
 );
 
-export const SiteHeader = ({ cfg }: { cfg: Header }) => {
+export const SiteHeader = ({ cfg, logoUrl }: { cfg: Header; logoUrl?: string }) => {
   const path = usePathname();
   const [open, setOpen] = useState(false);
   const [mobile, setMobile] = useState(false);
@@ -52,7 +52,7 @@ export const SiteHeader = ({ cfg }: { cfg: Header }) => {
       <div className="flex items-center gap-3 px-4 sm:px-5 md:px-12 lg:px-12 xl:px-20 2xl:px-28 py-[10px] h-[72px] sm:h-[82px] max-w-[1600px] mx-auto">
         <Link href="/" aria-label="Lions Wrestling home" className="block w-[58px] h-[64px] sm:w-[66px] sm:h-[72px] shrink-0">
           <img
-            src="/logos/lion-head-white-transparent.png"
+            src={logoUrl ?? '/logos/lion-head-white-transparent.png'}
             alt=""
             className="w-full h-full object-contain"
           />

@@ -2,6 +2,7 @@ import { getPayload } from 'payload';
 import config from '@payload-config';
 import Link from 'next/link';
 import { CtaStrip } from '@/components/CtaStrip';
+import { mediaUrl, type MediaRef } from '@/lib/media';
 
 export const revalidate = 600;
 export const metadata = { title: 'Gallery' };
@@ -27,8 +28,7 @@ const GalleryPage = async () => {
       <section
         className="relative text-white overflow-hidden"
         style={{
-          background:
-            "linear-gradient(180deg, rgba(6,27,58,.6) 0%, rgba(6,27,58,.85) 100%), url('/images/hero-bg.jpg') center/cover no-repeat, #061B3A",
+          background: `linear-gradient(180deg, rgba(6,27,58,.6) 0%, rgba(6,27,58,.85) 100%), url('${mediaUrl(page.bannerImage as MediaRef, '/images/hero-bg.jpg', 'feature')}') center/cover no-repeat, #061B3A`,
         }}
       >
         <div className="px-5 sm:px-8 md:px-14 lg:px-20 xl:px-28 2xl:px-40 py-12 sm:py-14 max-w-[820px]">

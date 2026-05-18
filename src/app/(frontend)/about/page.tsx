@@ -2,6 +2,7 @@ import { getPayload } from 'payload';
 import config from '@payload-config';
 import Link from 'next/link';
 import { CtaStrip } from '@/components/CtaStrip';
+import { mediaUrl, type MediaRef } from '@/lib/media';
 
 export const revalidate = 600;
 export const metadata = { title: 'About' };
@@ -35,6 +36,8 @@ const AboutPage = async () => {
   const stats = (page.stats ?? []) as Array<{ value?: string; label?: string }>;
   const storyParas = (page.storyParagraphs ?? []) as Array<{ text?: string }>;
   const values = (page.values ?? []) as Array<{ title?: string; verse?: string; body?: string }>;
+  const heroBg = mediaUrl(page.bannerImage as MediaRef, '/images/hero-bg.jpg', 'feature');
+  const storyImg = mediaUrl(page.storyImage as MediaRef, '/images/mission-photo.jpg', 'feature');
 
   return (
     <>
@@ -42,8 +45,7 @@ const AboutPage = async () => {
       <section
         className="relative text-white overflow-hidden"
         style={{
-          background:
-            "linear-gradient(180deg, rgba(6,27,58,.6) 0%, rgba(6,27,58,.85) 100%), url('/images/hero-bg.jpg') center/cover no-repeat, #061B3A",
+          background: `linear-gradient(180deg, rgba(6,27,58,.6) 0%, rgba(6,27,58,.85) 100%), url('${heroBg}') center/cover no-repeat, #061B3A`,
         }}
       >
         <div className="px-5 sm:px-8 md:px-14 lg:px-20 xl:px-28 2xl:px-40 py-12 sm:py-16 md:py-20 max-w-[820px]">
@@ -96,7 +98,7 @@ const AboutPage = async () => {
         <div className="relative">
           <div
             className="rounded-xl bg-cover bg-center w-full aspect-[360/280] shadow-card"
-            style={{ backgroundImage: "url('/images/mission-photo.jpg')" }}
+            style={{ backgroundImage: `url('${storyImg}')` }}
           />
           <div className="absolute bottom-4 right-4 bg-white/95 backdrop-blur px-4 py-3 rounded-lg shadow-soft">
             <div className="text-navy text-[18px] font-extrabold leading-tight">{page.storyBadgeBig ?? 'Est. 2002'}</div>

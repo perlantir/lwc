@@ -34,6 +34,26 @@ import { RegisterPage } from './globals/RegisterPage';
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
+const livePreviewBreakpoints = [
+  { label: 'Mobile', name: 'mobile', width: 375, height: 812 },
+  { label: 'Tablet', name: 'tablet', width: 768, height: 1024 },
+  { label: 'Desktop', name: 'desktop', width: 1440, height: 900 },
+];
+
+const GLOBAL_TO_PATH: Record<string, string> = {
+  homepage: '/',
+  'about-page': '/about',
+  'schedule-page': '/schedule',
+  'results-page': '/results',
+  'gallery-page': '/gallery',
+  'contact-page': '/contact',
+  'register-page': '/register',
+  header: '/',
+  footer: '/',
+  'site-settings': '/',
+  'contact-config': '/contact',
+};
+
 export default buildConfig({
   admin: {
     user: Users.slug,
@@ -41,7 +61,15 @@ export default buildConfig({
       titleSuffix: ' — Lions Wrestling Club Admin',
       icons: [{ rel: 'icon', type: 'image/png', url: '/logos/lion-head-blue-transparent.png' }],
     },
-    // Custom graphics can be wired here later via `components.graphics`.
+    livePreview: {
+      breakpoints: livePreviewBreakpoints,
+      url: ({ globalConfig }) => {
+        const slug = globalConfig?.slug ?? 'homepage';
+        const path = GLOBAL_TO_PATH[slug] ?? '/';
+        const base = process.env.SITE_URL ?? 'http://localhost:3000';
+        return `${base}${path}`;
+      },
+    },
   },
   collections: [
     Users,

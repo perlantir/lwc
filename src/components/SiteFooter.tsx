@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import type { Footer } from '../../payload-types';
 
-export const SiteFooter = ({ cfg }: { cfg: Footer }) => {
+export const SiteFooter = ({ cfg, logoUrl }: { cfg: Footer; logoUrl?: string }) => {
   const links = cfg.quickLinks ?? [];
   return (
     <footer className="bg-deep-navy text-white/80 px-5 md:px-14 lg:px-20 xl:px-28 2xl:px-40 pt-9 pb-7">
@@ -10,7 +10,7 @@ export const SiteFooter = ({ cfg }: { cfg: Footer }) => {
           <div
             aria-hidden="true"
             className="w-[130px] h-[130px] bg-no-repeat bg-center bg-contain"
-            style={{ backgroundImage: "url('/logos/lion-head-white-transparent.png')" }}
+            style={{ backgroundImage: `url('${logoUrl ?? '/logos/lion-head-white-transparent.png'}')` }}
           />
         </div>
         <div>

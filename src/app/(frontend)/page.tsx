@@ -4,6 +4,7 @@ import config from '@payload-config';
 import { CtaStrip } from '@/components/CtaStrip';
 import { ButtonLink } from '@/components/Button';
 import { parseDate, shortMo, pad } from '@/lib/calendar';
+import { mediaUrl, type MediaRef } from '@/lib/media';
 
 export const revalidate = 600;
 
@@ -30,14 +31,16 @@ const HomePage = async () => {
     limit: 6,
   });
 
+  const heroBgUrl = mediaUrl(homepage.heroBackgroundImage as MediaRef, '/images/hero-bg.jpg', 'feature');
+  const missionPhotoUrl = mediaUrl(homepage.missionPhoto as MediaRef, '/images/mission-photo.jpg', 'feature');
+
   return (
     <>
       {/* HERO */}
       <section
         className="relative text-white overflow-hidden min-h-[520px] md:min-h-[560px]"
         style={{
-          background:
-            "linear-gradient(180deg, rgba(6,27,58,.35) 0%, rgba(6,27,58,.35) 50%, rgba(6,27,58,.75) 100%), url('/images/hero-bg.jpg') center/cover no-repeat, #061B3A",
+          background: `linear-gradient(180deg, rgba(6,27,58,.35) 0%, rgba(6,27,58,.35) 50%, rgba(6,27,58,.75) 100%), url('${heroBgUrl}') center/cover no-repeat, #061B3A`,
         }}
       >
         <div
@@ -130,7 +133,7 @@ const HomePage = async () => {
         <div
           aria-label="Coach with wrestlers"
           className="rounded-xl bg-cover bg-center w-full shadow-card aspect-[380/270]"
-          style={{ backgroundImage: "url('/images/mission-photo.jpg')" }}
+          style={{ backgroundImage: `url('${missionPhotoUrl}')` }}
         />
       </section>
 
