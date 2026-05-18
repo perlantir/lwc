@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Results — Lions Wrestling Club</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" />
+<link rel="stylesheet" href="site.css" />
+<style>
+  .res-hero {
+    position: relative;
+    background: var(--navy);
+    color: var(--white);
+    padding: 48px 56px 48px;
+    overflow: hidden;
+  }
+  .res-hero::before {
+    content: ""; position: absolute; inset: 0;
+    background: url('assets/images/hero-bg.jpg') center/cover no-repeat;
+    opacity: .14;
+  }
+  .res-hero::after {
+    content: ""; position: absolute;
+    right: -60px; top: -10px;
+    width: 320px; height: 320px;
+    background: url('assets/logos/lion-head-blue-transparent.png') center/contain no-repeat;
+    opacity: .15;
+  }
+  .res-hero .inner { position: relative; z-index: 1; max-width: 580px; }
+  .res-hero .crumbs { font-size: 12px; color: rgba(255,255,255,.65); margin-bottom: 12px; }
+  .res-hero .crumbs a { color: var(--cyan); }
+  .res-hero .crumbs .sep { margin: 0 8px; color: rgba(255,255,255,.3); }
+  .res-hero h1 { font-size: 44px; font-weight: 800; letter-spacing: -.5px; line-height: 50px; }
+  .res-hero p {
+    margin-top: 12px; font-size: 15px; line-height: 23px;
+    color: rgba(255,255,255,.78); max-width: 540px;
+  }
+  .res-hero .updated {
+    margin-top: 22px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(18,174,234,.15);
+    border: 1px solid rgba(18,174,234,.3);
+    padding: 8px 14px;
+    border-radius: 24px;
+    font-size: 12px;
+    color: var(--white);
+    font-weight: 600;
+    letter-spacing: .3px;
+  }
+  .res-hero .updated .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--cyan);
+    box-shadow: 0 0 0 4px rgba(18,174,234,.25);
+  }
+
+  /* Recent Results section */
+  .results-section {
+    background: var(--off-white);
+    padding: 56px 56px 64px;
+  }
+  .section-head {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    margin-bottom: 28px;
+  }
+  .section-head .left .eyebrow { margin-bottom: 10px; display: block; }
+  .section-head h2 {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--text-navy);
+    line-height: 38px;
+    letter-spacing: -.3px;
+  }
+  .section-head .note {
+    font-size: 12px;
+    color: var(--muted);
+    text-align: right;
+    line-height: 18px;
+  }
+  .section-head .note b { color: var(--text-navy); font-weight: 600; }
+
+  .results-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .result-entry {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px 28px;
+    display: grid;
+    grid-template-columns: 84px 1fr;
+    gap: 24px;
+    align-items: start;
+    box-shadow: 0 4px 12px rgba(0,31,68,.04);
+    transition: box-shadow .15s, transform .15s;
+  }
+  .result-entry:hover {
+    box-shadow: 0 10px 24px rgba(0,31,68,.10);
+    transform: translateY(-1px);
+  }
+
+  /* Date stamp */
+  .result-entry .date-stamp {
+    text-align: center;
+    background: linear-gradient(160deg, var(--navy) 0%, var(--royal) 100%);
+    color: var(--white);
+    border-radius: 12px;
+    padding: 14px 0;
+    box-shadow: 0 6px 14px rgba(0,31,68,.25);
+  }
+  .result-entry .date-stamp .mo {
+    color: var(--cyan);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+  }
+  .result-entry .date-stamp .day {
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1;
+    margin: 4px 0 2px;
+  }
+  .result-entry .date-stamp .yr {
+    font-size: 11px;
+    color: rgba(255,255,255,.6);
+    letter-spacing: 1px;
+  }
+
+  /* Body */
+  .result-entry .body .kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 8px;
+  }
+  .result-entry .body .kicker .ico {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: rgba(18,174,234,.12);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .result-entry .body .kicker .ico svg { width: 11px; height: 11px; color: var(--cyan); }
+  .result-entry .body h3 {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--text-navy);
+    line-height: 28px;
+    letter-spacing: -.2px;
+  }
+  .result-entry .body .notes {
+    margin-top: 10px;
+    font-size: 14.5px;
+    line-height: 23px;
+    color: #3F4E62;
+    white-space: pre-wrap;
+  }
+  .result-entry .body .stats {
+    margin-top: 14px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .result-entry .body .stats .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--off-white);
+    border: 1px solid var(--border);
+    padding: 5px 12px;
+    border-radius: 16px;
+    font-size: 12px;
+    color: var(--text-navy);
+    font-weight: 500;
+  }
+  .result-entry .body .stats .chip svg {
+    width: 11px; height: 11px;
+    color: var(--cyan);
+  }
+
+  /* Outcome badge */
+  .outcome {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 14px 22px;
+    border-radius: 12px;
+    color: var(--white);
+    min-width: 96px;
+  }
+  .outcome.win { background: linear-gradient(135deg, #1FA84F, #14823D); box-shadow: 0 8px 16px rgba(20,130,61,.25); }
+  .outcome.loss { background: linear-gradient(135deg, #C4574D, #9C3F37); box-shadow: 0 8px 16px rgba(156,63,55,.25); }
+  .outcome.placed { background: linear-gradient(135deg, var(--cyan), var(--cyan-dark)); box-shadow: 0 8px 16px rgba(18,174,234,.3); }
+  .outcome .label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    opacity: .85;
+  }
+  .outcome .score {
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -.5px;
+  }
+  .outcome .vs {
+    font-size: 11px;
+    margin-top: 2px;
+    opacity: .8;
+  }
+
+  /* Coach editor hint card */
+  .coach-hint {
+    margin-top: 26px;
+    padding: 18px 22px;
+    background: linear-gradient(135deg, rgba(18,174,234,.06), rgba(18,174,234,.02));
+    border: 1px dashed rgba(18,174,234,.3);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 13.5px;
+    color: var(--text-navy);
+  }
+  .coach-hint .ico {
+    width: 36px; height: 36px;
+    background: rgba(18,174,234,.15);
+    color: var(--cyan);
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .coach-hint .ico svg { width: 18px; height: 18px; }
+  .coach-hint b { display: block; margin-bottom: 2px; font-weight: 700; }
+  .coach-hint span.muted { color: var(--muted); font-size: 13px; }
+  .coach-hint a {
+    margin-left: auto;
+    color: var(--cyan);
+    font-weight: 700;
+    font-size: 13px;
+    display: inline-flex; align-items: center; gap: 6px;
+    flex-shrink: 0;
+  }
+</style>
+</head>
+<body>
+<div class="page" data-screen-label="04 Results">
+
+  <header class="site-header">
+    <a href="Lions Wrestling Club.html" class="logo" aria-label="Lions Wrestling"></a>
+    <nav class="nav">
+      <a href="Lions Wrestling Club.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="schedule.html">Schedule</a>
+      <a href="results.html" class="active">Results</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div class="header-socials">
+      <a href="https://instagram.com/dmclionswrestling" target="_blank" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+      </a>
+      <a href="https://facebook.com/dmclionswrestling" target="_blank" aria-label="Facebook">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 22v-8h2.7l.4-3.2h-3.1V8.7c0-.9.3-1.6 1.6-1.6h1.7V4.2c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.5-4 4.1v2.6H7.6V14h2.8v8h3.1z"/></svg>
+      </a>
+    </div>
+    <a href="register.html" class="join-btn">Join the Lions</a>
+  </header>
+
+  <section class="res-hero">
+    <div class="inner">
+      <div class="crumbs"><a href="Lions Wrestling Club.html">Home</a><span class="sep">/</span>Results</div>
+      <h1>Recent Results</h1>
+      <p>Every dual, tournament, and match — straight from the coaches. Posted within 24 hours of every event.</p>
+      <div class="updated"><span class="dot"></span> Last updated Jan 9, 2026</div>
+    </div>
+  </section>
+
+  <!-- ====== RECENT RESULTS ====== -->
+  <section class="results-section">
+    <div class="section-head">
+      <div class="left">
+        <span class="eyebrow">Coach's Recap</span>
+        <h2>The latest from the mat</h2>
+      </div>
+      <div class="note">Posted by <b>Coach Reeves</b><br/>Updated as results come in</div>
+    </div>
+
+    <div class="results-list">
+
+      <!-- ENTRY 1 -->
+      <article class="result-entry">
+        <div class="date-stamp">
+          <div class="mo">Jan</div>
+          <div class="day">08</div>
+          <div class="yr">2026</div>
+        </div>
+        <div class="body">
+          <div class="kicker">
+            <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+            Away Dual · CIML
+          </div>
+          <h3>Lions storm Valley HS, 52 – 18</h3>
+          <div class="notes">A dominant night on the road. Eight of ten bouts went the Lions' way, four by bonus. Anderson set the tone early with a 2nd-period pin, and the lower-weight rotation looked sharper than they have all season. Crowd was loud — we hear you.</div>
+          <div class="stats">
+            <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4"/></svg> 8 – 2 bout record</span>
+            <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3 7 7 .5-5 5 1.5 7L12 18l-6.5 3.5L7 14.5 2 9.5 9 9z"/></svg> 4 pins</span>
+            <span class="chip"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg> Valley HS</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- ENTRY 2 -->
+      <article class="result-entry">
+        <div class="date-stamp">
+          <div class="mo">Jan</div>
+          <div class="day">03</div>
+          <div class="yr">2026</div>
+        </div>
+        <div class="body">
+          <div class="kicker">
+            <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+            Tournament · 18 teams
+          </div>
+          <h3>2nd place at Mid-Iowa Open</h3>
+          <div class="notes">A breakthrough day for the program. Brennan and Anderson both reached the finals at 152 and 160, with Brennan claiming gold. Four total placers — our best showing at this event in five years. The young guys learned a lot watching how the seniors handled long days.</div>
+          <div class="stats">
+            <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="3"/><path d="M5 21c.8-4 3.5-6.5 7-6.5s6.2 2.5 7 6.5"/></svg> 4 placers</span>
+            <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15 9 22 9.5 17 14.5 18.5 22 12 18 5.5 22 7 14.5 2 9.5 9 9 12 2"/></svg> 1 champion</span>
+            <span class="chip"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg> Indianola HS</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- ENTRY 3 -->
+      <article class="result-entry">
+        <div class="date-stamp">
+          <div class="mo">Dec</div>
+          <div class="day">19</div>
+          <div class="yr">2025</div>
+        </div>
+        <div class="body">
+          <div class="kicker">
+            <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+            Home Dual · Lions Gym
+          </div>
+          <h3>Lions take down Norwalk, 42 – 28</h3>
+          <div class="notes">A great Friday night in front of a packed home crowd. The match swung in our favor at 170 when Krause hit a beautiful headlock for a 3rd-period pin and the momentum never left. Reed's tech-fall sealed it. Shout-out to the youth wrestlers who came out for warmups — that's the next wave.</div>
+          <div class="stats">
+            <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4"/></svg> 7 – 4 bout record</span>
+            <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3 7 7 .5-5 5 1.5 7L12 18l-6.5 3.5L7 14.5 2 9.5 9 9z"/></svg> 3 pins</span>
+            <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-4v-6h-8v6H4a1 1 0 0 1-1-1v-9z"/></svg> Home · Lions Gym</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- ENTRY 4 -->
+      <article class="result-entry">
+        <div class="date-stamp">
+          <div class="mo">Dec</div>
+          <div class="day">12</div>
+          <div class="yr">2025</div>
+        </div>
+        <div class="body">
+          <div class="kicker">
+            <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+            Away Dual · CIML
+          </div>
+          <h3>Tough night at Southeast Polk</h3>
+          <div class="notes">A loss that stings — but a loss we needed. SE Polk is one of the top programs in 3A and we wrestled them tougher than the score showed. Bright spots: Frank's 9-2 decision at 120 against a state placer, and Anderson keeping his unbeaten streak alive at 160. We'll learn from this and come back better in February.</div>
+          <div class="stats">
+            <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4"/></svg> 4 – 7 bout record</span>
+            <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3 7 7 .5-5 5 1.5 7L12 18l-6.5 3.5L7 14.5 2 9.5 9 9z"/></svg> 1 pin</span>
+            <span class="chip"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg> Southeast Polk HS</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- ENTRY 5 -->
+      <article class="result-entry">
+        <div class="date-stamp">
+          <div class="mo">Dec</div>
+          <div class="day">06</div>
+          <div class="yr">2025</div>
+        </div>
+        <div class="body">
+          <div class="kicker">
+            <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+            Tournament · 22 teams
+          </div>
+          <h3>4th place — Iowa City Tournament</h3>
+          <div class="notes">A solid early-season tournament showing. Six placers and three semifinal appearances. Brennan and Anderson both reached the championship round; Reed bounced back from a tough first match to take 3rd. The freshmen Mitchell and Frank both placed in their tournament debut — couldn't be prouder.</div>
+          <div class="stats">
+            <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="3"/><path d="M5 21c.8-4 3.5-6.5 7-6.5s6.2 2.5 7 6.5"/></svg> 6 placers</span>
+            <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15 9 22 9.5 17 14.5 18.5 22 12 18 5.5 22 7 14.5 2 9.5 9 9 12 2"/></svg> 3 finalists</span>
+            <span class="chip"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg> Iowa City West</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- ENTRY 6 -->
+      <article class="result-entry">
+        <div class="date-stamp">
+          <div class="mo">Nov</div>
+          <div class="day">28</div>
+          <div class="yr">2025</div>
+        </div>
+        <div class="body">
+          <div class="kicker">
+            <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+            Season Opener · Home
+          </div>
+          <h3>Season opens with a roar — 58 – 12 over Indianola</h3>
+          <div class="notes">What a way to kick off the year. We came out hungry. Nine bouts, eight wins, six bonus-point victories. The new uniforms looked sharp under the gym lights, and the senior class led from the front. This is who we want to be in February.</div>
+          <div class="stats">
+            <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4"/></svg> 8 – 1 bout record</span>
+            <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3 7 7 .5-5 5 1.5 7L12 18l-6.5 3.5L7 14.5 2 9.5 9 9z"/></svg> 5 pins</span>
+            <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-4v-6h-8v6H4a1 1 0 0 1-1-1v-9z"/></svg> Home · Lions Gym</span>
+          </div>
+        </div>
+      </article>
+
+    </div>
+
+    <div class="coach-hint">
+      <div class="ico">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.1 2.1 0 1 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+      </div>
+      <div>
+        <b>Coaches</b>
+        <span class="muted">Recap a recent event freeform — text, score, callouts, whatever fits the story.</span>
+      </div>
+      <a href="contact.html">Post a recap →</a>
+    </div>
+  </section>
+
+  <!-- ====== CTA STRIP ====== -->
+  <section class="cta-strip">
+    <h3>Want to wrestle?<span class="accent">Earn your spot.</span></h3>
+    <div class="cta-divide"></div>
+    <p>Every result above started at a first practice. Come find out where you fit on the mat.</p>
+    <a href="register.html" class="btn btn-cyan">Join the Lions <span>→</span></a>
+  </section>
+
+  <!-- ====== FOOTER ====== -->
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div class="footer-logo" aria-label="Lions Wrestling"></div>
+      <div>
+        <h4>Quick Links</h4>
+        <div class="footer-links">
+          <a href="Lions Wrestling Club.html">Home</a>
+          <a href="results.html">Results</a>
+          <a href="about.html">About</a>
+          <a href="gallery.html">Gallery</a>
+          <a href="schedule.html">Schedule</a>
+          <a href="contact.html">Contact</a>
+        </div>
+      </div>
+      <div>
+        <h4>Contact Us</h4>
+        <div class="contact-row">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+          9730 Woodland, Cumming, IA 50061
+        </div>
+        <div class="contact-row">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.3 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A18 18 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.3 1.1l-2.2 2.1z"/></svg>
+          515-844-3947
+        </div>
+        <div class="contact-row">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 6h16c1.1 0 2 .9 2 2v8c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V8c0-1.1.9-2 2-2zm0 2v.5l8 5 8-5V8H4zm16 2.4-7.4 4.6a1 1 0 0 1-1.2 0L4 10.4V16h16v-5.6z"/></svg>
+          lionswrestling@dmcschools.org
+        </div>
+        <div class="footer-socials-row">
+          <a href="https://instagram.com/dmclionswrestling" target="_blank" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+            Instagram
+          </a>
+          <a href="https://facebook.com/dmclionswrestling" target="_blank" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 22v-8h2.7l.4-3.2h-3.1V8.7c0-.9.3-1.6 1.6-1.6h1.7V4.2c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.5-4 4.1v2.6H7.6V14h2.8v8h3.1z"/></svg>
+            Facebook
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 Des Moines Christian Lions Wrestling Club</div>
+  </footer>
+
+</div>
+</body>
+</html>

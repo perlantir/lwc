@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Join the Lions — Registration</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" />
+<link rel="stylesheet" href="site.css" />
+<style>
+  /* ============ Page hero ============ */
+  .reg-hero {
+    position: relative;
+    background: var(--navy);
+    color: var(--white);
+    padding: 48px 56px 72px;
+    overflow: hidden;
+  }
+  .reg-hero::before {
+    content: ""; position: absolute; inset: 0;
+    background: url('assets/images/hero-bg.jpg') center/cover no-repeat;
+    opacity: .14;
+  }
+  .reg-hero::after {
+    content: ""; position: absolute;
+    right: -60px; top: -10px;
+    width: 320px; height: 320px;
+    background: url('assets/logos/lion-head-blue-transparent.png') center/contain no-repeat;
+    opacity: .15;
+  }
+  .reg-hero .inner {
+    position: relative; z-index: 1;
+    max-width: 580px;
+  }
+  .reg-hero .crumbs { font-size: 12px; color: rgba(255,255,255,.65); margin-bottom: 14px; }
+  .reg-hero .crumbs a { color: var(--cyan); }
+  .reg-hero .crumbs .sep { margin: 0 8px; color: rgba(255,255,255,.3); }
+  .reg-hero h1 {
+    font-size: 44px;
+    line-height: 50px;
+    font-weight: 800;
+    letter-spacing: -.5px;
+  }
+  .reg-hero h1 .accent { color: var(--cyan); }
+  .reg-hero p {
+    margin-top: 14px;
+    font-size: 16px;
+    line-height: 24px;
+    color: rgba(255,255,255,.82);
+  }
+  .reg-hero .perks {
+    margin-top: 22px;
+    display: flex;
+    gap: 26px;
+    flex-wrap: wrap;
+  }
+  .reg-hero .perks .perk {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: rgba(255,255,255,.85);
+  }
+  .reg-hero .perks .perk svg {
+    width: 14px; height: 14px;
+    color: var(--cyan);
+    flex-shrink: 0;
+  }
+
+  /* ============ Form layout ============ */
+  .reg-main {
+    background: var(--off-white);
+    padding: 40px 32px 60px;
+    display: grid;
+    grid-template-columns: 1.7fr 1fr;
+    gap: 22px;
+    align-items: start;
+  }
+  .reg-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 8px 28px rgba(0,31,68,.08);
+    position: relative;
+    margin-top: -34px;
+  }
+
+  /* Progress strip */
+  .progress {
+    background: linear-gradient(90deg, var(--navy) 0%, var(--royal) 100%);
+    color: var(--white);
+    padding: 16px 28px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 12px;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  .progress .bar {
+    flex: 1;
+    height: 6px;
+    border-radius: 3px;
+    background: rgba(255,255,255,.12);
+    overflow: hidden;
+    position: relative;
+  }
+  .progress .bar .fill {
+    height: 100%;
+    width: 70%;
+    background: var(--cyan);
+    border-radius: 3px;
+    transition: width .3s;
+  }
+  .progress .step {
+    color: var(--cyan);
+  }
+
+  .form-body { padding: 28px 32px 32px; }
+
+  .section-title {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 6px;
+  }
+  .section-title .num {
+    width: 32px; height: 32px;
+    background: rgba(18,174,234,.15);
+    color: var(--cyan);
+    border-radius: 50%;
+    font-weight: 800; font-size: 14px;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .section-title h3 {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text-navy);
+  }
+  .section-title .small {
+    margin-left: auto;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .section-rule {
+    height: 1px;
+    background: var(--border);
+    margin: 18px 0 22px;
+  }
+
+  /* Field grid */
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .grid.three { grid-template-columns: 1fr 1fr 1fr; }
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field.full { grid-column: 1 / -1; }
+  .field label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-navy);
+    letter-spacing: .2px;
+  }
+  .field label .req { color: var(--cyan); margin-left: 2px; }
+  .field .input-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  .field .input-wrap .lead-ico {
+    position: absolute;
+    left: 12px;
+    color: var(--muted);
+    pointer-events: none;
+  }
+  .field .input-wrap .lead-ico svg { width: 14px; height: 14px; }
+  .field .input-wrap .lead-ico + input,
+  .field .input-wrap .lead-ico ~ input { padding-left: 36px; }
+  .field input, .field select, .field textarea {
+    width: 100%;
+    border: 1px solid #D6DFEC;
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--text-navy);
+    background: var(--white);
+    transition: border-color .15s, box-shadow .15s;
+    outline: none;
+  }
+  .field input::placeholder, .field textarea::placeholder { color: #ABB6C6; }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    border-color: var(--cyan);
+    box-shadow: 0 0 0 3px rgba(18,174,234,.18);
+  }
+  .field .suffix {
+    position: absolute;
+    right: 14px;
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 500;
+    pointer-events: none;
+  }
+  .field .hint {
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  /* Segmented controls (gender) */
+  .seg {
+    display: flex;
+    gap: 8px;
+  }
+  .seg-opt {
+    flex: 1;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: #F2F6FB;
+    border: 1.5px solid transparent;
+    cursor: pointer;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-navy);
+    transition: all .15s;
+  }
+  .seg-opt:hover { background: #E8F0F9; }
+  .seg-opt.active {
+    background: var(--white);
+    border-color: var(--cyan);
+    color: var(--cyan);
+    box-shadow: 0 0 0 3px rgba(18,174,234,.12);
+  }
+
+  /* Grade chips */
+  .grade-chips {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 6px;
+  }
+  .grade-chip {
+    padding: 10px 0;
+    text-align: center;
+    border-radius: 8px;
+    background: #F2F6FB;
+    border: 1.5px solid transparent;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-navy);
+    transition: all .15s;
+  }
+  .grade-chip:hover { background: #E8F0F9; }
+  .grade-chip.active {
+    background: var(--cyan);
+    border-color: var(--cyan);
+    color: var(--white);
+    box-shadow: 0 4px 10px rgba(18,174,234,.3);
+  }
+
+  /* Consent */
+  .consent {
+    margin-top: 8px;
+    padding: 16px 18px;
+    background: #F4F8FC;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    display: flex; gap: 12px;
+    font-size: 13px;
+    line-height: 19px;
+    color: #3F4E62;
+  }
+  .consent input {
+    width: 18px; height: 18px;
+    accent-color: var(--cyan);
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* Submit row */
+  .submit-row {
+    margin-top: 28px;
+    padding-top: 22px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .submit-note {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 16px;
+  }
+  .submit-note b { color: var(--text-navy); }
+  .submit-btn {
+    margin-left: auto;
+    background: var(--cyan);
+    color: var(--white);
+    font-size: 15px;
+    font-weight: 700;
+    padding: 14px 30px;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(18,174,234,.45);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: background .15s, transform .15s, box-shadow .15s;
+  }
+  .submit-btn:hover { background: var(--cyan-dark); transform: translateY(-1px); }
+  .submit-btn svg { width: 16px; height: 16px; }
+
+  /* Side stack */
+  .side-stack { display: flex; flex-direction: column; gap: 16px; margin-top: -34px; }
+  .why-card {
+    background: var(--navy);
+    color: var(--white);
+    border-radius: 18px;
+    padding: 26px 26px 22px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--card-shadow);
+  }
+  .why-card::after {
+    content: "";
+    position: absolute;
+    right: -40px; bottom: -40px;
+    width: 180px; height: 180px;
+    background: url('assets/logos/lion-head-blue-transparent.png') center/contain no-repeat;
+    opacity: .14;
+  }
+  .why-card .eyebrow { color: var(--cyan); }
+  .why-card h4 {
+    margin-top: 8px;
+    font-size: 22px;
+    line-height: 28px;
+    font-weight: 800;
+  }
+  .why-card ul {
+    margin-top: 18px;
+    list-style: none;
+    position: relative; z-index: 1;
+  }
+  .why-card ul li {
+    display: flex;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    font-size: 13.5px;
+    line-height: 20px;
+    color: rgba(255,255,255,.85);
+  }
+  .why-card ul li:last-child { border-bottom: none; }
+  .why-card ul li svg {
+    width: 16px; height: 16px;
+    color: var(--cyan);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .help-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 22px 24px;
+  }
+  .help-card h4 {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--text-navy);
+    margin-bottom: 12px;
+  }
+  .help-card .row {
+    display: grid;
+    grid-template-columns: 32px 1fr;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid #F0F4F9;
+  }
+  .help-card .row:last-child { border-bottom: none; }
+  .help-card .row .ico {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    background: rgba(18,174,234,.12);
+    color: var(--cyan);
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .help-card .row .ico svg { width: 14px; height: 14px; }
+  .help-card .row .lbl {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .help-card .row .val {
+    margin-top: 2px;
+    font-size: 13.5px;
+    color: var(--text-navy);
+    font-weight: 600;
+  }
+
+  /* ============ Thank-you state ============ */
+  .thanks {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: var(--card-shadow);
+    position: relative;
+    text-align: center;
+    margin-top: -34px;
+    padding: 56px 48px 48px;
+  }
+  .thanks::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 25% 0%, rgba(18,174,234,.10), transparent 50%),
+      radial-gradient(circle at 75% 100%, rgba(18,174,234,.10), transparent 50%);
+    pointer-events: none;
+  }
+  .thanks .check-ring {
+    position: relative; z-index: 1;
+    width: 96px; height: 96px;
+    margin: 0 auto;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--cyan), var(--cyan-dark));
+    color: var(--white);
+    display: inline-flex; align-items: center; justify-content: center;
+    box-shadow:
+      0 0 0 10px rgba(18,174,234,.12),
+      0 0 0 22px rgba(18,174,234,.06),
+      0 14px 28px rgba(18,174,234,.4);
+    animation: pop .5s cubic-bezier(.2,.9,.3,1.4);
+  }
+  .thanks .check-ring svg { width: 44px; height: 44px; }
+  @keyframes pop {
+    0% { transform: scale(.3); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  .thanks .eyebrow { display: block; margin-top: 30px; position: relative; z-index: 1; }
+  .thanks h2 {
+    position: relative; z-index: 1;
+    margin-top: 10px;
+    font-size: 36px;
+    line-height: 42px;
+    font-weight: 800;
+    color: var(--text-navy);
+    letter-spacing: -.4px;
+  }
+  .thanks h2 .name { color: var(--cyan); }
+  .thanks p.lede {
+    position: relative; z-index: 1;
+    margin: 14px auto 0;
+    max-width: 460px;
+    font-size: 15px;
+    line-height: 24px;
+    color: #3F4E62;
+  }
+  .next-steps {
+    position: relative; z-index: 1;
+    margin: 28px auto 0;
+    max-width: 540px;
+    text-align: left;
+    background: var(--off-white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px 26px;
+  }
+  .next-steps h5 {
+    font-size: 11px;
+    letter-spacing: 1.4px;
+    color: var(--cyan);
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .next-steps .item {
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    gap: 12px;
+    padding: 10px 0;
+    align-items: start;
+  }
+  .next-steps .item .n {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: var(--white);
+    border: 1.5px solid var(--cyan);
+    color: var(--cyan);
+    font-weight: 800;
+    font-size: 12px;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .next-steps .item .t {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-navy);
+  }
+  .next-steps .item .d {
+    margin-top: 2px;
+    font-size: 12.5px;
+    color: var(--muted);
+    line-height: 18px;
+  }
+  .thanks .actions {
+    position: relative; z-index: 1;
+    margin-top: 28px;
+    display: flex; gap: 12px;
+    justify-content: center;
+  }
+  .thanks .actions a {
+    padding: 12px 22px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .thanks .actions .primary {
+    background: var(--cyan);
+    color: var(--white);
+    box-shadow: 0 6px 18px rgba(18,174,234,.4);
+  }
+  .thanks .actions .primary:hover { background: var(--cyan-dark); }
+  .thanks .actions .ghost {
+    background: transparent;
+    color: var(--text-navy);
+    border: 1px solid var(--border);
+  }
+  .thanks .actions .ghost:hover { background: var(--off-white); }
+
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+<div class="page" data-screen-label="07 Registration">
+
+  <header class="site-header">
+    <a href="Lions Wrestling Club.html" class="logo" aria-label="Lions Wrestling"></a>
+    <nav class="nav">
+      <a href="Lions Wrestling Club.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="schedule.html">Schedule</a>
+      <a href="results.html">Results</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div class="header-socials">
+      <a href="https://instagram.com/dmclionswrestling" target="_blank" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+      </a>
+      <a href="https://facebook.com/dmclionswrestling" target="_blank" aria-label="Facebook">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 22v-8h2.7l.4-3.2h-3.1V8.7c0-.9.3-1.6 1.6-1.6h1.7V4.2c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.5-4 4.1v2.6H7.6V14h2.8v8h3.1z"/></svg>
+      </a>
+    </div>
+    <a href="register.html" class="join-btn">Join the Lions</a>
+  </header>
+
+  <!-- ====== HERO ====== -->
+  <section class="reg-hero">
+    <div class="inner">
+      <div class="crumbs"><a href="Lions Wrestling Club.html">Home</a><span class="sep">/</span>Join the Lions</div>
+      <h1>Sign up. <span class="accent">Suit up.</span><br/>Become a Lion.</h1>
+      <p>One short form and your wrestler is officially on our roster. A coach will personally reach out within 24 hours to walk you through gear, practice, and your first match.</p>
+      <div class="perks">
+        <span class="perk">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Free first 2 weeks
+        </span>
+        <span class="perk">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Loaner gear available
+        </span>
+        <span class="perk">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Scholarships on request
+        </span>
+        <span class="perk">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          All skill levels welcome
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== FORM ====== -->
+  <section class="reg-main" id="reg-main">
+    <!-- FORM CARD -->
+    <div class="reg-card" id="form-card">
+      <div class="progress">
+        <span class="step">Step 1 of 1</span>
+        <div class="bar"><div class="fill"></div></div>
+        <span>~ 2 min</span>
+      </div>
+
+      <form class="form-body" id="reg-form" autocomplete="on">
+        <!-- ===== Section 1: Wrestler ===== -->
+        <div class="section-title">
+          <span class="num">1</span>
+          <h3>About the Wrestler</h3>
+          <span class="small">Required</span>
+        </div>
+        <div class="section-rule"></div>
+
+        <div class="grid">
+          <div class="field">
+            <label>Wrestler's First Name <span class="req">*</span></label>
+            <div class="input-wrap">
+              <span class="lead-ico">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c.5-3 3-5 7-5s6.5 2 7 5"/></svg>
+              </span>
+              <input type="text" name="wFirst" placeholder="Caleb" required />
+            </div>
+          </div>
+          <div class="field">
+            <label>Wrestler's Last Name <span class="req">*</span></label>
+            <input type="text" name="wLast" placeholder="Anderson" required />
+          </div>
+
+          <div class="field">
+            <label>Date of Birth <span class="req">*</span></label>
+            <div class="input-wrap">
+              <span class="lead-ico">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/></svg>
+              </span>
+              <input type="date" name="dob" required />
+            </div>
+          </div>
+          <div class="field">
+            <label>School <span class="req">*</span></label>
+            <div class="input-wrap">
+              <span class="lead-ico">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-4v-6h-8v6H4a1 1 0 0 1-1-1v-9z"/></svg>
+              </span>
+              <input type="text" name="school" placeholder="Des Moines Christian" required />
+            </div>
+          </div>
+
+          <div class="field full">
+            <label>Grade <span class="req">*</span></label>
+            <div class="grade-chips" id="grade-chips">
+              <div class="grade-chip" data-val="K">K</div>
+              <div class="grade-chip" data-val="1-3">1–3</div>
+              <div class="grade-chip" data-val="4-6">4–6</div>
+              <div class="grade-chip" data-val="7-8">7–8</div>
+              <div class="grade-chip" data-val="9-10">9–10</div>
+              <div class="grade-chip" data-val="11-12">11–12</div>
+            </div>
+            <input type="hidden" name="grade" id="grade-input" required />
+          </div>
+
+          <div class="field">
+            <label>Current Weight <span class="req">*</span></label>
+            <div class="input-wrap">
+              <input type="number" name="weight" placeholder="142" min="40" max="320" required style="padding-right:46px;" />
+              <span class="suffix">lbs</span>
+            </div>
+            <span class="hint">Used for weight-class placement. Updated at first practice.</span>
+          </div>
+          <div class="field">
+            <label>Gender <span class="req">*</span></label>
+            <div class="seg" id="gender-seg">
+              <div class="seg-opt" data-val="boys">Boys</div>
+              <div class="seg-opt" data-val="girls">Girls</div>
+              <div class="seg-opt" data-val="prefer">Prefer not to say</div>
+            </div>
+            <input type="hidden" name="gender" id="gender-input" required />
+          </div>
+
+          <div class="field full">
+            <label>Home Address <span class="req">*</span></label>
+            <div class="input-wrap">
+              <span class="lead-ico">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+              </span>
+              <input type="text" name="address" placeholder="123 Maple St, Cumming, IA 50061" required />
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== Section 2: Parent ===== -->
+        <div class="section-title" style="margin-top:32px;">
+          <span class="num">2</span>
+          <h3>Parent / Guardian</h3>
+          <span class="small">Required</span>
+        </div>
+        <div class="section-rule"></div>
+
+        <div class="grid">
+          <div class="field">
+            <label>Parent / Guardian Name <span class="req">*</span></label>
+            <div class="input-wrap">
+              <span class="lead-ico">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.2"/><path d="M3 19c.6-3 3-5 6-5s5.4 2 6 5"/><path d="M15 18c.4-2 1.7-3.2 4-3.2"/></svg>
+              </span>
+              <input type="text" name="parentName" placeholder="Sarah Anderson" required />
+            </div>
+          </div>
+          <div class="field">
+            <label>Relationship</label>
+            <select name="relationship">
+              <option>Parent</option>
+              <option>Legal Guardian</option>
+              <option>Grandparent</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Phone Number <span class="req">*</span></label>
+            <div class="input-wrap">
+              <span class="lead-ico">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.3 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A18 18 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.3 1.1l-2.2 2.1z"/></svg>
+              </span>
+              <input type="tel" name="parentPhone" placeholder="(515) 555-0114" required />
+            </div>
+          </div>
+          <div class="field">
+            <label>Email Address <span class="req">*</span></label>
+            <div class="input-wrap">
+              <span class="lead-ico">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 6h16c1.1 0 2 .9 2 2v8c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V8c0-1.1.9-2 2-2zm0 2v.5l8 5 8-5V8H4z"/></svg>
+              </span>
+              <input type="email" name="parentEmail" placeholder="parent@example.com" required />
+            </div>
+          </div>
+        </div>
+
+        <!-- Consent -->
+        <div class="consent" style="margin-top:22px;">
+          <input type="checkbox" id="consent" required />
+          <label for="consent">
+            I confirm I'm a parent or legal guardian, the information above is accurate, and I authorize Lions Wrestling Club coaching staff to contact me about practice, matches, and team logistics.
+          </label>
+        </div>
+        <div class="consent" style="margin-top:10px;">
+          <input type="checkbox" id="updates" checked />
+          <label for="updates">
+            Send me weekly season updates and match-day reminders by email.
+          </label>
+        </div>
+
+        <!-- Submit -->
+        <div class="submit-row">
+          <div class="submit-note">
+            <b>Almost done.</b><br/>Click submit and a coach will reach out within 24 hours.
+          </div>
+          <button type="submit" class="submit-btn">
+            Submit Registration
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- SIDE STACK -->
+    <div class="side-stack">
+      <div class="why-card">
+        <span class="eyebrow">Why Join</span>
+        <h4>You're not just joining a team. You're joining a brotherhood.</h4>
+        <ul>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Year-round training with experienced, vetted coaches
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            K – 12 program with age-appropriate groups
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Faith-rooted culture &amp; character-first coaching
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Travel duals, tournaments, &amp; state-level competition
+          </li>
+        </ul>
+      </div>
+
+      <div class="help-card">
+        <h4>Questions before you sign?</h4>
+        <div class="row">
+          <div class="ico">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.3 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A18 18 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.3 1.1l-2.2 2.1z"/></svg>
+          </div>
+          <div>
+            <div class="lbl">Coach line</div>
+            <div class="val">515-844-3947</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="ico">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 6h16c1.1 0 2 .9 2 2v8c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V8c0-1.1.9-2 2-2zm0 2v.5l8 5 8-5V8H4z"/></svg>
+          </div>
+          <div>
+            <div class="lbl">Email</div>
+            <div class="val">lionswrestling@dmcschools.org</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.1 9.5a3 3 0 0 1 5.7 1c0 2-3 2.5-3 4M12 17.5h.01"/></svg>
+          </div>
+          <div>
+            <div class="lbl">FAQ</div>
+            <div class="val"><a href="contact.html#faq" style="color:var(--cyan);">Read common questions →</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== THANK-YOU STATE ====== -->
+  <section class="reg-main hidden" id="thanks-main">
+    <div class="thanks" style="grid-column: 1 / -1;">
+      <div class="check-ring">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </div>
+      <span class="eyebrow">Welcome to the Pride</span>
+      <h2>Thank you for registering, <span class="name" id="thanks-name">Lion</span>!</h2>
+      <p class="lede">Your registration for the Lions Wrestling Club has been received. <b>Our coaches will be in touch within 24 hours</b> to walk you through next steps and get you on the mat.</p>
+
+      <div class="next-steps">
+        <h5>What happens next</h5>
+        <div class="item">
+          <div class="n">1</div>
+          <div>
+            <div class="t">A coach personally reaches out</div>
+            <div class="d">Within 24 hours by phone or email — whichever you prefer. We'll cover practice times, gear, and your first session.</div>
+          </div>
+        </div>
+        <div class="item">
+          <div class="n">2</div>
+          <div>
+            <div class="t">Drop in for your first practice</div>
+            <div class="d">Your first two weeks are on us. Just bring athletic shoes, shorts, and a t-shirt — we'll handle the rest.</div>
+          </div>
+        </div>
+        <div class="item">
+          <div class="n">3</div>
+          <div>
+            <div class="t">Welcome to the team</div>
+            <div class="d">You'll get a welcome packet, our season schedule, and a gear order link from the team store.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <a href="schedule.html" class="primary">View Schedule <span>→</span></a>
+        <a href="about.html" class="ghost">Learn about the program</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== CTA STRIP ====== -->
+  <section class="cta-strip">
+    <h3>Got questions?<span class="accent">We're a call away.</span></h3>
+    <div class="cta-divide"></div>
+    <p>Talk to a coach before signing — we love showing parents around the wrestling room.</p>
+    <a href="contact.html" class="btn btn-cyan">Contact a Coach <span>→</span></a>
+  </section>
+
+  <!-- ====== FOOTER ====== -->
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div class="footer-logo" aria-label="Lions Wrestling"></div>
+      <div>
+        <h4>Quick Links</h4>
+        <div class="footer-links">
+          <a href="Lions Wrestling Club.html">Home</a>
+          <a href="results.html">Results</a>
+          <a href="about.html">About</a>
+          <a href="gallery.html">Gallery</a>
+          <a href="schedule.html">Schedule</a>
+          <a href="contact.html">Contact</a>
+        </div>
+      </div>
+      <div>
+        <h4>Contact Us</h4>
+        <div class="contact-row">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+          9730 Woodland, Cumming, IA 50061
+        </div>
+        <div class="contact-row">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.3 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A18 18 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.3 1.1l-2.2 2.1z"/></svg>
+          515-844-3947
+        </div>
+        <div class="contact-row">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 6h16c1.1 0 2 .9 2 2v8c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V8c0-1.1.9-2 2-2zm0 2v.5l8 5 8-5V8H4zm16 2.4-7.4 4.6a1 1 0 0 1-1.2 0L4 10.4V16h16v-5.6z"/></svg>
+          lionswrestling@dmcschools.org
+        </div>
+        <div class="footer-socials-row">
+          <a href="https://instagram.com/dmclionswrestling" target="_blank" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+            Instagram
+          </a>
+          <a href="https://facebook.com/dmclionswrestling" target="_blank" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 22v-8h2.7l.4-3.2h-3.1V8.7c0-.9.3-1.6 1.6-1.6h1.7V4.2c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.5-4 4.1v2.6H7.6V14h2.8v8h3.1z"/></svg>
+            Facebook
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 Des Moines Christian Lions Wrestling Club</div>
+  </footer>
+
+</div>
+
+<script>
+  // Grade chip selection
+  const gradeChips = document.querySelectorAll('#grade-chips .grade-chip');
+  const gradeInput = document.getElementById('grade-input');
+  gradeChips.forEach(c => c.addEventListener('click', () => {
+    gradeChips.forEach(x => x.classList.remove('active'));
+    c.classList.add('active');
+    gradeInput.value = c.dataset.val;
+  }));
+
+  // Gender segmented
+  const genderOpts = document.querySelectorAll('#gender-seg .seg-opt');
+  const genderInput = document.getElementById('gender-input');
+  genderOpts.forEach(o => o.addEventListener('click', () => {
+    genderOpts.forEach(x => x.classList.remove('active'));
+    o.classList.add('active');
+    genderInput.value = o.dataset.val;
+  }));
+
+  // Form submit -> thank-you
+  const form = document.getElementById('reg-form');
+  const formCard = document.getElementById('form-card').closest('.reg-main');
+  const thanks = document.getElementById('thanks-main');
+  const thanksName = document.getElementById('thanks-name');
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (!gradeInput.value) { alert('Please pick a grade.'); return; }
+    if (!genderInput.value) { alert('Please pick a gender.'); return; }
+    const first = form.querySelector('[name=wFirst]').value.trim();
+    if (first) thanksName.textContent = first;
+    formCard.classList.add('hidden');
+    thanks.classList.remove('hidden');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Contact — Lions Wrestling Club</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" />
+<link rel="stylesheet" href="site.css" />
+<style>
+  .ct-hero {
+    position: relative;
+    background: var(--navy);
+    color: var(--white);
+    padding: 56px 56px 80px;
+    overflow: hidden;
+  }
+  .ct-hero::before {
+    content: ""; position: absolute; inset: 0;
+    background: url('assets/images/hero-bg.jpg') center/cover no-repeat;
+    opacity: .13;
+  }
+  .ct-hero::after {
+    content: ""; position: absolute;
+    right: -60px; top: -20px;
+    width: 320px; height: 320px;
+    background: url('assets/logos/lion-head-blue-transparent.png') center/contain no-repeat;
+    opacity: .15;
+  }
+  .ct-hero .inner {
+    position: relative; z-index: 1; max-width: 560px;
+  }
+  .ct-hero .crumbs { font-size: 12px; color: rgba(255,255,255,.65); margin-bottom: 14px; }
+  .ct-hero .crumbs a { color: var(--cyan); }
+  .ct-hero .crumbs .sep { margin: 0 8px; color: rgba(255,255,255,.3); }
+  .ct-hero h1 { font-size: 44px; font-weight: 800; letter-spacing: -.5px; line-height: 50px; }
+  .ct-hero p {
+    margin-top: 14px; font-size: 16px; line-height: 24px;
+    color: rgba(255,255,255,.78);
+  }
+
+  /* Reason chips */
+  .reasons {
+    background: var(--off-white);
+    padding: 36px 32px 18px;
+  }
+  .reasons-head {
+    text-align: center;
+    margin-bottom: 22px;
+  }
+  .reasons-head h2 {
+    margin-top: 8px;
+    font-size: 26px; font-weight: 800;
+    color: var(--text-navy);
+  }
+  .reasons-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+  }
+  .reason {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 18px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform .15s, box-shadow .15s, border-color .15s;
+  }
+  .reason:hover { transform: translateY(-2px); box-shadow: var(--soft-shadow); }
+  .reason.active {
+    border-color: var(--cyan);
+    box-shadow: 0 0 0 3px rgba(18,174,234,.12), 0 8px 18px rgba(18,174,234,.18);
+  }
+  .reason .ico {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    background: rgba(18,174,234,.12);
+    color: var(--cyan);
+    display: inline-flex; align-items: center; justify-content: center;
+    margin-bottom: 12px;
+  }
+  .reason.active .ico {
+    background: var(--cyan); color: var(--white);
+    box-shadow: 0 6px 16px rgba(18,174,234,.4);
+  }
+  .reason .ico svg { width: 22px; height: 22px; }
+  .reason .t {
+    font-size: 14px; font-weight: 700;
+    color: var(--text-navy);
+  }
+  .reason .d {
+    margin-top: 4px;
+    font-size: 12px; color: var(--muted);
+    line-height: 16px;
+  }
+
+  /* Form + Side */
+  .ct-main {
+    padding: 24px 32px 48px;
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 22px;
+    align-items: start;
+  }
+  .form-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px 30px;
+    box-shadow: 0 6px 18px rgba(0,31,68,.06);
+  }
+  .form-card h3 {
+    font-size: 20px; font-weight: 800;
+    color: var(--text-navy);
+  }
+  .form-card p.lede {
+    margin-top: 4px;
+    font-size: 13px; color: var(--muted);
+  }
+  .form-grid {
+    margin-top: 18px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px 14px;
+  }
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field.full { grid-column: 1 / -1; }
+  .field label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-navy);
+    letter-spacing: .2px;
+  }
+  .field label .req { color: var(--cyan); }
+  .field input, .field select, .field textarea {
+    border: 1px solid #D6DFEC;
+    border-radius: 8px;
+    padding: 11px 14px;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--text-navy);
+    background: var(--white);
+    transition: border-color .15s, box-shadow .15s;
+    outline: none;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    border-color: var(--cyan);
+    box-shadow: 0 0 0 3px rgba(18,174,234,.18);
+  }
+  .field textarea {
+    min-height: 110px;
+    resize: vertical;
+    font-family: inherit;
+  }
+  .field .hint {
+    font-size: 11px; color: var(--muted);
+  }
+  .form-foot {
+    margin-top: 20px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .check {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 12px; color: var(--muted);
+  }
+  .check input { width: 16px; height: 16px; accent-color: var(--cyan); }
+  .submit {
+    margin-left: auto;
+    background: var(--cyan);
+    color: var(--white);
+    font-size: 14px;
+    font-weight: 600;
+    padding: 13px 28px;
+    border-radius: 8px;
+    box-shadow: 0 6px 18px rgba(18,174,234,.4);
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .submit:hover { background: var(--cyan-dark); }
+
+  /* Side info */
+  .side-stack { display: flex; flex-direction: column; gap: 18px; }
+  .info-card {
+    background: var(--navy);
+    color: var(--white);
+    border-radius: 16px;
+    padding: 26px;
+    position: relative;
+    overflow: hidden;
+  }
+  .info-card::after {
+    content: "";
+    position: absolute;
+    right: -40px; bottom: -40px;
+    width: 160px; height: 160px;
+    background: url('assets/logos/lion-head-blue-transparent.png') center/contain no-repeat;
+    opacity: .14;
+  }
+  .info-card h4 {
+    font-size: 16px;
+    font-weight: 800;
+    margin-bottom: 16px;
+  }
+  .info-row {
+    display: grid;
+    grid-template-columns: 32px 1fr;
+    gap: 10px;
+    align-items: start;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    position: relative;
+    z-index: 1;
+  }
+  .info-row:last-child { border-bottom: none; }
+  .info-row .ico {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    background: rgba(18,174,234,.18);
+    color: var(--cyan);
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .info-row .ico svg { width: 14px; height: 14px; }
+  .info-row .lbl {
+    color: rgba(255,255,255,.55);
+    font-size: 10px;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .info-row .val {
+    margin-top: 2px;
+    font-size: 13.5px;
+    color: var(--white);
+    font-weight: 500;
+    line-height: 18px;
+  }
+
+  /* Hours */
+  .hours-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px 26px;
+  }
+  .hours-card h4 {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--text-navy);
+    margin-bottom: 14px;
+  }
+  .hours-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 9px 0;
+    border-bottom: 1px solid #F0F4F9;
+    font-size: 13.5px;
+  }
+  .hours-row:last-child { border-bottom: none; }
+  .hours-row .day {
+    color: var(--muted);
+    font-weight: 500;
+  }
+  .hours-row.today .day {
+    color: var(--text-navy);
+    font-weight: 700;
+  }
+  .hours-row .time { color: var(--text-navy); font-weight: 600; }
+  .hours-row.closed .time { color: var(--muted); font-weight: 500; }
+  .hours-foot {
+    margin-top: 14px;
+    padding: 10px 12px;
+    background: rgba(18,174,234,.08);
+    border-radius: 8px;
+    font-size: 12px;
+    color: var(--text-navy);
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .hours-foot .pulse {
+    width: 8px; height: 8px;
+    background: #1FA84F;
+    border-radius: 50%;
+    box-shadow: 0 0 0 4px rgba(31,168,79,.2);
+  }
+
+  /* Coaching contacts */
+  .staff-ct {
+    background: var(--off-white);
+    padding: 56px 32px;
+    border-top: 1px solid var(--border);
+  }
+  .staff-ct .head { text-align: center; margin-bottom: 26px; }
+  .staff-ct h2 {
+    margin-top: 8px;
+    font-size: 26px; font-weight: 800;
+    color: var(--text-navy);
+  }
+  .staff-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .ct-coach {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px 22px;
+    text-align: center;
+    transition: transform .15s, box-shadow .15s;
+  }
+  .ct-coach:hover { transform: translateY(-2px); box-shadow: var(--soft-shadow); }
+  .ct-coach .avatar {
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--royal), var(--navy));
+    color: var(--white);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 24px;
+    font-weight: 800;
+    margin: 0 auto;
+    box-shadow: 0 6px 16px rgba(0,58,120,.3);
+  }
+  .ct-coach h3 {
+    margin-top: 14px;
+    font-size: 17px; font-weight: 700;
+    color: var(--text-navy);
+  }
+  .ct-coach .role {
+    margin-top: 2px;
+    color: var(--cyan);
+    font-size: 12px; font-weight: 700;
+    letter-spacing: 1.4px; text-transform: uppercase;
+  }
+  .ct-coach .links {
+    margin-top: 14px;
+    display: flex; justify-content: center; gap: 8px;
+  }
+  .ct-coach .link {
+    flex: 1;
+    background: #F2F6FB;
+    color: var(--text-navy);
+    padding: 8px 0;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    display: inline-flex; justify-content: center; align-items: center; gap: 6px;
+  }
+  .ct-coach .link:hover { background: rgba(18,174,234,.12); color: var(--cyan); }
+  .ct-coach .link svg { width: 12px; height: 12px; }
+
+  /* FAQ */
+  .faq {
+    padding: 0 32px 56px;
+    background: var(--off-white);
+  }
+  .faq .head { text-align: center; margin-bottom: 22px; }
+  .faq h2 {
+    margin-top: 8px;
+    font-size: 26px; font-weight: 800;
+    color: var(--text-navy);
+  }
+  .faq-list {
+    max-width: 760px;
+    margin: 0 auto;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  details.faq-item {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 0;
+    transition: box-shadow .15s;
+  }
+  details.faq-item[open] { box-shadow: 0 6px 16px rgba(0,31,68,.08); }
+  details.faq-item summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 18px 22px;
+    font-size: 15px; font-weight: 700;
+    color: var(--text-navy);
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 16px;
+  }
+  details.faq-item summary::-webkit-details-marker { display: none; }
+  details.faq-item summary::after {
+    content: "+";
+    color: var(--cyan);
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 1;
+    transition: transform .2s;
+  }
+  details.faq-item[open] summary::after {
+    content: "−";
+  }
+  details.faq-item .ans {
+    padding: 0 22px 18px;
+    font-size: 13.5px;
+    line-height: 22px;
+    color: #3F4E62;
+  }
+</style>
+</head>
+<body>
+<div class="page" data-screen-label="06 Contact">
+
+  <header class="site-header">
+    <a href="Lions Wrestling Club.html" class="logo" aria-label="Lions Wrestling"></a>
+    <nav class="nav">
+      <a href="Lions Wrestling Club.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="schedule.html">Schedule</a>
+      <a href="results.html">Results</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="contact.html" class="active">Contact</a>
+    </nav>
+    <div class="header-socials">
+      <a href="https://instagram.com/dmclionswrestling" target="_blank" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+      </a>
+      <a href="https://facebook.com/dmclionswrestling" target="_blank" aria-label="Facebook">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 22v-8h2.7l.4-3.2h-3.1V8.7c0-.9.3-1.6 1.6-1.6h1.7V4.2c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.5-4 4.1v2.6H7.6V14h2.8v8h3.1z"/></svg>
+      </a>
+    </div>
+    <a href="register.html" class="join-btn">Join the Lions</a>
+  </header>
+
+  <section class="ct-hero">
+    <div class="inner">
+      <div class="crumbs"><a href="Lions Wrestling Club.html">Home</a><span class="sep">/</span>Contact</div>
+      <h1>Let's talk wrestling.</h1>
+      <p>Joining the team, asking about practice, or just want to learn what we're about — we're here. Drop us a note and a coach will reach out within 24 hours.</p>
+    </div>
+  </section>
+
+  <!-- ====== REASONS ====== -->
+  <section class="reasons">
+    <div class="reasons-head">
+      <div class="eyebrow">What brings you in?</div>
+      <h2>Pick a reason — we'll route you to the right coach.</h2>
+    </div>
+    <div class="reasons-grid">
+      <div class="reason active">
+        <div class="ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M12 8v7M9 11h6"/></svg>
+        </div>
+        <div class="t">Join the Team</div>
+        <div class="d">New to wrestling or transferring in</div>
+      </div>
+      <div class="reason">
+        <div class="ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.2"/><path d="M3 19c.6-3 3-5 6-5s5.4 2 6 5"/></svg>
+        </div>
+        <div class="t">Youth Program</div>
+        <div class="d">K – 6 wrestlers, parents welcome</div>
+      </div>
+      <div class="reason">
+        <div class="ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/></svg>
+        </div>
+        <div class="t">Schedule a Match</div>
+        <div class="d">For opposing teams and ADs</div>
+      </div>
+      <div class="reason">
+        <div class="ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8c1.7 0 3-1.3 3-3s-1.3-3-3-3-3 1.3-3 3 1.3 3 3 3z"/><path d="M19 21H5a2 2 0 0 1-2-2v-3a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4v3a2 2 0 0 1-2 2z"/></svg>
+        </div>
+        <div class="t">Sponsor / Support</div>
+        <div class="d">Booster club &amp; partnerships</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== FORM + SIDE ====== -->
+  <section class="ct-main">
+    <div class="form-card">
+      <h3>Tell us about you</h3>
+      <p class="lede">All fields marked <span style="color:var(--cyan); font-weight: 700;">*</span> are required. We won't share your info — promise.</p>
+      <div class="form-grid">
+        <div class="field">
+          <label>First Name <span class="req">*</span></label>
+          <input type="text" placeholder="Jordan" />
+        </div>
+        <div class="field">
+          <label>Last Name <span class="req">*</span></label>
+          <input type="text" placeholder="Bell" />
+        </div>
+        <div class="field">
+          <label>Email <span class="req">*</span></label>
+          <input type="email" placeholder="you@example.com" />
+        </div>
+        <div class="field">
+          <label>Phone</label>
+          <input type="tel" placeholder="(515) 555-0114" />
+        </div>
+        <div class="field">
+          <label>Wrestler's Grade Level</label>
+          <select>
+            <option>— Select —</option>
+            <option>K – 2 (Mini Lions)</option>
+            <option>3 – 6 (Youth)</option>
+            <option>7 – 8 (Middle School)</option>
+            <option>9 – 12 (High School)</option>
+            <option>Not a wrestler</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Experience</label>
+          <select>
+            <option>— Select —</option>
+            <option>Brand new</option>
+            <option>1 – 2 seasons</option>
+            <option>3+ seasons</option>
+          </select>
+        </div>
+        <div class="field full">
+          <label>Your message <span class="req">*</span></label>
+          <textarea placeholder="Tell us a bit about your wrestler and what you're hoping to learn. We read everything."></textarea>
+          <span class="hint">Average response time: under 24 hours.</span>
+        </div>
+      </div>
+      <div class="form-foot">
+        <label class="check">
+          <input type="checkbox" checked />
+          Send me season updates &amp; match-day reminders
+        </label>
+        <button class="submit">Send Message <span>→</span></button>
+      </div>
+    </div>
+
+    <div class="side-stack">
+      <div class="info-card">
+        <h4>Reach us directly</h4>
+        <div class="info-row">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg></div>
+          <div><div class="lbl">Address</div><div class="val">9730 Woodland<br/>Cumming, IA 50061</div></div>
+        </div>
+        <div class="info-row">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.3 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A18 18 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.3 1.1l-2.2 2.1z"/></svg></div>
+          <div><div class="lbl">Phone</div><div class="val">515-844-3947</div></div>
+        </div>
+        <div class="info-row">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 6h16c1.1 0 2 .9 2 2v8c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V8c0-1.1.9-2 2-2zm0 2v.5l8 5 8-5V8H4zm16 2.4-7.4 4.6a1 1 0 0 1-1.2 0L4 10.4V16h16v-5.6z"/></svg></div>
+          <div><div class="lbl">Email</div><div class="val">lionswrestling<br/>@dmcschools.org</div></div>
+        </div>
+      </div>
+
+      <div class="hours-card">
+        <h4>Practice Hours</h4>
+        <div class="hours-row"><span class="day">Monday</span><span class="time">3:45 – 5:45 PM</span></div>
+        <div class="hours-row today"><span class="day">Tuesday (today)</span><span class="time">3:45 – 5:45 PM</span></div>
+        <div class="hours-row"><span class="day">Wednesday</span><span class="time">3:45 – 5:45 PM</span></div>
+        <div class="hours-row"><span class="day">Thursday</span><span class="time">3:45 – 5:45 PM</span></div>
+        <div class="hours-row closed"><span class="day">Friday</span><span class="time">Open mat only</span></div>
+        <div class="hours-row"><span class="day">Saturday</span><span class="time">9:00 – 10:30 AM</span></div>
+        <div class="hours-row closed"><span class="day">Sunday</span><span class="time">Closed</span></div>
+        <div class="hours-foot"><span class="pulse"></span> Open right now · Youth practice in session</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== COACHING CONTACTS ====== -->
+  <section class="staff-ct">
+    <div class="head">
+      <div class="eyebrow">Direct line</div>
+      <h2>Contact a coach</h2>
+    </div>
+    <div class="staff-grid">
+      <div class="ct-coach">
+        <div class="avatar">DR</div>
+        <h3>Coach Daniel Reeves</h3>
+        <div class="role">Head Coach</div>
+        <div class="links">
+          <a href="#" class="link"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 6h16c1.1 0 2 .9 2 2v8c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V8c0-1.1.9-2 2-2zm0 2v.5l8 5 8-5V8H4z"/></svg> Email</a>
+          <a href="#" class="link"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.3 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A18 18 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.3 1.1l-2.2 2.1z"/></svg> Call</a>
+        </div>
+      </div>
+      <div class="ct-coach">
+        <div class="avatar">MH</div>
+        <h3>Coach Mike Hollings</h3>
+        <div class="role">Assistant Coach</div>
+        <div class="links">
+          <a href="#" class="link"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 6h16c1.1 0 2 .9 2 2v8c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V8c0-1.1.9-2 2-2zm0 2v.5l8 5 8-5V8H4z"/></svg> Email</a>
+          <a href="#" class="link"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.3 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A18 18 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.3 1.1l-2.2 2.1z"/></svg> Call</a>
+        </div>
+      </div>
+      <div class="ct-coach">
+        <div class="avatar">JB</div>
+        <h3>Coach Jared Bell</h3>
+        <div class="role">Youth Director</div>
+        <div class="links">
+          <a href="#" class="link"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 6h16c1.1 0 2 .9 2 2v8c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V8c0-1.1.9-2 2-2zm0 2v.5l8 5 8-5V8H4z"/></svg> Email</a>
+          <a href="#" class="link"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.3 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A18 18 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.3 1.1l-2.2 2.1z"/></svg> Call</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== FAQ ====== -->
+  <section class="faq">
+    <div class="head">
+      <div class="eyebrow">Quick answers</div>
+      <h2>Frequently asked</h2>
+    </div>
+    <div class="faq-list">
+      <details class="faq-item" open>
+        <summary>Do I need to be a DMC student to join?</summary>
+        <div class="ans">The high school team rosters DMC students, but our youth program welcomes families from across the Des Moines metro. Reach out and we'll point you in the right direction.</div>
+      </details>
+      <details class="faq-item">
+        <summary>My kid has never wrestled. Can they still join?</summary>
+        <div class="ans">Absolutely. Every Lion started somewhere. Our youth nights and open mats are designed to onboard brand-new wrestlers in a supportive, no-pressure environment.</div>
+      </details>
+      <details class="faq-item">
+        <summary>What gear do we need to start?</summary>
+        <div class="ans">Athletic shoes, a t-shirt, and shorts to start. Wrestling shoes and headgear can be borrowed for the first few weeks while you decide if it's a fit.</div>
+      </details>
+      <details class="faq-item">
+        <summary>What does it cost?</summary>
+        <div class="ans">Our youth program is intentionally low-cost to remove barriers — annual dues cover insurance and travel. Scholarship spots are available; just ask.</div>
+      </details>
+      <details class="faq-item">
+        <summary>How do I stay updated on schedule changes?</summary>
+        <div class="ans">Subscribe via the form above — we send weekly emails during the season with practice notes, match locations, and weather updates.</div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ====== CTA STRIP ====== -->
+  <section class="cta-strip">
+    <h3>Still on the fence?<span class="accent">Come watch a practice.</span></h3>
+    <div class="cta-divide"></div>
+    <p>Parents and prospective wrestlers welcome any practice day. No appointment needed.</p>
+    <a href="#" class="btn btn-cyan">Get Directions <span>→</span></a>
+  </section>
+
+  <!-- ====== FOOTER ====== -->
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div class="footer-logo" aria-label="Lions Wrestling"></div>
+      <div>
+        <h4>Quick Links</h4>
+        <div class="footer-links">
+          <a href="Lions Wrestling Club.html">Home</a>
+          <a href="results.html">Results</a>
+          <a href="about.html">About</a>
+          <a href="gallery.html">Gallery</a>
+          <a href="schedule.html">Schedule</a>
+          <a href="contact.html">Contact</a>
+        </div>
+      </div>
+      <div>
+        <h4>Contact Us</h4>
+        <div class="contact-row">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+          9730 Woodland, Cumming, IA 50061
+        </div>
+        <div class="contact-row">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.3 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A18 18 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.3 1.1l-2.2 2.1z"/></svg>
+          515-844-3947
+        </div>
+        <div class="contact-row">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 6h16c1.1 0 2 .9 2 2v8c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V8c0-1.1.9-2 2-2zm0 2v.5l8 5 8-5V8H4zm16 2.4-7.4 4.6a1 1 0 0 1-1.2 0L4 10.4V16h16v-5.6z"/></svg>
+          lionswrestling@dmcschools.org
+        </div>
+        <div class="footer-socials-row">
+          <a href="https://instagram.com/dmclionswrestling" target="_blank" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+            Instagram
+          </a>
+          <a href="https://facebook.com/dmclionswrestling" target="_blank" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 22v-8h2.7l.4-3.2h-3.1V8.7c0-.9.3-1.6 1.6-1.6h1.7V4.2c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.5-4 4.1v2.6H7.6V14h2.8v8h3.1z"/></svg>
+            Facebook
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 Des Moines Christian Lions Wrestling Club</div>
+  </footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Lions Wrestling Club — Des Moines Christian</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" />
+<style>
+  :root {
+    --navy: #061B3A;
+    --deep-navy: #03142B;
+    --royal: #003A78;
+    --cyan: #12AEEA;
+    --cyan-dark: #079DDB;
+    --white: #FFFFFF;
+    --off-white: #F8FBFF;
+    --text-navy: #071C3D;
+    --muted: #6E7C8E;
+    --card-shadow: 0 20px 45px rgba(0, 31, 68, .16);
+    --soft-shadow: 0 10px 30px rgba(0, 31, 68, .12);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: #ECEEF1;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--text-navy);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  img { display: block; max-width: 100%; }
+  button { font-family: inherit; cursor: pointer; border: none; background: none; }
+  a { color: inherit; text-decoration: none; }
+
+  .page {
+    width: 941px;
+    margin: 0 auto;
+    background: var(--off-white);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* ------------- HEADER + HERO ------------- */
+  .hero {
+    position: relative;
+    height: 438px;
+    background: linear-gradient(180deg, rgba(6,27,58,.35) 0%, rgba(6,27,58,.35) 50%, rgba(6,27,58,.75) 100%),
+                url('assets/images/hero-bg.jpg') center/cover no-repeat,
+                var(--navy);
+    color: var(--white);
+    overflow: hidden;
+  }
+  .hero::after {
+    content: "";
+    position: absolute;
+    right: -60px;
+    top: 40px;
+    width: 380px;
+    height: 380px;
+    background: url('assets/logos/lion-head-blue-transparent.png') center/contain no-repeat;
+    opacity: .22;
+    pointer-events: none;
+  }
+  .header {
+    position: relative;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    padding: 10px 28px 10px 47px;
+    height: 82px;
+  }
+  .header .logo {
+    width: 66px;
+    height: 72px;
+    background: url('assets/logos/lion-head-white-transparent.png') center/contain no-repeat;
+    flex-shrink: 0;
+  }
+  .nav {
+    display: flex;
+    gap: 32px;
+    margin-left: 200px;
+  }
+  .nav a {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 18px;
+    color: rgba(255,255,255,.92);
+    padding: 4px 0;
+    position: relative;
+    transition: color .15s;
+  }
+  .nav a:hover { color: var(--cyan); }
+  .nav a.active { color: var(--white); }
+  .nav a.active::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: -6px;
+    height: 2px;
+    background: var(--cyan);
+    border-radius: 2px;
+  }
+  .join-btn {
+    margin-left: auto;
+    background: var(--cyan);
+    color: var(--white);
+    font-size: 14px;
+    font-weight: 600;
+    padding: 11px 22px;
+    border-radius: 8px;
+    box-shadow: 0 4px 14px rgba(18,174,234,.45);
+    transition: background .15s, transform .15s;
+  }
+  .join-btn:hover { background: var(--cyan-dark); transform: translateY(-1px); }
+
+  .hero-content {
+    position: relative;
+    z-index: 4;
+    text-align: center;
+    padding-top: 78px;
+  }
+  .hero-title {
+    font-size: 60px;
+    line-height: 70px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    text-shadow: 0 4px 24px rgba(0,0,0,.4);
+  }
+  .hero-sub {
+    margin-top: 8px;
+    font-size: 22px;
+    font-weight: 500;
+    text-shadow: 0 2px 12px rgba(0,0,0,.5);
+  }
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 24px;
+    background: var(--cyan);
+    color: var(--white);
+    font-size: 17px;
+    font-weight: 600;
+    padding: 13px 28px;
+    border-radius: 8px;
+    box-shadow: 0 6px 18px rgba(18,174,234,.45);
+    transition: background .15s, transform .15s;
+  }
+  .hero-cta:hover { background: var(--cyan-dark); transform: translateY(-1px); }
+  .hero-cta .arrow { font-size: 14px; }
+
+  .pillars {
+    position: absolute;
+    left: 0; right: 0;
+    bottom: 56px;
+    z-index: 4;
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    color: var(--white);
+    white-space: nowrap;
+  }
+  .pillar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .pillar svg { width: 22px; height: 22px; flex-shrink: 0; }
+  .pillar .label .top {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    line-height: 16px;
+    white-space: nowrap;
+  }
+  .pillar .label .sub {
+    font-size: 12px;
+    font-weight: 400;
+    color: rgba(255,255,255,.78);
+    line-height: 16px;
+    margin-top: 2px;
+    white-space: nowrap;
+  }
+  .dots {
+    position: absolute;
+    bottom: 24px;
+    left: 0; right: 0;
+    z-index: 4;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+  }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,.4); }
+  .dot.active { background: var(--cyan); width: 8px; height: 8px; }
+
+  /* ------------- MISSION ------------- */
+  .mission {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
+    padding: 56px 56px 56px 56px;
+    background: var(--off-white);
+    align-items: center;
+  }
+  .eyebrow {
+    color: var(--cyan);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .mission h2 {
+    margin-top: 14px;
+    font-size: 30px;
+    line-height: 34px;
+    font-weight: 800;
+    color: var(--text-navy);
+    letter-spacing: -.3px;
+  }
+  .mission p {
+    margin-top: 18px;
+    font-size: 14px;
+    line-height: 22px;
+    color: #3F4E62;
+    max-width: 360px;
+  }
+  .pill-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 24px;
+  }
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #E8F1FB;
+    border: 1px solid #D6E5F4;
+    color: var(--text-navy);
+    font-size: 13px;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 24px;
+  }
+  .pill svg { width: 14px; height: 14px; }
+  .mission-photo {
+    width: 100%;
+    aspect-ratio: 380 / 270;
+    border-radius: 12px;
+    background: url('assets/images/mission-photo.jpg') center/cover no-repeat;
+    box-shadow: var(--card-shadow);
+  }
+
+  /* ------------- PROGRAM ------------- */
+  .program {
+    position: relative;
+    background: var(--navy);
+    color: var(--white);
+    padding: 48px 56px 100px;
+    overflow: hidden;
+  }
+  .program::before, .program::after {
+    content: "";
+    position: absolute;
+    width: 220px; height: 280px;
+    background: radial-gradient(circle at 30% 50%, rgba(18,174,234,.18), transparent 60%);
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .program::before { left: -60px; }
+  .program::after { right: -60px; transform: translateY(-50%) scaleX(-1); }
+  .program-head { text-align: center; }
+  .program-head .eyebrow { color: var(--cyan); }
+  .program-head h2 {
+    margin-top: 10px;
+    font-size: 30px;
+    line-height: 36px;
+    font-weight: 800;
+    color: var(--white);
+    letter-spacing: -.3px;
+  }
+  .program-cards {
+    margin-top: 28px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .program-card {
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 12px;
+    padding: 22px 22px 18px;
+    backdrop-filter: blur(4px);
+  }
+  .program-card .ico {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(18,174,234,.14);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--cyan);
+    margin-bottom: 14px;
+  }
+  .program-card .ico svg { width: 22px; height: 22px; }
+  .program-card h3 {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+  .program-card p {
+    font-size: 13px;
+    line-height: 19px;
+    color: rgba(255,255,255,.72);
+  }
+  .learn-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 14px;
+    color: var(--cyan);
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .learn-more:hover { color: var(--cyan-dark); }
+
+  /* Schedule card overlaps program / next bg */
+  .schedule-wrap {
+    position: relative;
+    margin: 0 auto;
+    width: 568px;
+    margin-top: 36px;
+    z-index: 2;
+  }
+  .schedule-card {
+    background: var(--white);
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
+    padding: 22px 26px 22px;
+  }
+  .schedule-card .eyebrow {
+    color: var(--cyan);
+    margin-bottom: 14px;
+    display: block;
+  }
+  .sched-item {
+    display: grid;
+    grid-template-columns: 36px 64px 1fr auto auto 16px;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 0;
+    color: var(--text-navy);
+  }
+  .sched-item + .sched-item { border-top: 1px solid #EEF2F7; }
+  .sched-item .ico {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--cyan);
+    color: var(--white);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .sched-item .ico svg { width: 16px; height: 16px; }
+  .sched-item .date {
+    font-size: 15px;
+    font-weight: 700;
+  }
+  .sched-item .what {
+    font-size: 14px;
+    color: var(--text-navy);
+  }
+  .sched-item .where {
+    font-size: 13px;
+    color: var(--muted);
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .sched-item .where svg { width: 12px; height: 12px; color: var(--cyan); }
+  .sched-item .when {
+    font-size: 13px;
+    color: var(--text-navy);
+    font-weight: 500;
+    text-align: right;
+  }
+  .sched-item .chev {
+    color: #B7C2D2;
+    font-size: 16px;
+    text-align: center;
+  }
+  .full-sched-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    margin: 20px auto -38px;
+    background: var(--cyan);
+    color: var(--white);
+    font-size: 14px;
+    font-weight: 600;
+    padding: 12px 28px;
+    border-radius: 8px;
+    box-shadow: 0 6px 18px rgba(18,174,234,.4);
+  }
+  .full-sched-btn-wrap {
+    display: flex;
+    justify-content: center;
+  }
+  .full-sched-btn:hover { background: var(--cyan-dark); }
+
+  /* Gallery section bg under schedule overflow */
+  .gallery {
+    background: var(--off-white);
+    padding: 70px 56px 36px;
+  }
+  .gallery-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .gallery-head .eyebrow { color: var(--cyan); }
+  .view-gallery {
+    color: var(--cyan);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    display: inline-flex; align-items: center; gap: 6px;
+    white-space: nowrap;
+  }
+  .gallery-head .eyebrow { white-space: nowrap; }
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 12px;
+  }
+  .gallery-grid .tile {
+    aspect-ratio: 132 / 92;
+    border-radius: 10px;
+    background-size: cover;
+    background-position: center;
+    box-shadow: 0 6px 18px rgba(0,31,68,.12);
+  }
+
+  /* Testimonial */
+  .testimonial {
+    position: relative;
+    padding: 42px 56px;
+    background: linear-gradient(180deg, #E6EEF8 0%, #DDE7F4 100%);
+    overflow: hidden;
+  }
+  .testimonial::after {
+    content: "";
+    position: absolute;
+    right: 0; top: 0; bottom: 0;
+    width: 380px;
+    background: url('assets/images/quote-ghost.png') right center/contain no-repeat;
+    opacity: .18;
+    pointer-events: none;
+  }
+  .test-inner {
+    position: relative;
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    gap: 14px;
+    z-index: 1;
+    padding-left: 80px;
+  }
+  .test-dots {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-top: 6px;
+  }
+  .test-dots span {
+    width: 4px; height: 4px; border-radius: 50%;
+    background: var(--cyan);
+    opacity: .65;
+  }
+  .quote-mark {
+    font-family: Georgia, serif;
+    font-size: 88px;
+    line-height: .6;
+    color: var(--cyan);
+    font-weight: 700;
+  }
+  .test-body {
+    grid-column: 2;
+    margin-top: -8px;
+  }
+  .test-body p {
+    font-size: 22px;
+    line-height: 30px;
+    color: var(--text-navy);
+    font-weight: 500;
+    text-wrap: pretty;
+  }
+  .test-author {
+    margin-top: 14px;
+    color: var(--cyan);
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  /* CTA Strip */
+  .cta {
+    position: relative;
+    background: linear-gradient(90deg, rgba(6,27,58,.92), rgba(6,27,58,.75)),
+                url('assets/images/cta-bg.jpg') center/cover no-repeat,
+                var(--navy);
+    color: var(--white);
+    padding: 26px 56px;
+    display: grid;
+    grid-template-columns: 260px 1px 1fr auto;
+    align-items: center;
+    gap: 28px;
+  }
+  .cta h3 {
+    font-size: 26px;
+    line-height: 32px;
+    font-weight: 800;
+  }
+  .cta h3 .accent { color: var(--cyan); display: block; }
+  .cta-divide {
+    width: 1px;
+    height: 60px;
+    background: rgba(255,255,255,.18);
+  }
+  .cta p {
+    font-size: 14px;
+    line-height: 20px;
+    color: rgba(255,255,255,.86);
+    max-width: 340px;
+  }
+  .cta .cta-btn {
+    background: var(--cyan);
+    color: var(--white);
+    font-size: 14px;
+    font-weight: 600;
+    padding: 13px 24px;
+    border-radius: 8px;
+    box-shadow: 0 6px 18px rgba(18,174,234,.4);
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .cta .cta-btn:hover { background: var(--cyan-dark); }
+
+  /* Footer */
+  .footer {
+    background: var(--deep-navy);
+    color: rgba(255,255,255,.82);
+    padding: 36px 56px 26px;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 200px 1fr 1fr;
+    gap: 40px;
+    align-items: start;
+  }
+  .footer-logo {
+    width: 130px; height: 130px;
+    background: url('assets/logos/lion-head-white-transparent.png') center/contain no-repeat;
+  }
+  .footer h4 {
+    color: var(--white);
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+  .footer-links {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 16px;
+    font-size: 14px;
+  }
+  .footer-links a {
+    color: rgba(255,255,255,.78);
+    line-height: 24px;
+  }
+  .footer-links a:hover { color: var(--cyan); }
+  .contact-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+    font-size: 14px;
+    line-height: 20px;
+    color: rgba(255,255,255,.82);
+  }
+  .contact-row svg { width: 14px; height: 14px; color: var(--cyan); flex-shrink: 0; }
+  .footer-bottom {
+    margin-top: 28px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255,255,255,.08);
+    text-align: center;
+    font-size: 12px;
+    color: rgba(255,255,255,.54);
+  }
+</style>
+</head>
+<body>
+<div class="page" data-screen-label="01 Homepage">
+
+  <!-- ====== HERO ====== -->
+  <section class="hero">
+    <header class="header">
+      <a href="#" class="logo" aria-label="Lions Wrestling"></a>
+      <nav class="nav">
+        <a href="Lions Wrestling Club.html" class="active">Home</a>
+        <a href="about.html">About</a>
+        <a href="schedule.html">Schedule</a>
+        <a href="results.html">Results</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+      <div class="header-socials">
+      <a href="https://instagram.com/dmclionswrestling" target="_blank" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+      </a>
+      <a href="https://facebook.com/dmclionswrestling" target="_blank" aria-label="Facebook">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 22v-8h2.7l.4-3.2h-3.1V8.7c0-.9.3-1.6 1.6-1.6h1.7V4.2c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.5-4 4.1v2.6H7.6V14h2.8v8h3.1z"/></svg>
+      </a>
+    </div>
+    <a href="register.html" class="join-btn">Join the Lions</a>
+    </header>
+
+    <div class="hero-content">
+      <h1 class="hero-title">Lions Wrestling Club</h1>
+      <div class="hero-sub">Des Moines Christian</div>
+      <a href="#" class="hero-cta">View Schedule <span class="arrow">›</span></a>
+    </div>
+
+    <div class="pillars">
+      <div class="pillar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M12 8v7M9 11h6"/></svg>
+        <div class="label"><div class="top">FAITH</div><div class="sub">Rooted in Christ</div></div>
+      </div>
+      <div class="pillar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg>
+        <div class="label"><div class="top">DISCIPLINE</div><div class="sub">Built on Character</div></div>
+      </div>
+      <div class="pillar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15 9 22 9.5 17 14.5 18.5 22 12 18 5.5 22 7 14.5 2 9.5 9 9 12 2"/></svg>
+        <div class="label"><div class="top">EXCELLENCE</div><div class="sub">Pursuing Greatness</div></div>
+      </div>
+    </div>
+
+    <div class="dots">
+      <span class="dot"></span>
+      <span class="dot active"></span>
+      <span class="dot"></span>
+    </div>
+  </section>
+
+  <!-- ====== MISSION ====== -->
+  <section class="mission">
+    <div>
+      <div class="eyebrow">Our Mission</div>
+      <h2>Building Champions<br/>On and Off the Mat</h2>
+      <p>We develop student-athletes who strive for excellence in wrestling and in life. Through faith, discipline, and dedication, we prepare our athletes to lead with integrity and represent the Lions with pride.</p>
+      <div class="pill-row">
+        <span class="pill">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#12AEEA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M12 8v7M9 11h6"/></svg>
+          Faith
+        </span>
+        <span class="pill">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#12AEEA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg>
+          Discipline
+        </span>
+        <span class="pill">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#12AEEA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15 9 22 9.5 17 14.5 18.5 22 12 18 5.5 22 7 14.5 2 9.5 9 9 12 2"/></svg>
+          Excellence
+        </span>
+      </div>
+    </div>
+    <div class="mission-photo" aria-label="Coach with wrestlers"></div>
+  </section>
+
+  <!-- ====== PROGRAM ====== -->
+  <section class="program">
+    <div class="program-head">
+      <div class="eyebrow">Our Program</div>
+      <h2>Developing Complete Wrestlers</h2>
+    </div>
+
+    <div class="program-cards">
+      <div class="program-card">
+        <div class="ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.2"/><path d="M3 19c.6-3 3-5 6-5s5.4 2 6 5"/><path d="M15 18c.4-2 1.7-3.2 4-3.2"/></svg>
+        </div>
+        <h3>Youth Program</h3>
+        <p>Building a strong foundation for young athletes through technique, teamwork, and character.</p>
+        <a href="#" class="learn-more">Learn More <span>→</span></a>
+      </div>
+
+      <div class="program-card">
+        <div class="ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="3.2"/><path d="M5 21c.8-4 3.5-6.5 7-6.5s6.2 2.5 7 6.5"/></svg>
+        </div>
+        <h3>Skill Development</h3>
+        <p>Focused training that improves technique, strength, and mental toughness every day.</p>
+        <a href="#" class="learn-more">Learn More <span>→</span></a>
+      </div>
+
+      <div class="program-card">
+        <div class="ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4h10v4a5 5 0 0 1-10 0V4z"/><path d="M5 5H3v2a3 3 0 0 0 3 3"/><path d="M19 5h2v2a3 3 0 0 1-3 3"/><path d="M9 13h6l-.6 3h-4.8L9 13z"/><path d="M8 20h8"/></svg>
+        </div>
+        <h3>Competition Readiness</h3>
+        <p>Preparing athletes to perform at their best and compete with confidence and heart.</p>
+        <a href="#" class="learn-more">Learn More <span>→</span></a>
+      </div>
+    </div>
+
+    <div class="schedule-wrap">
+      <div class="schedule-card">
+        <span class="eyebrow">Upcoming Schedule</span>
+        <div class="sched-item">
+          <div class="ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/></svg>
+          </div>
+          <div class="date">Jan 15</div>
+          <div class="what">Dual vs. Johnston</div>
+          <div class="where"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>Home</div>
+          <div class="when">5:30 PM</div>
+          <div class="chev">›</div>
+        </div>
+        <div class="sched-item">
+          <div class="ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v4a4 4 0 0 1-8 0V4z"/><path d="M6 5H4v2a3 3 0 0 0 3 3"/><path d="M18 5h2v2a3 3 0 0 1-3 3"/><path d="M10 13h4v3h-4z"/><path d="M9 20h6"/></svg>
+          </div>
+          <div class="date">Jan 22</div>
+          <div class="what">Tournament @ Waukee</div>
+          <div class="where"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>Waukee HS</div>
+          <div class="when">All Day</div>
+          <div class="chev">›</div>
+        </div>
+        <div class="sched-item">
+          <div class="ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1v-9z"/></svg>
+          </div>
+          <div class="date">Jan 29</div>
+          <div class="what">Home Match vs. Ankeny</div>
+          <div class="where"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>Home</div>
+          <div class="when">5:30 PM</div>
+          <div class="chev">›</div>
+        </div>
+      </div>
+      <div class="full-sched-btn-wrap"><a href="#" class="full-sched-btn">View Full Schedule</a></div>
+    </div>
+  </section>
+
+  <!-- ====== GALLERY ====== -->
+  <section class="gallery">
+    <div class="gallery-head">
+      <div class="eyebrow">Match Highlights</div>
+      <a href="#" class="view-gallery">View Gallery <span>→</span></a>
+    </div>
+    <div class="gallery-grid">
+      <div class="tile" style="background-image:url('assets/images/gallery-01.jpg')"></div>
+      <div class="tile" style="background-image:url('assets/images/gallery-02.jpg')"></div>
+      <div class="tile" style="background-image:url('assets/images/gallery-03.jpg')"></div>
+      <div class="tile" style="background-image:url('assets/images/gallery-04.jpg')"></div>
+      <div class="tile" style="background-image:url('assets/images/gallery-05.jpg')"></div>
+      <div class="tile" style="background-image:url('assets/images/gallery-06.jpg')"></div>
+    </div>
+  </section>
+
+  <!-- ====== TESTIMONIAL ====== -->
+  <section class="testimonial">
+    <div class="test-inner">
+      <div class="test-dots"><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="quote-mark">“</div>
+      <div class="test-body">
+        <p>This club changed my son's life.<br/>The coaching staff is incredible."</p>
+        <div class="test-author">— Parent of a 2026 Freshman</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== CTA STRIP ====== -->
+  <section class="cta">
+    <h3>Join the Legacy.<span class="accent">Become a Lion.</span></h3>
+    <div class="cta-divide"></div>
+    <p>Be part of a program that builds champions on the mat and leaders for life.</p>
+    <a href="register.html" class="cta-btn">Join the Lions <span>→</span></a>
+  </section>
+
+  <!-- ====== FOOTER ====== -->
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-logo" aria-label="Lions Wrestling"></div>
+      <div>
+        <h4>Quick Links</h4>
+        <div class="footer-links">
+          <a href="#">Home</a>
+          <a href="#">Results</a>
+          <a href="#">About</a>
+          <a href="#">Gallery</a>
+          <a href="#">Schedule</a>
+          <a href="#">Contact</a>
+        </div>
+      </div>
+      <div>
+        <h4>Contact Us</h4>
+        <div class="contact-row">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+          9730 Woodland, Cumming, IA 50061
+        </div>
+        <div class="contact-row">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.3 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A18 18 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.3 1.1l-2.2 2.1z"/></svg>
+          515-844-3947
+        </div>
+        <div class="contact-row">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 6h16c1.1 0 2 .9 2 2v8c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V8c0-1.1.9-2 2-2zm0 2v.5l8 5 8-5V8H4zm16 2.4-7.4 4.6a1 1 0 0 1-1.2 0L4 10.4V16h16v-5.6z"/></svg>
+          lionswrestling@dmcschools.org
+        </div>
+        <div class="footer-socials-row">
+          <a href="https://instagram.com/dmclionswrestling" target="_blank" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+            Instagram
+          </a>
+          <a href="https://facebook.com/dmclionswrestling" target="_blank" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 22v-8h2.7l.4-3.2h-3.1V8.7c0-.9.3-1.6 1.6-1.6h1.7V4.2c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.5-4 4.1v2.6H7.6V14h2.8v8h3.1z"/></svg>
+            Facebook
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 Des Moines Christian Lions Wrestling Club</div>
+  </footer>
+
+</div>
+</body>
+</html>

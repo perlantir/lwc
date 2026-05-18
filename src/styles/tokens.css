@@ -1,0 +1,15 @@
+/* Mirrors handoff/site.css :root tokens. Components consume via Tailwind classes. */
+:root {
+  --navy: #061B3A;
+  --deep-navy: #03142B;
+  --royal: #003A78;
+  --cyan: #12AEEA;
+  --cyan-dark: #079DDB;
+  --white: #FFFFFF;
+  --off-white: #F8FBFF;
+  --text-navy: #071C3D;
+  --muted: #6E7C8E;
+  --border: #E3EAF3;
+  --card-shadow: 0 20px 45px rgba(0, 31, 68, .16);
+  --soft-shadow: 0 10px 30px rgba(0, 31, 68, .12);
+}

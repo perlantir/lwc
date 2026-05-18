@@ -1,0 +1,23 @@
+node_modules
+.next
+dist
+.turbo
+.cache
+*.log
+
+# Local env
+.env
+.env.local
+.env.*.local
+
+# Payload uploads (dev)
+public/uploads
+
+# Test artifacts
+coverage
+playwright-report
+test-results
+.playwright
+
+# OS
+.DS_Store

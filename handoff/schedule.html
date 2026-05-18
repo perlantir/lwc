@@ -1,0 +1,1298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Schedule — Lions Wrestling Club</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" />
+<link rel="stylesheet" href="site.css" />
+<style>
+  .sched-hero {
+    position: relative;
+    background: var(--navy);
+    color: var(--white);
+    padding: 48px 56px 44px;
+    overflow: hidden;
+  }
+  .sched-hero::before {
+    content: ""; position: absolute; inset: 0;
+    background: url('assets/images/hero-bg.jpg') center/cover no-repeat;
+    opacity: .15;
+  }
+  .sched-hero::after {
+    content: ""; position: absolute;
+    right: -80px; top: 0; bottom: 0;
+    width: 320px;
+    background: url('assets/logos/lion-head-blue-transparent.png') center/contain no-repeat;
+    opacity: .15;
+  }
+  .sched-hero .inner { position: relative; z-index: 1; }
+  .sched-hero .crumbs { font-size: 12px; color: rgba(255,255,255,.65); margin-bottom: 14px; }
+  .sched-hero .crumbs a { color: var(--cyan); }
+  .sched-hero .crumbs .sep { margin: 0 8px; color: rgba(255,255,255,.3); }
+  .sched-hero h1 { font-size: 40px; font-weight: 800; letter-spacing: -.4px; line-height: 46px; }
+  .sched-hero p {
+    margin-top: 10px; font-size: 15px;
+    color: rgba(255,255,255,.75); max-width: 540px;
+  }
+
+  /* Top tools row */
+  .sched-tools {
+    background: var(--white);
+    padding: 22px 32px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .filters {
+    display: inline-flex;
+    background: #EEF3F9;
+    border-radius: 10px;
+    padding: 4px;
+  }
+  .filters button {
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 18px;
+    border-radius: 7px;
+    color: var(--muted);
+    transition: all .15s;
+  }
+  .filters button.active {
+    background: var(--white);
+    color: var(--text-navy);
+    box-shadow: 0 2px 6px rgba(0,31,68,.08);
+  }
+  .season-pick {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 13px;
+    color: var(--text-navy);
+    font-weight: 500;
+  }
+  .season-pick svg { width: 14px; height: 14px; color: var(--cyan); }
+  .download-ics {
+    color: var(--cyan);
+    font-size: 13px;
+    font-weight: 600;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+
+  /* Coach-mode toggle */
+  .coach-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 6px 7px 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--white);
+    color: var(--text-navy);
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .coach-toggle .switch {
+    width: 32px; height: 18px;
+    background: #D6DFEC;
+    border-radius: 9px;
+    position: relative;
+    cursor: pointer;
+    transition: background .2s;
+  }
+  .coach-toggle .switch::after {
+    content: "";
+    position: absolute;
+    top: 2px; left: 2px;
+    width: 14px; height: 14px;
+    background: var(--white);
+    border-radius: 50%;
+    transition: transform .2s;
+    box-shadow: 0 1px 2px rgba(0,0,0,.2);
+  }
+  .coach-toggle.on .switch { background: var(--cyan); }
+  .coach-toggle.on .switch::after { transform: translateX(14px); }
+  .coach-toggle svg { width: 13px; height: 13px; color: var(--cyan); }
+
+  /* Add event affordance per cell */
+  .cal-day .add-btn {
+    position: absolute;
+    top: 6px; right: 6px;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: var(--cyan);
+    color: #fff;
+    border: none;
+    display: none;
+    align-items: center; justify-content: center;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1;
+    box-shadow: 0 4px 10px rgba(18,174,234,.4);
+  }
+  body.coach-mode .cal-day:not(.muted):hover .add-btn { display: inline-flex; }
+  body.coach-mode .cal-day:not(.muted) {
+    cursor: pointer;
+    transition: background .15s;
+  }
+  body.coach-mode .cal-day:not(.muted):hover { background: #F5FAFE; }
+
+  /* Event chip - clickable */
+  .cal-event {
+    position: relative;
+    cursor: pointer;
+    transition: filter .15s, transform .15s;
+  }
+  .cal-event:hover { filter: brightness(1.08); transform: translateX(1px); }
+
+  /* Event popover */
+  .event-pop {
+    position: absolute;
+    z-index: 50;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: 0 18px 40px rgba(0,31,68,.18);
+    width: 280px;
+    padding: 16px 18px;
+    font-size: 13px;
+    color: var(--text-navy);
+  }
+  .event-pop .head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .event-pop .swatch {
+    width: 10px; height: 10px; border-radius: 3px;
+  }
+  .event-pop .head .kind {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .event-pop h4 {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--text-navy);
+    line-height: 20px;
+  }
+  .event-pop .meta {
+    margin-top: 8px;
+    font-size: 12px;
+    color: var(--muted);
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .event-pop .meta svg { width: 11px; height: 11px; color: var(--cyan); margin-right: 6px; vertical-align: -1px; }
+  .event-pop .actions {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    gap: 8px;
+  }
+  .event-pop .actions button {
+    flex: 1;
+    padding: 8px 0;
+    border-radius: 7px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .event-pop .actions .primary {
+    background: var(--cyan);
+    color: #fff;
+    border: none;
+  }
+  .event-pop .actions .primary:hover { background: var(--cyan-dark); }
+  .event-pop .actions .ghost {
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid var(--border);
+  }
+  .event-pop .actions .ghost:hover { color: #C4574D; border-color: #E8D0CE; }
+
+  /* Modal */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(6,27,58,.55);
+    z-index: 100;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+  }
+  .modal-backdrop.open { display: flex; }
+  .modal {
+    background: var(--white);
+    border-radius: 16px;
+    width: 460px;
+    max-width: 90vw;
+    overflow: hidden;
+    box-shadow: 0 30px 60px rgba(0,0,0,.4);
+  }
+  .modal-head {
+    background: var(--navy);
+    color: #fff;
+    padding: 18px 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .modal-head h3 {
+    font-size: 16px;
+    font-weight: 800;
+  }
+  .modal-head .close {
+    background: transparent;
+    color: rgba(255,255,255,.7);
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+  }
+  .modal-body {
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .modal-body .field { display: flex; flex-direction: column; gap: 5px; }
+  .modal-body label { font-size: 11px; font-weight: 700; color: var(--text-navy); letter-spacing: .3px; text-transform: uppercase; }
+  .modal-body input, .modal-body select, .modal-body textarea {
+    border: 1px solid #D6DFEC;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-family: inherit;
+    font-size: 13px;
+    color: var(--text-navy);
+    outline: none;
+  }
+  .modal-body input:focus, .modal-body select:focus, .modal-body textarea:focus {
+    border-color: var(--cyan);
+    box-shadow: 0 0 0 3px rgba(18,174,234,.15);
+  }
+  .modal-body .two { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .modal-foot {
+    padding: 14px 22px 18px;
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    border-top: 1px solid var(--border);
+  }
+  .modal-foot button {
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .modal-foot .cancel { background: transparent; color: var(--muted); border: 1px solid var(--border); }
+  .modal-foot .save { background: var(--cyan); color: #fff; border: none; box-shadow: 0 4px 12px rgba(18,174,234,.4); }
+
+  /* Tabs for list-view */
+  .list-tabs {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 18px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0;
+  }
+  .list-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 18px;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--muted);
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    background: transparent;
+    cursor: pointer;
+  }
+  .list-tab svg { width: 16px; height: 16px; }
+  .list-tab:hover { color: var(--text-navy); }
+  .list-tab.active {
+    color: var(--text-navy);
+    border-bottom-color: var(--cyan);
+  }
+  .list-tab .tab-count {
+    font-size: 11px;
+    background: #EEF3F9;
+    color: var(--muted);
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: 700;
+    letter-spacing: .5px;
+  }
+  .list-tab.active .tab-count {
+    background: rgba(18,174,234,.15);
+    color: var(--cyan);
+  }
+  .tab-help {
+    margin-left: auto;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .list-panel.hidden { display: none; }
+
+  /* Updated match-card to include add-to-cal button on right */
+  .match-card .add-cal {
+    background: rgba(18,174,234,.1);
+    color: var(--cyan);
+    border: none;
+    border-radius: 8px;
+    padding: 9px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: background .15s;
+  }
+  .match-card .add-cal:hover { background: var(--cyan); color: #fff; }
+  .match-card .add-cal svg { width: 12px; height: 12px; }
+  .match-card {
+    grid-template-columns: 64px 1fr auto auto auto;
+  }
+  .match-card.prac { grid-template-columns: 64px 1fr auto auto; }
+  .match-card .tag.prac-tag {
+    color: var(--muted);
+    background: #EEF3F9;
+  }
+
+  /* Empty state */
+  .empty {
+    text-align: center;
+    padding: 36px 20px;
+    background: var(--white);
+    border: 1px dashed var(--border);
+    border-radius: 12px;
+    color: var(--muted);
+    font-size: 13.5px;
+  }
+  .empty b { display: block; color: var(--text-navy); font-size: 15px; margin-bottom: 4px; }
+
+  /* Featured next match */
+  .next-match {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--royal) 100%);
+    color: var(--white);
+    margin: 28px 32px 0;
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: var(--card-shadow);
+  }
+  .next-match::after {
+    content: ""; position: absolute;
+    right: -40px; top: -20px; bottom: -20px;
+    width: 320px;
+    background: url('assets/logos/lion-head-blue-transparent.png') center/contain no-repeat;
+    opacity: .18;
+  }
+  .next-match .pad {
+    padding: 28px 32px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 32px;
+    position: relative;
+    z-index: 1;
+  }
+  .next-match .date-block {
+    text-align: center;
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 12px;
+    padding: 14px 22px;
+    min-width: 96px;
+  }
+  .next-match .date-block .mo {
+    color: var(--cyan);
+    font-size: 12px; font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+  .next-match .date-block .day {
+    font-size: 32px; font-weight: 800;
+    line-height: 1; margin: 4px 0;
+  }
+  .next-match .date-block .dow {
+    font-size: 11px; color: rgba(255,255,255,.6);
+    letter-spacing: 1px; text-transform: uppercase;
+  }
+  .next-match .info .pill {
+    display: inline-block;
+    background: rgba(18,174,234,.18);
+    color: var(--cyan);
+    font-size: 11px; font-weight: 700;
+    padding: 4px 10px; border-radius: 4px;
+    letter-spacing: 1px; text-transform: uppercase;
+  }
+  .next-match .info h2 {
+    margin-top: 10px;
+    font-size: 26px; font-weight: 800;
+    line-height: 32px;
+  }
+  .next-match .info .meta {
+    margin-top: 10px;
+    display: flex; gap: 22px;
+    font-size: 13px;
+    color: rgba(255,255,255,.78);
+  }
+  .next-match .info .meta span { display: inline-flex; align-items: center; gap: 6px; }
+  .next-match .info .meta svg { width: 14px; height: 14px; color: var(--cyan); }
+  .next-match .ctas {
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .next-match .ctas .btn-cyan,
+  .next-match .ctas .btn-outline-w {
+    font-size: 13px; padding: 11px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+    display: inline-flex; align-items: center; justify-content: center;
+    gap: 6px;
+  }
+  .next-match .ctas .btn-outline-w {
+    border: 1px solid rgba(255,255,255,.3);
+    color: var(--white);
+    background: transparent;
+  }
+  .next-match .ctas .btn-outline-w:hover { background: rgba(255,255,255,.06); }
+
+  /* Calendar grid */
+  .calendar {
+    padding: 36px 32px 12px;
+  }
+  .month-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .month-head h3 {
+    font-size: 22px; font-weight: 800;
+    color: var(--text-navy);
+  }
+  .month-head h3 .yr { color: var(--muted); font-weight: 500; margin-left: 6px; }
+  .month-nav {
+    display: flex; gap: 6px;
+  }
+  .month-nav button {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    color: var(--text-navy);
+    font-size: 14px;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .month-nav button:hover { background: #EFF4FA; }
+  .cal-grid {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .cal-dow {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    background: #F4F7FB;
+    border-bottom: 1px solid var(--border);
+  }
+  .cal-dow div {
+    text-align: center;
+    padding: 10px 0;
+    font-size: 11px;
+    letter-spacing: 1.4px;
+    color: var(--muted);
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .cal-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+  }
+  .cal-day {
+    aspect-ratio: 1 / 1;
+    padding: 8px 8px 6px;
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    display: flex; flex-direction: column;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--text-navy);
+    background: var(--white);
+    min-height: 80px;
+  }
+  .cal-day:nth-child(7n) { border-right: none; }
+  .cal-day.muted { color: #C7D0DD; background: #FBFCFE; }
+  .cal-day .num { font-weight: 600; }
+  .cal-day.today .num {
+    background: var(--cyan);
+    color: var(--white);
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-weight: 700;
+  }
+  .cal-event {
+    font-size: 10.5px;
+    line-height: 13px;
+    padding: 3px 6px;
+    border-radius: 4px;
+    font-weight: 600;
+    color: var(--white);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .cal-event.home { background: var(--cyan); }
+  .cal-event.away { background: var(--royal); }
+  .cal-event.tour { background: #6E3FD9; }
+  .cal-event.prac { background: rgba(110,124,142,.35); color: var(--text-navy); }
+
+  /* Legend */
+  .legend {
+    padding: 14px 4px 0;
+    display: flex; gap: 22px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .legend span { display: inline-flex; align-items: center; gap: 8px; }
+  .legend i {
+    width: 10px; height: 10px;
+    border-radius: 3px;
+    display: inline-block;
+  }
+  .legend i.home { background: var(--cyan); }
+  .legend i.away { background: var(--royal); }
+  .legend i.tour { background: #6E3FD9; }
+  .legend i.prac { background: rgba(110,124,142,.55); }
+
+  /* List view */
+  .list-view {
+    padding: 32px 32px 56px;
+  }
+  .list-view h3 {
+    font-size: 18px; font-weight: 800;
+    color: var(--text-navy);
+    margin-bottom: 16px;
+  }
+  .list-view h3 .count {
+    color: var(--muted); font-weight: 500;
+    margin-left: 8px; font-size: 14px;
+  }
+  .match-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 20px;
+    display: grid;
+    grid-template-columns: 64px 1fr auto auto;
+    gap: 20px;
+    align-items: center;
+    transition: box-shadow .15s;
+  }
+  .match-card + .match-card { margin-top: 10px; }
+  .match-card:hover { box-shadow: var(--soft-shadow); border-color: #C9D6E5; }
+  .match-card .date-pip {
+    text-align: center;
+    background: #EEF7FE;
+    border-radius: 10px;
+    padding: 8px 0;
+  }
+  .match-card .date-pip .mo {
+    color: var(--cyan); font-size: 10px;
+    font-weight: 700; letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .match-card .date-pip .day {
+    font-size: 22px; font-weight: 800; line-height: 1;
+    color: var(--text-navy);
+    margin-top: 2px;
+  }
+  .match-card .who {
+    font-size: 15px; font-weight: 700;
+    color: var(--text-navy);
+  }
+  .match-card .who .sub {
+    margin-top: 3px;
+    font-size: 12px; color: var(--muted);
+    font-weight: 500;
+  }
+  .match-card .tag {
+    font-size: 11px; font-weight: 700;
+    color: var(--cyan);
+    background: rgba(18,174,234,.1);
+    padding: 4px 10px;
+    border-radius: 4px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .match-card .tag.away { color: var(--royal); background: rgba(0,58,120,.1); }
+  .match-card .tag.tour { color: #6E3FD9; background: rgba(110,63,217,.12); }
+  .match-card .time {
+    font-size: 13px;
+    color: var(--text-navy);
+    font-weight: 500;
+    min-width: 80px;
+    text-align: right;
+  }
+</style>
+</head>
+<body>
+<div class="page" data-screen-label="03 Schedule">
+
+  <header class="site-header">
+    <a href="Lions Wrestling Club.html" class="logo" aria-label="Lions Wrestling"></a>
+    <nav class="nav">
+      <a href="Lions Wrestling Club.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="schedule.html" class="active">Schedule</a>
+      <a href="results.html">Results</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div class="header-socials">
+      <a href="https://instagram.com/dmclionswrestling" target="_blank" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+      </a>
+      <a href="https://facebook.com/dmclionswrestling" target="_blank" aria-label="Facebook">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 22v-8h2.7l.4-3.2h-3.1V8.7c0-.9.3-1.6 1.6-1.6h1.7V4.2c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.5-4 4.1v2.6H7.6V14h2.8v8h3.1z"/></svg>
+      </a>
+    </div>
+    <a href="register.html" class="join-btn">Join the Lions</a>
+  </header>
+
+  <section class="sched-hero">
+    <div class="inner">
+      <div class="crumbs"><a href="Lions Wrestling Club.html">Home</a><span class="sep">/</span>Schedule</div>
+      <h1>2025–26 Season Schedule</h1>
+      <p>Duals, tournaments, and home matches. Add the season to your calendar — and come pack the stands.</p>
+    </div>
+  </section>
+
+  <!-- ====== TOOLS ====== -->
+  <section class="sched-tools">
+    <div class="filters">
+      <button class="active" data-filter="all">All Events</button>
+      <button data-filter="matches">Matches</button>
+      <button data-filter="practices">Practices</button>
+      <button data-filter="home">Home Only</button>
+    </div>
+    <a href="#" class="download-ics" id="download-all">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Download Season .ics
+    </a>
+    <div class="season-pick">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/></svg>
+      2025 – 26 Season
+    </div>
+  </section>
+
+  <!-- ====== NEXT MATCH ====== -->
+  <section class="next-match">
+    <div class="pad">
+      <div class="date-block">
+        <div class="mo">Jan</div>
+        <div class="day">15</div>
+        <div class="dow">Thu</div>
+      </div>
+      <div class="info">
+        <span class="pill">Next Match · Home</span>
+        <h2>Dual vs. Johnston Dragons</h2>
+        <div class="meta">
+          <span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg> Lions Gym, DMC</span>
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> 5:30 PM</span>
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> Youth Night</span>
+        </div>
+      </div>
+      <div class="ctas">
+        <button id="hero-add-cal" class="btn-cyan" style="background:var(--cyan); color:#fff; padding:12px 20px; border-radius:8px; font-size:13px; font-weight:600; display:inline-flex; align-items:center; gap:8px; border:none; cursor:pointer;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:14px; height:14px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Add to My Calendar
+        </button>
+        <a href="#" class="btn-outline-w" id="hero-directions">Get Directions</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== CALENDAR ====== -->
+  <section class="calendar">
+    <div class="month-head">
+      <h3>January<span class="yr">2026</span></h3>
+      <div class="month-nav">
+        <button>‹</button>
+        <button>Today</button>
+        <button>›</button>
+      </div>
+    </div>
+
+    <div class="cal-grid">
+      <div class="cal-dow">
+        <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+      </div>
+      <div class="cal-days" id="cal-days">
+        <!-- rendered from JS EVENTS array -->
+      </div>
+    </div>
+
+    <div class="legend">
+      <span><i class="home"></i> Home Match</span>
+      <span><i class="away"></i> Away Match</span>
+      <span><i class="tour"></i> Tournament</span>
+      <span><i class="prac"></i> Practice</span>
+    </div>
+  </section>
+
+  <!-- ====== UPCOMING TABS ====== -->
+  <section class="list-view">
+    <div class="list-tabs">
+      <button class="list-tab active" data-tab="matches">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3 7 7 .5-5 5 1.5 7L12 18l-6.5 3.5L7 14.5 2 9.5 9 9z"/></svg>
+        Upcoming Matches
+        <span class="tab-count" id="count-matches">0</span>
+      </button>
+      <button class="list-tab" data-tab="practices">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        Upcoming Practices
+        <span class="tab-count" id="count-practices">0</span>
+      </button>
+      <div class="tab-help">Pulled live from the calendar above</div>
+    </div>
+
+    <div class="list-panel" id="list-matches"></div>
+    <div class="list-panel hidden" id="list-practices"></div>
+  </section>
+
+  <!-- ====== CTA STRIP ====== -->
+  <section class="cta-strip">
+    <h3>Stand with the Lions.<span class="accent">Pack the gym.</span></h3>
+    <div class="cta-divide"></div>
+    <p>Home matches are free for students and families. Concessions support the team.</p>
+    <a href="#" class="btn btn-cyan">Subscribe to Updates <span>→</span></a>
+  </section>
+
+  <!-- ====== FOOTER ====== -->
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div class="footer-logo" aria-label="Lions Wrestling"></div>
+      <div>
+        <h4>Quick Links</h4>
+        <div class="footer-links">
+          <a href="Lions Wrestling Club.html">Home</a>
+          <a href="results.html">Results</a>
+          <a href="about.html">About</a>
+          <a href="gallery.html">Gallery</a>
+          <a href="schedule.html">Schedule</a>
+          <a href="contact.html">Contact</a>
+        </div>
+      </div>
+      <div>
+        <h4>Contact Us</h4>
+        <div class="contact-row">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+          9730 Woodland, Cumming, IA 50061
+        </div>
+        <div class="contact-row">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.3 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A18 18 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.3 1.1l-2.2 2.1z"/></svg>
+          515-844-3947
+        </div>
+        <div class="contact-row">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 6h16c1.1 0 2 .9 2 2v8c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V8c0-1.1.9-2 2-2zm0 2v.5l8 5 8-5V8H4zm16 2.4-7.4 4.6a1 1 0 0 1-1.2 0L4 10.4V16h16v-5.6z"/></svg>
+          lionswrestling@dmcschools.org
+        </div>
+        <div class="footer-socials-row">
+          <a href="https://instagram.com/dmclionswrestling" target="_blank" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+            Instagram
+          </a>
+          <a href="https://facebook.com/dmclionswrestling" target="_blank" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 22v-8h2.7l.4-3.2h-3.1V8.7c0-.9.3-1.6 1.6-1.6h1.7V4.2c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.5-4 4.1v2.6H7.6V14h2.8v8h3.1z"/></svg>
+            Facebook
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 Des Moines Christian Lions Wrestling Club</div>
+  </footer>
+
+</div>
+
+<!-- ====== ADD/EDIT EVENT MODAL ====== -->
+<div class="modal-backdrop" id="modal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="modal-title">Add Event</h3>
+      <button class="close" id="modal-close" aria-label="Close">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="field">
+        <label>Event Title</label>
+        <input type="text" id="m-title" placeholder="vs. Johnston Dragons" />
+      </div>
+      <div class="two">
+        <div class="field">
+          <label>Type</label>
+          <select id="m-kind">
+            <option value="home">Home Match</option>
+            <option value="away">Away Match</option>
+            <option value="tour">Tournament</option>
+            <option value="prac">Practice</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Date</label>
+          <input type="date" id="m-date" />
+        </div>
+      </div>
+      <div class="two">
+        <div class="field">
+          <label>Start Time</label>
+          <input type="time" id="m-time" value="17:30" />
+        </div>
+        <div class="field">
+          <label>Location</label>
+          <input type="text" id="m-loc" placeholder="Lions Gym" />
+        </div>
+      </div>
+      <div class="field">
+        <label>Notes (optional)</label>
+        <input type="text" id="m-notes" placeholder="Senior Night · doors at 5:00" />
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="cancel" id="modal-cancel">Cancel</button>
+      <button class="save" id="modal-save">Save Event</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ============ DATA ============
+  // Single source of truth — calendar and lists both read from this.
+  const KINDS = {
+    home: { label: 'Home', color: '#12AEEA', cat: 'match' },
+    away: { label: 'Away', color: '#003A78', cat: 'match' },
+    tour: { label: 'Tournament', color: '#6E3FD9', cat: 'match' },
+    prac: { label: 'Practice', color: 'rgba(110,124,142,.55)', cat: 'practice' },
+  };
+
+  let EVENTS = [
+    // Match-type events
+    { id: 1, date: '2026-01-03', time: 'All Day', title: 'Mid-Iowa Open', kind: 'tour', location: 'Indianola HS', notes: '18 schools' },
+    { id: 2, date: '2026-01-08', time: '6:00 PM', title: '@ Valley Tigers', kind: 'away', location: 'Valley HS', notes: 'CIML matchup' },
+    { id: 3, date: '2026-01-10', time: 'All Day', title: 'Cedar Falls Invite', kind: 'tour', location: 'Cedar Falls HS', notes: '' },
+    { id: 4, date: '2026-01-15', time: '5:30 PM', title: 'Dual vs. Johnston', kind: 'home', location: 'Lions Gym, DMC', notes: 'Senior Night' },
+    { id: 5, date: '2026-01-22', time: 'All Day', title: 'Tournament @ Waukee', kind: 'tour', location: 'Waukee HS', notes: '14 schools' },
+    { id: 6, date: '2026-01-23', time: 'All Day', title: 'Waukee Day 2 — Finals', kind: 'tour', location: 'Waukee HS', notes: '' },
+    { id: 7, date: '2026-01-29', time: '5:30 PM', title: 'Home Match vs. Ankeny', kind: 'home', location: 'Lions Gym, DMC', notes: 'Youth Night' },
+    { id: 8, date: '2026-01-31', time: '10:00 AM', title: 'Sectional Prep Tournament', kind: 'tour', location: 'TBD', notes: '' },
+    { id: 9, date: '2026-02-05', time: '6:00 PM', title: 'Tri @ Valley', kind: 'away', location: 'Valley HS', notes: 'vs. Lions · Lewis Central' },
+    { id: 10, date: '2026-02-12', time: '9:00 AM', title: 'CIML Conference Duals', kind: 'tour', location: 'Hosted by SE Polk', notes: '' },
+    { id: 11, date: '2026-02-19', time: '10:00 AM', title: 'Sectional Tournament', kind: 'tour', location: 'TBD', notes: 'State qualifier' },
+    // Practice-type events
+    { id: 101, date: '2026-01-05', time: '3:45 PM', title: 'Varsity Practice', kind: 'prac', location: 'Lions Wrestling Room', notes: '' },
+    { id: 102, date: '2026-01-06', time: '3:45 PM', title: 'Varsity Practice', kind: 'prac', location: 'Lions Wrestling Room', notes: '' },
+    { id: 103, date: '2026-01-07', time: '3:45 PM', title: 'Varsity Practice', kind: 'prac', location: 'Lions Wrestling Room', notes: '' },
+    { id: 104, date: '2026-01-12', time: '3:45 PM', title: 'Varsity Practice', kind: 'prac', location: 'Lions Wrestling Room', notes: '' },
+    { id: 105, date: '2026-01-13', time: '6:00 PM', title: 'Youth Night', kind: 'prac', location: 'Lions Wrestling Room', notes: 'K – 6 grade' },
+    { id: 106, date: '2026-01-14', time: '3:45 PM', title: 'Varsity Practice', kind: 'prac', location: 'Lions Wrestling Room', notes: 'Live go Friday' },
+    { id: 107, date: '2026-01-19', time: '3:45 PM', title: 'Varsity Practice', kind: 'prac', location: 'Lions Wrestling Room', notes: '' },
+    { id: 108, date: '2026-01-20', time: '6:00 PM', title: 'Youth Night', kind: 'prac', location: 'Lions Wrestling Room', notes: 'K – 6 grade' },
+    { id: 109, date: '2026-01-21', time: '3:45 PM', title: 'Varsity Practice', kind: 'prac', location: 'Lions Wrestling Room', notes: '' },
+    { id: 110, date: '2026-01-26', time: '3:45 PM', title: 'Varsity Practice', kind: 'prac', location: 'Lions Wrestling Room', notes: '' },
+    { id: 111, date: '2026-01-27', time: '6:00 PM', title: 'Youth Night', kind: 'prac', location: 'Lions Wrestling Room', notes: 'K – 6 grade' },
+    { id: 112, date: '2026-01-28', time: '3:45 PM', title: 'Varsity Practice', kind: 'prac', location: 'Lions Wrestling Room', notes: 'Live go Friday' },
+    { id: 113, date: '2026-01-31', time: '9:00 AM', title: 'Saturday Open Mat', kind: 'prac', location: 'Lions Wrestling Room', notes: 'All ages' },
+    { id: 114, date: '2026-02-02', time: '3:45 PM', title: 'Varsity Practice', kind: 'prac', location: 'Lions Wrestling Room', notes: '' },
+    { id: 115, date: '2026-02-03', time: '6:00 PM', title: 'Youth Night', kind: 'prac', location: 'Lions Wrestling Room', notes: '' },
+    { id: 116, date: '2026-02-04', time: '3:45 PM', title: 'Varsity Practice', kind: 'prac', location: 'Lions Wrestling Room', notes: '' },
+  ];
+  let nextId = 200;
+
+  // ============ STATE ============
+  let viewYear = 2026, viewMonth = 0; // 0 = Jan
+  const TODAY = '2026-01-15'; // demo today
+  let filter = 'all';
+
+  // ============ DOM ============
+  const $ = (s) => document.querySelector(s);
+  const calDays = $('#cal-days');
+  const monthLabel = $('.month-head h3');
+  const listMatches = $('#list-matches');
+  const listPractices = $('#list-practices');
+  const countMatches = $('#count-matches');
+  const countPractices = $('#count-practices');
+  const modal = $('#modal');
+
+  // ============ HELPERS ============
+  function pad(n){ return String(n).padStart(2,'0'); }
+  function mkDate(y,m,d){ return `${y}-${pad(m+1)}-${pad(d)}`; }
+  function parseDate(s){ const [y,m,d]=s.split('-').map(Number); return new Date(y, m-1, d); }
+  function monthName(m){ return ['January','February','March','April','May','June','July','August','September','October','November','December'][m]; }
+  function shortMo(m){ return ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][m]; }
+  function eventsOn(dateStr){ return EVENTS.filter(e => e.date === dateStr); }
+  function passesFilter(ev) {
+    if (filter === 'all') return true;
+    if (filter === 'matches') return KINDS[ev.kind].cat === 'match';
+    if (filter === 'practices') return ev.kind === 'prac';
+    if (filter === 'home') return ev.kind === 'home';
+    return true;
+  }
+
+  // ============ RENDER CALENDAR ============
+  function renderCalendar() {
+    monthLabel.innerHTML = `${monthName(viewMonth)}<span class="yr">${viewYear}</span>`;
+    const firstDay = new Date(viewYear, viewMonth, 1).getDay();
+    const daysInMonth = new Date(viewYear, viewMonth+1, 0).getDate();
+    const prevDays = new Date(viewYear, viewMonth, 0).getDate();
+    const cells = [];
+    // leading muted days
+    for (let i=firstDay-1; i>=0; i--) {
+      cells.push({ muted: true, num: prevDays-i, dateStr: null });
+    }
+    // current month
+    for (let d=1; d<=daysInMonth; d++) {
+      cells.push({ muted: false, num: d, dateStr: mkDate(viewYear, viewMonth, d) });
+    }
+    // trailing muted days to complete weeks (6 rows × 7 = 42 cells max, but show 5 rows when fits)
+    while (cells.length % 7 !== 0) {
+      const next = cells.length - firstDay - daysInMonth + 1;
+      cells.push({ muted: true, num: next, dateStr: null });
+    }
+
+    calDays.innerHTML = cells.map(c => {
+      const isToday = c.dateStr === TODAY;
+      const events = c.dateStr ? eventsOn(c.dateStr).filter(passesFilter) : [];
+      const eventHtml = events.map(e => `
+        <div class="cal-event ${e.kind}" data-id="${e.id}">${escape(eventLabel(e))}</div>
+      `).join('');
+      return `
+        <div class="cal-day ${c.muted ? 'muted' : ''} ${isToday ? 'today' : ''}" ${c.dateStr ? `data-date="${c.dateStr}"` : ''}>
+          <span class="num">${c.num}</span>
+          ${eventHtml}
+          ${!c.muted ? `<button class="add-btn" data-add-date="${c.dateStr}" title="Add event">+</button>` : ''}
+        </div>
+      `;
+    }).join('');
+  }
+  function eventLabel(e){
+    if (e.kind === 'home') return 'vs ' + e.title.replace(/^Dual vs\.?\s*/i,'').replace(/^Home Match vs\.?\s*/i,'').replace(/^vs\.?\s*/i,'');
+    if (e.kind === 'away') return e.title.startsWith('@') ? e.title : '@ ' + e.title.replace(/^Tri @\s*/, '');
+    if (e.kind === 'tour') return e.title.replace(/^Tournament\s*/i,'').slice(0, 22);
+    if (e.kind === 'prac') return (e.title.includes('Youth') ? 'Youth ' : 'Practice ') + e.time.replace(' ',' ').replace(' PM','p').replace(' AM','a');
+    return e.title;
+  }
+  function escape(s){ return String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+  // ============ RENDER LISTS ============
+  function renderLists() {
+    const today = parseDate(TODAY);
+    const upcoming = EVENTS
+      .filter(e => parseDate(e.date) >= today)
+      .filter(passesFilter)
+      .sort((a,b) => a.date.localeCompare(b.date) || a.time.localeCompare(b.time));
+
+    const matches = upcoming.filter(e => KINDS[e.kind].cat === 'match');
+    const practices = upcoming.filter(e => e.kind === 'prac');
+
+    countMatches.textContent = matches.length;
+    countPractices.textContent = practices.length;
+
+    listMatches.innerHTML = matches.length
+      ? matches.map(matchCard).join('')
+      : emptyState('No upcoming matches', 'Coaches: switch on Coach Mode and click any calendar day to add one.');
+
+    listPractices.innerHTML = practices.length
+      ? practices.map(practiceCard).join('')
+      : emptyState('No upcoming practices', 'Practices show up here as coaches add them on the calendar.');
+  }
+  function matchCard(e) {
+    const d = parseDate(e.date);
+    const tagClass = e.kind === 'home' ? '' : (e.kind === 'away' ? ' away' : ' tour');
+    const tagText = e.kind === 'home' ? 'Home' : (e.kind === 'away' ? 'Away' : 'Tournament');
+    const subline = [e.location, e.notes].filter(Boolean).join(' · ');
+    return `
+      <div class="match-card">
+        <div class="date-pip"><div class="mo">${shortMo(d.getMonth())}</div><div class="day">${pad(d.getDate())}</div></div>
+        <div class="who">${escape(e.title)}<div class="sub">${escape(subline)}</div></div>
+        <span class="tag${tagClass}">${tagText}</span>
+        <span class="time">${escape(e.time)}</span>
+        <button class="add-cal" data-ics="${e.id}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Add to Calendar
+        </button>
+      </div>
+    `;
+  }
+  function practiceCard(e) {
+    const d = parseDate(e.date);
+    const subline = [e.location, e.notes].filter(Boolean).join(' · ');
+    return `
+      <div class="match-card prac">
+        <div class="date-pip"><div class="mo">${shortMo(d.getMonth())}</div><div class="day">${pad(d.getDate())}</div></div>
+        <div class="who">${escape(e.title)}<div class="sub">${escape(subline)}</div></div>
+        <span class="time">${escape(e.time)}</span>
+        <button class="add-cal" data-ics="${e.id}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Add to Calendar
+        </button>
+      </div>
+    `;
+  }
+  function emptyState(title, sub) {
+    return `<div class="empty"><b>${title}</b>${sub}</div>`;
+  }
+
+  // ============ ICS EXPORT ============
+  function eventToICS(e) {
+    const d = parseDate(e.date);
+    const y = d.getFullYear(), m = pad(d.getMonth()+1), day = pad(d.getDate());
+    let dtStart, dtEnd;
+    if (e.time === 'All Day') {
+      dtStart = `${y}${m}${day}`;
+      const end = new Date(d); end.setDate(end.getDate()+1);
+      dtEnd = `${end.getFullYear()}${pad(end.getMonth()+1)}${pad(end.getDate())}`;
+    } else {
+      const [hh, mm] = parseTime(e.time);
+      dtStart = `${y}${m}${day}T${pad(hh)}${pad(mm)}00`;
+      const endH = (hh + 2) % 24;
+      dtEnd = `${y}${m}${day}T${pad(endH)}${pad(mm)}00`;
+    }
+    const dtType = e.time === 'All Day' ? 'VALUE=DATE:' : ':';
+    return [
+      'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Lions Wrestling//Schedule//EN','BEGIN:VEVENT',
+      `UID:lions-${e.id}@dmcschools.org`,
+      `SUMMARY:${e.title}`,
+      `LOCATION:${e.location || ''}`,
+      `DESCRIPTION:${(e.notes || '').replace(/\n/g, '\\n')}`,
+      `DTSTART;${dtType.replace(':','')}${dtStart}`,
+      `DTEND;${dtType.replace(':','')}${dtEnd}`,
+      'END:VEVENT','END:VCALENDAR'
+    ].join('\r\n');
+  }
+  function parseTime(s) {
+    const m = s.match(/(\d+):(\d+)\s*(AM|PM)?/i);
+    if (!m) return [12,0];
+    let h = +m[1]; const min = +m[2]; const ap = (m[3]||'').toUpperCase();
+    if (ap === 'PM' && h < 12) h += 12;
+    if (ap === 'AM' && h === 12) h = 0;
+    return [h, min];
+  }
+  function downloadICS(filename, content) {
+    const blob = new Blob([content], { type: 'text/calendar' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url), 1000);
+  }
+
+  // ============ MODAL ============
+  let editingId = null;
+  function openModal(prefillDate, eventId) {
+    editingId = eventId || null;
+    $('#modal-title').textContent = eventId ? 'Edit Event' : 'Add Event';
+    const ev = eventId ? EVENTS.find(e => e.id === eventId) : null;
+    $('#m-title').value = ev?.title || '';
+    $('#m-kind').value = ev?.kind || 'home';
+    $('#m-date').value = ev?.date || prefillDate || TODAY;
+    $('#m-time').value = ev ? ((p)=>{ const [h,mn]=parseTime(p); return pad(h)+':'+pad(mn); })(ev.time) : '17:30';
+    $('#m-loc').value = ev?.location || '';
+    $('#m-notes').value = ev?.notes || '';
+    modal.classList.add('open');
+  }
+  function closeModal() { modal.classList.remove('open'); editingId = null; }
+  function saveModal() {
+    const t = $('#m-title').value.trim();
+    if (!t) { $('#m-title').focus(); return; }
+    const timeRaw = $('#m-time').value;
+    let timeStr = 'All Day';
+    if (timeRaw) {
+      const [h,m] = timeRaw.split(':').map(Number);
+      const ap = h >= 12 ? 'PM' : 'AM';
+      const hh = h === 0 ? 12 : (h > 12 ? h - 12 : h);
+      timeStr = `${hh}:${pad(m)} ${ap}`;
+    }
+    const payload = {
+      title: t,
+      kind: $('#m-kind').value,
+      date: $('#m-date').value,
+      time: timeStr,
+      location: $('#m-loc').value.trim(),
+      notes: $('#m-notes').value.trim(),
+    };
+    if (editingId) {
+      const ix = EVENTS.findIndex(e => e.id === editingId);
+      EVENTS[ix] = { ...EVENTS[ix], ...payload };
+    } else {
+      EVENTS.push({ id: nextId++, ...payload });
+    }
+    closeModal();
+    render();
+  }
+  $('#modal-close').onclick = closeModal;
+  $('#modal-cancel').onclick = closeModal;
+  $('#modal-save').onclick = saveModal;
+  modal.addEventListener('click', (e)=> { if (e.target === modal) closeModal(); });
+
+  // ============ COACH MODE (removed) ============
+
+  // ============ EVENT DELEGATION ============
+  document.addEventListener('click', (e) => {
+    // add event from calendar cell
+    const addBtn = e.target.closest('[data-add-date]');
+    if (addBtn) { openModal(addBtn.dataset.addDate); return; }
+    // cell click in coach mode
+    const cell = e.target.closest('.cal-day[data-date]');
+    if (cell && document.body.classList.contains('coach-mode') && !e.target.closest('.cal-event')) {
+      openModal(cell.dataset.date);
+      return;
+    }
+    // event chip click -> popover
+    const chip = e.target.closest('.cal-event');
+    if (chip) {
+      const id = +chip.dataset.id;
+      openPopover(chip, id);
+      return;
+    }
+    // close popover
+    const pop = document.querySelector('.event-pop');
+    if (pop && !e.target.closest('.event-pop')) pop.remove();
+    // add-cal in lists
+    const cal = e.target.closest('[data-ics]');
+    if (cal) {
+      const id = +cal.dataset.ics;
+      const ev = EVENTS.find(x => x.id === id);
+      if (ev) downloadICS(`${ev.title}.ics`, eventToICS(ev));
+    }
+  });
+
+  // ============ POPOVER ============
+  function openPopover(chip, id) {
+    document.querySelector('.event-pop')?.remove();
+    const ev = EVENTS.find(e => e.id === id);
+    if (!ev) return;
+    const k = KINDS[ev.kind];
+    const pop = document.createElement('div');
+    pop.className = 'event-pop';
+    pop.innerHTML = `
+      <div class="head">
+        <span class="swatch" style="background:${k.color}"></span>
+        <span class="kind">${k.label}</span>
+      </div>
+      <h4>${escape(ev.title)}</h4>
+      <div class="meta">
+        <span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>${escape(ev.location || '—')}</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>${escape(ev.time)} · ${escape(formatDateLong(ev.date))}</span>
+        ${ev.notes ? `<span style="margin-top:4px; color: var(--text-navy);">${escape(ev.notes)}</span>` : ''}
+      </div>
+      <div class="actions">
+        <button class="primary" data-pop-act="ics">Add to Calendar</button>
+        ${document.body.classList.contains('coach-mode')
+          ? `<button class="ghost" data-pop-act="edit">Edit</button><button class="ghost" data-pop-act="del">Delete</button>`
+          : ''}
+      </div>
+    `;
+    // position relative to chip
+    const rect = chip.getBoundingClientRect();
+    const pageRect = document.querySelector('.page').getBoundingClientRect();
+    pop.style.position = 'absolute';
+    pop.style.left = Math.min(rect.left - pageRect.left, pageRect.width - 300) + 'px';
+    pop.style.top = (rect.bottom - pageRect.top + 6) + 'px';
+    document.querySelector('.page').appendChild(pop);
+    pop.querySelectorAll('[data-pop-act]').forEach(btn => {
+      btn.onclick = () => {
+        const act = btn.dataset.popAct;
+        if (act === 'ics') downloadICS(`${ev.title}.ics`, eventToICS(ev));
+        if (act === 'edit') { pop.remove(); openModal(null, id); }
+        if (act === 'del') {
+          if (confirm('Delete "' + ev.title + '"?')) {
+            EVENTS = EVENTS.filter(x => x.id !== id);
+            pop.remove();
+            render();
+          }
+        }
+      };
+    });
+  }
+  function formatDateLong(s) {
+    const d = parseDate(s);
+    return d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+  }
+
+  // ============ FILTERS ============
+  document.querySelectorAll('.filters button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filters button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      filter = btn.dataset.filter;
+      render();
+    });
+  });
+
+  // ============ LIST TABS ============
+  document.querySelectorAll('.list-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.list-tab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const t = btn.dataset.tab;
+      $('#list-matches').classList.toggle('hidden', t !== 'matches');
+      $('#list-practices').classList.toggle('hidden', t !== 'practices');
+    });
+  });
+
+  // ============ MONTH NAV ============
+  const navBtns = document.querySelectorAll('.month-nav button');
+  if (navBtns.length === 3) {
+    navBtns[0].onclick = () => { viewMonth--; if (viewMonth < 0) { viewMonth = 11; viewYear--; } renderCalendar(); };
+    navBtns[1].onclick = () => { const t = parseDate(TODAY); viewMonth = t.getMonth(); viewYear = t.getFullYear(); renderCalendar(); };
+    navBtns[2].onclick = () => { viewMonth++; if (viewMonth > 11) { viewMonth = 0; viewYear++; } renderCalendar(); };
+  }
+
+  // ============ DOWNLOAD ALL ============
+  $('#download-all').addEventListener('click', (e) => {
+    e.preventDefault();
+    const all = ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Lions Wrestling//Season//EN'];
+    EVENTS.forEach(ev => {
+      const ics = eventToICS(ev);
+      const body = ics.split('\r\n').slice(3, -1).join('\r\n');
+      all.push(body);
+    });
+    all.push('END:VCALENDAR');
+    downloadICS('Lions-Wrestling-Season.ics', all.join('\r\n'));
+  });
+
+  // Hero "Add to my calendar" — adds the next match
+  $('#hero-add-cal').addEventListener('click', () => {
+    const today = parseDate(TODAY);
+    const next = EVENTS.filter(e => KINDS[e.kind].cat === 'match' && parseDate(e.date) >= today).sort((a,b)=>a.date.localeCompare(b.date))[0];
+    if (next) downloadICS(`${next.title}.ics`, eventToICS(next));
+  });
+
+  // ============ RENDER ============
+  function render() { renderCalendar(); renderLists(); }
+  render();
+</script>
+
+</body>
+</html>

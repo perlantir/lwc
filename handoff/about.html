@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>About — Lions Wrestling Club</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" />
+<link rel="stylesheet" href="site.css" />
+<style>
+  /* ------ Page header w/ team photo ------ */
+  .about-hero {
+    position: relative;
+    height: 320px;
+    background: linear-gradient(180deg, rgba(6,27,58,.55) 0%, rgba(6,27,58,.92) 100%),
+                url('assets/images/mission-photo.jpg') center/cover no-repeat,
+                var(--navy);
+    color: var(--white);
+    overflow: hidden;
+  }
+  .about-hero::after {
+    content: ""; position: absolute;
+    right: -60px; top: 30px;
+    width: 320px; height: 320px;
+    background: url('assets/logos/lion-head-blue-transparent.png') center/contain no-repeat;
+    opacity: .15; pointer-events: none;
+  }
+  .about-hero .inner {
+    position: relative; z-index: 2;
+    padding: 56px 56px 0;
+  }
+  .crumbs { font-size: 12px; color: rgba(255,255,255,.65); margin-bottom: 18px; }
+  .crumbs a { color: var(--cyan); }
+  .crumbs .sep { margin: 0 8px; color: rgba(255,255,255,.3); }
+  .about-hero h1 {
+    font-size: 48px; line-height: 56px;
+    font-weight: 800; letter-spacing: -.5px;
+  }
+  .about-hero .tag {
+    margin-top: 14px; font-size: 16px; line-height: 24px;
+    color: rgba(255,255,255,.82); max-width: 540px;
+  }
+
+  /* ------ Our Story ------ */
+  .story {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
+    padding: 64px 56px 56px;
+    background: var(--off-white);
+    align-items: center;
+  }
+  .story h2 {
+    margin-top: 12px;
+    font-size: 32px; line-height: 38px;
+    font-weight: 800; color: var(--text-navy);
+    letter-spacing: -.3px;
+  }
+  .story p {
+    margin-top: 16px;
+    font-size: 14.5px; line-height: 23px;
+    color: #3F4E62;
+  }
+  .story p + p { margin-top: 12px; }
+  .story-img {
+    aspect-ratio: 400 / 300;
+    border-radius: 12px;
+    background: url('assets/images/gallery-04.jpg') center/cover no-repeat;
+    box-shadow: var(--card-shadow);
+    position: relative;
+  }
+  .story-img .badge {
+    position: absolute;
+    left: 18px; bottom: 18px;
+    background: rgba(6,27,58,.92);
+    color: var(--white);
+    padding: 10px 16px;
+    border-radius: 8px;
+    backdrop-filter: blur(8px);
+  }
+  .story-img .badge .big {
+    font-size: 22px; font-weight: 800; color: var(--cyan);
+    line-height: 24px;
+  }
+  .story-img .badge .small {
+    font-size: 11px; letter-spacing: 1px;
+    text-transform: uppercase; color: rgba(255,255,255,.78);
+  }
+
+  /* ------ Stats Row ------ */
+  .stats {
+    background: var(--navy);
+    color: var(--white);
+    padding: 36px 56px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .stats::before, .stats::after {
+    content: ""; position: absolute; top: 50%;
+    width: 200px; height: 240px;
+    background: radial-gradient(circle at 30% 50%, rgba(18,174,234,.16), transparent 60%);
+    transform: translateY(-50%);
+  }
+  .stats::before { left: -60px; }
+  .stats::after { right: -60px; transform: translateY(-50%) scaleX(-1); }
+  .stat {
+    text-align: center;
+    position: relative; z-index: 1;
+  }
+  .stat .num {
+    font-size: 44px; font-weight: 800;
+    color: var(--cyan); line-height: 1;
+    letter-spacing: -1px;
+  }
+  .stat .lbl {
+    margin-top: 8px;
+    font-size: 12px; letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.78);
+  }
+  .stat + .stat::before {
+    content: ""; position: absolute;
+    left: -12px; top: 50%; transform: translateY(-50%);
+    width: 1px; height: 50px;
+    background: rgba(255,255,255,.1);
+  }
+
+  /* ------ Values ------ */
+  .values {
+    padding: 64px 56px;
+    background: var(--off-white);
+    text-align: center;
+  }
+  .values h2 {
+    margin-top: 10px;
+    font-size: 30px; line-height: 36px;
+    font-weight: 800; color: var(--text-navy);
+  }
+  .values .grid {
+    margin-top: 32px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .value-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 24px;
+    text-align: left;
+    box-shadow: 0 4px 14px rgba(0,31,68,.06);
+    transition: transform .15s, box-shadow .15s;
+  }
+  .value-card:hover { transform: translateY(-2px); box-shadow: var(--soft-shadow); }
+  .value-card .ico {
+    width: 52px; height: 52px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, var(--cyan), var(--cyan-dark));
+    color: var(--white);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 8px 18px rgba(18,174,234,.35);
+  }
+  .value-card .ico svg { width: 26px; height: 26px; }
+  .value-card h3 {
+    margin-top: 18px;
+    font-size: 18px; font-weight: 700;
+    color: var(--text-navy);
+  }
+  .value-card .verse {
+    margin-top: 4px;
+    font-size: 12px; color: var(--cyan);
+    font-style: italic; font-weight: 500;
+  }
+  .value-card p {
+    margin-top: 12px;
+    font-size: 13.5px; line-height: 22px;
+    color: var(--muted);
+  }
+
+  /* ------ Coaching Staff ------ */
+  .staff {
+    background: var(--navy);
+    padding: 64px 56px 70px;
+    color: var(--white);
+    position: relative;
+    overflow: hidden;
+  }
+  .staff::before {
+    content: ""; position: absolute; inset: 0;
+    background: url('assets/images/hero-bg.jpg') center/cover no-repeat;
+    opacity: .06;
+  }
+  .staff-head {
+    text-align: center; position: relative; z-index: 1;
+  }
+  .staff-head h2 {
+    margin-top: 10px;
+    font-size: 30px; font-weight: 800;
+    color: var(--white);
+  }
+  .staff-grid {
+    margin-top: 36px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    position: relative; z-index: 1;
+  }
+  .coach {
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 14px;
+    overflow: hidden;
+    backdrop-filter: blur(4px);
+  }
+  .coach .photo {
+    aspect-ratio: 1 / 1;
+    background-size: cover;
+    background-position: center top;
+    position: relative;
+  }
+  .coach .photo::after {
+    content: "";
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, transparent 50%, rgba(6,27,58,.6) 100%);
+  }
+  .coach .body { padding: 18px 20px 22px; }
+  .coach .role {
+    color: var(--cyan);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+  }
+  .coach h3 {
+    margin-top: 6px;
+    font-size: 18px; font-weight: 700;
+    color: var(--white);
+  }
+  .coach .bio {
+    margin-top: 8px;
+    font-size: 13px; line-height: 20px;
+    color: rgba(255,255,255,.7);
+  }
+  .coach .stats-row {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255,255,255,.08);
+    display: flex; gap: 18px;
+  }
+  .coach .stats-row .item {
+    font-size: 11px; color: rgba(255,255,255,.6);
+    letter-spacing: 1px; text-transform: uppercase;
+  }
+  .coach .stats-row .item b {
+    display: block;
+    font-size: 17px; color: var(--white);
+    font-weight: 700; letter-spacing: 0;
+    text-transform: none; margin-bottom: 2px;
+  }
+
+  /* ------ Where We Train ------ */
+  .train {
+    background: var(--off-white);
+    padding: 64px 56px;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 36px;
+    align-items: stretch;
+  }
+  .train .copy h2 {
+    margin-top: 10px;
+    font-size: 28px; line-height: 34px;
+    font-weight: 800; color: var(--text-navy);
+  }
+  .train .copy p {
+    margin-top: 14px;
+    font-size: 14px; line-height: 22px;
+    color: #3F4E62;
+    max-width: 380px;
+  }
+  .train .info {
+    margin-top: 24px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+  .train .info .cell {
+    background: var(--white);
+    border: 1px solid var(--border);
+    padding: 16px 18px;
+    border-radius: 10px;
+  }
+  .train .info .lbl {
+    color: var(--cyan);
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 1.4px; text-transform: uppercase;
+  }
+  .train .info .val {
+    margin-top: 6px;
+    font-size: 14.5px; font-weight: 600;
+    color: var(--text-navy);
+    line-height: 20px;
+  }
+  .train .map {
+    border-radius: 12px;
+    background:
+      linear-gradient(135deg, rgba(6,27,58,.55), rgba(18,174,234,.25)),
+      repeating-linear-gradient(45deg, rgba(255,255,255,.04) 0 12px, transparent 12px 24px),
+      var(--navy);
+    box-shadow: var(--card-shadow);
+    position: relative;
+    overflow: hidden;
+    min-height: 260px;
+  }
+  .train .map .pin {
+    position: absolute;
+    left: 50%; top: 48%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: var(--white);
+  }
+  .train .map .pin .dot {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--cyan);
+    box-shadow: 0 0 0 8px rgba(18,174,234,.25), 0 0 0 18px rgba(18,174,234,.12);
+    margin: 0 auto 12px;
+  }
+  .train .map .pin .name {
+    font-size: 13px; font-weight: 700; letter-spacing: 1.4px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.92);
+  }
+  .train .map .pin .addr {
+    font-size: 12px; color: rgba(255,255,255,.65);
+    margin-top: 4px;
+  }
+</style>
+</head>
+<body>
+<div class="page" data-screen-label="02 About">
+
+  <header class="site-header">
+    <a href="Lions Wrestling Club.html" class="logo" aria-label="Lions Wrestling"></a>
+    <nav class="nav">
+      <a href="Lions Wrestling Club.html">Home</a>
+      <a href="about.html" class="active">About</a>
+      <a href="schedule.html">Schedule</a>
+      <a href="results.html">Results</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div class="header-socials">
+      <a href="https://instagram.com/dmclionswrestling" target="_blank" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+      </a>
+      <a href="https://facebook.com/dmclionswrestling" target="_blank" aria-label="Facebook">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 22v-8h2.7l.4-3.2h-3.1V8.7c0-.9.3-1.6 1.6-1.6h1.7V4.2c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.5-4 4.1v2.6H7.6V14h2.8v8h3.1z"/></svg>
+      </a>
+    </div>
+    <a href="register.html" class="join-btn">Join the Lions</a>
+  </header>
+
+  <section class="about-hero">
+    <div class="inner">
+      <div class="crumbs"><a href="Lions Wrestling Club.html">Home</a><span class="sep">/</span>About</div>
+      <h1>More than a team.<br/>A brotherhood.</h1>
+      <p class="tag">For over two decades, Lions Wrestling has shaped student-athletes through faith, hard work, and discipline — building champions on the mat and leaders in life.</p>
+    </div>
+  </section>
+
+  <!-- ====== STATS ====== -->
+  <section class="stats">
+    <div class="stat"><div class="num">24</div><div class="lbl">Years Strong</div></div>
+    <div class="stat"><div class="num">12</div><div class="lbl">State Qualifiers</div></div>
+    <div class="stat"><div class="num">3</div><div class="lbl">State Champions</div></div>
+    <div class="stat"><div class="num">80+</div><div class="lbl">Athletes Today</div></div>
+  </section>
+
+  <!-- ====== OUR STORY ====== -->
+  <section class="story">
+    <div>
+      <div class="eyebrow">Our Story</div>
+      <h2>Built on the mat. Shaped by faith.</h2>
+      <p>The Lions Wrestling Club was founded with a simple belief — that the lessons learned on a wrestling mat shape the men our young athletes become off of it. Discipline, humility, perseverance, and grace under pressure are not just wrestling skills; they are life skills.</p>
+      <p>Today, we serve athletes from kindergarten through twelfth grade across the Des Moines metro, training side-by-side under coaches who have walked the same path. Our program is competitive at the state level, but our scoreboard is bigger than wins — it's the young men who leave our program ready to lead.</p>
+    </div>
+    <div class="story-img">
+      <div class="badge">
+        <div class="big">Est. 2002</div>
+        <div class="small">Des Moines Christian</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== VALUES ====== -->
+  <section class="values">
+    <div class="eyebrow">Three Pillars</div>
+    <h2>What we stand for</h2>
+    <div class="grid">
+      <div class="value-card">
+        <div class="ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M12 8v7M9 11h6"/></svg>
+        </div>
+        <h3>Faith</h3>
+        <div class="verse">Rooted in Christ</div>
+        <p>We compete with conviction, pray before we step on the mat, and trust that every match — won or lost — is shaping us into who God called us to be.</p>
+      </div>
+      <div class="value-card">
+        <div class="ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg>
+        </div>
+        <h3>Discipline</h3>
+        <div class="verse">Built on Character</div>
+        <p>Show up. Work hard. Tell the truth. Wrestling rewards repetition and integrity — the same habits that make our athletes successful in everything else they pursue.</p>
+      </div>
+      <div class="value-card">
+        <div class="ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15 9 22 9.5 17 14.5 18.5 22 12 18 5.5 22 7 14.5 2 9.5 9 9 12 2"/></svg>
+        </div>
+        <h3>Excellence</h3>
+        <div class="verse">Pursuing Greatness</div>
+        <p>Good enough isn't. We chase greatness in technique, in conditioning, and in the way we carry ourselves — because how we do anything is how we do everything.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== COACHING STAFF ====== -->
+  <section class="staff">
+    <div class="staff-head">
+      <div class="eyebrow">Coaching Staff</div>
+      <h2>The men in the corner</h2>
+    </div>
+    <div class="staff-grid">
+      <div class="coach">
+        <div class="photo" style="background-image:url('assets/images/mission-photo.jpg')"></div>
+        <div class="body">
+          <div class="role">Head Coach</div>
+          <h3>Coach Daniel Reeves</h3>
+          <p class="bio">Two-time Iowa state placer at 152. Has led the Lions since 2014, building a culture of toughness, faith, and small details done well.</p>
+          <div class="stats-row">
+            <div class="item"><b>12</b>Years</div>
+            <div class="item"><b>3</b>State Titles</div>
+          </div>
+        </div>
+      </div>
+      <div class="coach">
+        <div class="photo" style="background-image:url('assets/images/gallery-05.jpg')"></div>
+        <div class="body">
+          <div class="role">Assistant Coach</div>
+          <h3>Coach Mike Hollings</h3>
+          <p class="bio">Former D-II All-American. Focus on technique, hand-fighting, and the top game. Father of two current Lions wrestlers.</p>
+          <div class="stats-row">
+            <div class="item"><b>8</b>Years</div>
+            <div class="item"><b>HS+D2</b>Played</div>
+          </div>
+        </div>
+      </div>
+      <div class="coach">
+        <div class="photo" style="background-image:url('assets/images/gallery-03.jpg')"></div>
+        <div class="body">
+          <div class="role">Youth Director</div>
+          <h3>Coach Jared Bell</h3>
+          <p class="bio">Runs the K-6 youth program and Sunday open mats. Believes that confidence, posture, and motion are the foundations of a Lion.</p>
+          <div class="stats-row">
+            <div class="item"><b>5</b>Years</div>
+            <div class="item"><b>K-6</b>Youth Lead</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== TRAIN ====== -->
+  <section class="train">
+    <div class="copy">
+      <div class="eyebrow">Where We Train</div>
+      <h2>The Lions Wrestling Room</h2>
+      <p>Our home mat lives inside the Des Moines Christian athletic complex. Open practices, parent viewing windows, and Saturday open rooms welcome wrestlers from across the metro.</p>
+      <div class="info">
+        <div class="cell"><div class="lbl">Address</div><div class="val">9730 Woodland<br/>Cumming, IA 50061</div></div>
+        <div class="cell"><div class="lbl">Practice</div><div class="val">Mon – Thurs<br/>3:45 – 5:45 PM</div></div>
+        <div class="cell"><div class="lbl">Youth Night</div><div class="val">Tuesdays<br/>6:00 – 7:15 PM</div></div>
+        <div class="cell"><div class="lbl">Open Mat</div><div class="val">Saturdays<br/>9:00 – 10:30 AM</div></div>
+      </div>
+    </div>
+    <div class="map">
+      <div class="pin">
+        <div class="dot"></div>
+        <div class="name">Lions Wrestling Room</div>
+        <div class="addr">9730 Woodland, Cumming IA</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== CTA STRIP ====== -->
+  <section class="cta-strip">
+    <h3>Ready to wrestle?<span class="accent">Step on the mat.</span></h3>
+    <div class="cta-divide"></div>
+    <p>New athletes welcome year-round. Come to a practice, no experience needed.</p>
+    <a href="register.html" class="btn btn-cyan">Join the Lions <span>→</span></a>
+  </section>
+
+  <!-- ====== FOOTER ====== -->
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div class="footer-logo" aria-label="Lions Wrestling"></div>
+      <div>
+        <h4>Quick Links</h4>
+        <div class="footer-links">
+          <a href="Lions Wrestling Club.html">Home</a>
+          <a href="results.html">Results</a>
+          <a href="about.html">About</a>
+          <a href="gallery.html">Gallery</a>
+          <a href="schedule.html">Schedule</a>
+          <a href="contact.html">Contact</a>
+        </div>
+      </div>
+      <div>
+        <h4>Contact Us</h4>
+        <div class="contact-row">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+          9730 Woodland, Cumming, IA 50061
+        </div>
+        <div class="contact-row">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.3 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A18 18 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.3 1.1l-2.2 2.1z"/></svg>
+          515-844-3947
+        </div>
+        <div class="contact-row">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 6h16c1.1 0 2 .9 2 2v8c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V8c0-1.1.9-2 2-2zm0 2v.5l8 5 8-5V8H4zm16 2.4-7.4 4.6a1 1 0 0 1-1.2 0L4 10.4V16h16v-5.6z"/></svg>
+          lionswrestling@dmcschools.org
+        </div>
+        <div class="footer-socials-row">
+          <a href="https://instagram.com/dmclionswrestling" target="_blank" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+            Instagram
+          </a>
+          <a href="https://facebook.com/dmclionswrestling" target="_blank" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 22v-8h2.7l.4-3.2h-3.1V8.7c0-.9.3-1.6 1.6-1.6h1.7V4.2c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.5-4 4.1v2.6H7.6V14h2.8v8h3.1z"/></svg>
+            Facebook
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 Des Moines Christian Lions Wrestling Club</div>
+  </footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Gallery — Lions Wrestling Club</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" />
+<link rel="stylesheet" href="site.css" />
+<style>
+  .gal-hero {
+    position: relative;
+    background: var(--navy);
+    color: var(--white);
+    padding: 44px 56px 36px;
+    overflow: hidden;
+  }
+  .gal-hero::before {
+    content: ""; position: absolute; inset: 0;
+    background: url('assets/images/cta-bg.jpg') center/cover no-repeat;
+    opacity: .14;
+  }
+  .gal-hero::after {
+    content: ""; position: absolute;
+    right: -60px; top: 0; bottom: 0;
+    width: 320px;
+    background: url('assets/logos/lion-head-blue-transparent.png') center/contain no-repeat;
+    opacity: .15;
+  }
+  .gal-hero .inner { position: relative; z-index: 1; max-width: 560px; }
+  .gal-hero .crumbs { font-size: 12px; color: rgba(255,255,255,.65); margin-bottom: 14px; }
+  .gal-hero .crumbs a { color: var(--cyan); }
+  .gal-hero .crumbs .sep { margin: 0 8px; color: rgba(255,255,255,.3); }
+  .gal-hero h1 { font-size: 40px; font-weight: 800; letter-spacing: -.4px; }
+  .gal-hero p {
+    margin-top: 10px; font-size: 15px;
+    color: rgba(255,255,255,.75);
+  }
+
+  /* Filter chips */
+  .gal-tools {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 18px 32px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .chip-row {
+    display: flex; gap: 8px; flex-wrap: wrap;
+  }
+  .chip {
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    background: #F1F5FB;
+    border: 1px solid transparent;
+    transition: all .15s;
+  }
+  .chip:hover { color: var(--text-navy); }
+  .chip.active {
+    background: var(--cyan);
+    color: var(--white);
+    border-color: var(--cyan);
+  }
+  .chip .count {
+    font-size: 11px;
+    margin-left: 4px;
+    opacity: .75;
+  }
+  .sort-by {
+    margin-left: auto;
+    font-size: 12px; color: var(--muted);
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .sort-by select {
+    border: 1px solid var(--border);
+    background: var(--white);
+    border-radius: 8px;
+    padding: 7px 10px;
+    font-family: inherit;
+    font-size: 13px;
+    color: var(--text-navy);
+    font-weight: 500;
+  }
+
+  /* Featured */
+  .featured {
+    padding: 28px 32px 0;
+  }
+  .featured .card {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    aspect-ratio: 877 / 360;
+    background: url('assets/images/mission-photo.jpg') center/cover no-repeat;
+    box-shadow: var(--card-shadow);
+  }
+  .featured .card::after {
+    content: "";
+    position: absolute; inset: 0;
+    background: linear-gradient(90deg, rgba(6,27,58,.85) 0%, rgba(6,27,58,.4) 60%, transparent 100%);
+  }
+  .featured .body {
+    position: absolute;
+    left: 32px; bottom: 28px; right: 40%;
+    z-index: 1;
+    color: var(--white);
+  }
+  .featured .pill {
+    display: inline-block;
+    background: var(--cyan);
+    color: var(--white);
+    font-size: 10px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 4px;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+  }
+  .featured h2 {
+    margin-top: 10px;
+    font-size: 28px;
+    line-height: 32px;
+    font-weight: 800;
+    letter-spacing: -.3px;
+  }
+  .featured .meta {
+    margin-top: 8px;
+    font-size: 13px;
+    color: rgba(255,255,255,.78);
+  }
+  .featured .play {
+    position: absolute;
+    right: 32px; top: 50%;
+    transform: translateY(-50%);
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    background: var(--cyan);
+    color: var(--white);
+    display: inline-flex; align-items: center; justify-content: center;
+    box-shadow: 0 8px 24px rgba(18,174,234,.5);
+    font-size: 22px;
+    cursor: pointer;
+    z-index: 1;
+  }
+  .featured .play svg { width: 22px; height: 22px; margin-left: 3px; }
+
+  /* Masonry grid (using CSS grid with row spans) */
+  .masonry {
+    padding: 32px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 132px;
+    gap: 12px;
+  }
+  .tile {
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    box-shadow: 0 4px 14px rgba(0,31,68,.1);
+    transition: transform .2s, box-shadow .2s;
+    cursor: pointer;
+  }
+  .tile:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px rgba(0,31,68,.2);
+  }
+  .tile::after {
+    content: "";
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, transparent 55%, rgba(6,27,58,.85) 100%);
+    opacity: 0;
+    transition: opacity .2s;
+  }
+  .tile:hover::after { opacity: 1; }
+  .tile .cap {
+    position: absolute;
+    left: 14px; right: 14px; bottom: 12px;
+    color: var(--white);
+    z-index: 1;
+    opacity: 0;
+    transition: opacity .2s, transform .2s;
+    transform: translateY(6px);
+  }
+  .tile:hover .cap { opacity: 1; transform: translateY(0); }
+  .tile .cap .t {
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 18px;
+  }
+  .tile .cap .d {
+    font-size: 11px;
+    color: rgba(255,255,255,.7);
+    margin-top: 2px;
+  }
+  .tile .badge {
+    position: absolute;
+    top: 12px; left: 12px;
+    background: rgba(6,27,58,.7);
+    color: var(--white);
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: 600;
+    backdrop-filter: blur(4px);
+    z-index: 1;
+  }
+  .tile.span-2-cols { grid-column: span 2; }
+  .tile.span-2-rows { grid-row: span 2; }
+  .tile.span-2 { grid-column: span 2; grid-row: span 2; }
+
+  /* Albums */
+  .albums {
+    padding: 0 32px 48px;
+  }
+  .albums .head { margin-bottom: 16px; }
+  .albums h2 {
+    font-size: 22px; font-weight: 800;
+    color: var(--text-navy);
+  }
+  .albums .head p {
+    margin-top: 4px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .album-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+  .album {
+    background: var(--white);
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 12px rgba(0,31,68,.06);
+    transition: transform .15s, box-shadow .15s;
+    cursor: pointer;
+  }
+  .album:hover { transform: translateY(-2px); box-shadow: var(--soft-shadow); }
+  .album .stack {
+    position: relative;
+    aspect-ratio: 280 / 170;
+  }
+  .album .stack .a, .album .stack .b, .album .stack .c {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    border-radius: 0;
+  }
+  .album .stack .b {
+    inset: 6px 6px 6px 6px;
+    box-shadow: 0 2px 6px rgba(0,0,0,.15);
+    border: 2px solid var(--white);
+    border-radius: 6px;
+  }
+  .album .body {
+    padding: 14px 18px 16px;
+  }
+  .album h3 {
+    font-size: 15px; font-weight: 700;
+    color: var(--text-navy);
+  }
+  .album .meta {
+    margin-top: 4px;
+    font-size: 12px;
+    color: var(--muted);
+    display: flex; gap: 12px;
+  }
+  .album .meta b { color: var(--text-navy); font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="page" data-screen-label="05 Gallery">
+
+  <header class="site-header">
+    <a href="Lions Wrestling Club.html" class="logo" aria-label="Lions Wrestling"></a>
+    <nav class="nav">
+      <a href="Lions Wrestling Club.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="schedule.html">Schedule</a>
+      <a href="results.html">Results</a>
+      <a href="gallery.html" class="active">Gallery</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div class="header-socials">
+      <a href="https://instagram.com/dmclionswrestling" target="_blank" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+      </a>
+      <a href="https://facebook.com/dmclionswrestling" target="_blank" aria-label="Facebook">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 22v-8h2.7l.4-3.2h-3.1V8.7c0-.9.3-1.6 1.6-1.6h1.7V4.2c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.5-4 4.1v2.6H7.6V14h2.8v8h3.1z"/></svg>
+      </a>
+    </div>
+    <a href="register.html" class="join-btn">Join the Lions</a>
+  </header>
+
+  <section class="gal-hero">
+    <div class="inner">
+      <div class="crumbs"><a href="Lions Wrestling Club.html">Home</a><span class="sep">/</span>Gallery</div>
+      <h1>Mat Stories. Captured.</h1>
+      <p>The roar of the crowd, the grip of a takedown, the brotherhood between matches. Every frame from this season.</p>
+    </div>
+  </section>
+
+  <!-- ====== TOOLS ====== -->
+  <section class="gal-tools">
+    <div class="chip-row">
+      <button class="chip active">All <span class="count">312</span></button>
+      <button class="chip">Match Day <span class="count">142</span></button>
+      <button class="chip">Tournaments <span class="count">86</span></button>
+      <button class="chip">Practice <span class="count">48</span></button>
+      <button class="chip">Team <span class="count">22</span></button>
+      <button class="chip">Senior Night <span class="count">14</span></button>
+    </div>
+    <label class="sort-by">
+      Sort by
+      <select>
+        <option>Newest first</option>
+        <option>Oldest first</option>
+        <option>Most viewed</option>
+      </select>
+    </label>
+  </section>
+
+  <!-- ====== FEATURED ====== -->
+  <section class="featured">
+    <div class="card">
+      <div class="body">
+        <span class="pill">Featured · Video</span>
+        <h2>Lions vs. Norwalk — Comeback Win</h2>
+        <div class="meta">Dec 19 · 3:42 highlight reel · 1.2k views</div>
+      </div>
+      <div class="play" aria-label="Play video">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== MASONRY GRID ====== -->
+  <section class="masonry">
+    <div class="tile span-2" style="background-image:url('assets/images/gallery-04.jpg')">
+      <span class="badge">Match Day</span>
+      <div class="cap"><div class="t">Anderson seals the dual</div><div class="d">Jan 8 · @ Valley Tigers</div></div>
+    </div>
+    <div class="tile" style="background-image:url('assets/images/gallery-02.jpg')">
+      <span class="badge">Pin</span>
+      <div class="cap"><div class="t">Brennan, 42 seconds</div><div class="d">Jan 8 · 152 lbs</div></div>
+    </div>
+    <div class="tile" style="background-image:url('assets/images/gallery-01.jpg')">
+      <span class="badge">Lions</span>
+      <div class="cap"><div class="t">Team huddle</div><div class="d">Pre-dual</div></div>
+    </div>
+    <div class="tile" style="background-image:url('assets/images/gallery-03.jpg')">
+      <span class="badge">Win</span>
+      <div class="cap"><div class="t">Hands raised</div><div class="d">Jan 3 · Mid-Iowa Open</div></div>
+    </div>
+    <div class="tile" style="background-image:url('assets/images/gallery-05.jpg')">
+      <span class="badge">Pin</span>
+      <div class="cap"><div class="t">Reed cradles for the pin</div><div class="d">Dec 19 · 182 lbs</div></div>
+    </div>
+    <div class="tile" style="background-image:url('assets/images/gallery-06.jpg')">
+      <span class="badge">Tournament</span>
+      <div class="cap"><div class="t">Battle of Iowa</div><div class="d">Dec 6 · Iowa City</div></div>
+    </div>
+    <div class="tile span-2-rows" style="background-image:url('assets/images/mission-photo.jpg')">
+      <span class="badge">Coaching</span>
+      <div class="cap"><div class="t">Coach Reeves talks through it</div><div class="d">Between periods</div></div>
+    </div>
+    <div class="tile" style="background-image:url('assets/images/gallery-02.jpg')">
+      <span class="badge">Practice</span>
+      <div class="cap"><div class="t">Live go Friday</div><div class="d">Lions Wrestling Room</div></div>
+    </div>
+    <div class="tile" style="background-image:url('assets/images/gallery-04.jpg')">
+      <span class="badge">Match Day</span>
+      <div class="cap"><div class="t">Frank ties him up</div><div class="d">Dec 12 · 120 lbs</div></div>
+    </div>
+    <div class="tile span-2-cols" style="background-image:url('assets/images/hero-bg.jpg')">
+      <span class="badge">Senior Night</span>
+      <div class="cap"><div class="t">The 2026 senior class — bow your heads.</div><div class="d">Jan 15 · Lions Gym</div></div>
+    </div>
+    <div class="tile" style="background-image:url('assets/images/gallery-05.jpg')">
+      <span class="badge">Win</span>
+      <div class="cap"><div class="t">Mitchell goes 4–0</div><div class="d">Jan 3 · Mid-Iowa Open</div></div>
+    </div>
+    <div class="tile" style="background-image:url('assets/images/gallery-01.jpg')">
+      <span class="badge">Team</span>
+      <div class="cap"><div class="t">Roster shot, 2025–26</div><div class="d">Picture day</div></div>
+    </div>
+    <div class="tile" style="background-image:url('assets/images/gallery-06.jpg')">
+      <span class="badge">Pin</span>
+      <div class="cap"><div class="t">Lewis pins in 1:08</div><div class="d">Dec 19 · 220 lbs</div></div>
+    </div>
+  </section>
+
+  <!-- ====== ALBUMS ====== -->
+  <section class="albums">
+    <div class="head"><h2>Browse by Event</h2><p>Full albums for each tournament and home match.</p></div>
+    <div class="album-grid">
+      <div class="album">
+        <div class="stack">
+          <div class="a" style="background-image:url('assets/images/gallery-04.jpg')"></div>
+        </div>
+        <div class="body">
+          <h3>vs. Norwalk — Home</h3>
+          <div class="meta"><b>62</b> photos<span>· Dec 19, 2025</span></div>
+        </div>
+      </div>
+      <div class="album">
+        <div class="stack">
+          <div class="a" style="background-image:url('assets/images/gallery-02.jpg')"></div>
+        </div>
+        <div class="body">
+          <h3>Mid-Iowa Open</h3>
+          <div class="meta"><b>134</b> photos<span>· Jan 3, 2026</span></div>
+        </div>
+      </div>
+      <div class="album">
+        <div class="stack">
+          <div class="a" style="background-image:url('assets/images/gallery-05.jpg')"></div>
+        </div>
+        <div class="body">
+          <h3>Iowa City Tournament</h3>
+          <div class="meta"><b>89</b> photos<span>· Dec 6, 2025</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== CTA STRIP ====== -->
+  <section class="cta-strip">
+    <h3>Got a great photo?<span class="accent">Send it in.</span></h3>
+    <div class="cta-divide"></div>
+    <p>Parents — share match-day photos with our team for the season highlight reel.</p>
+    <a href="mailto:lionswrestling@dmcschools.org?subject=Match%20Day%20Photo%20Submission&body=Hi%20Coach%2C%0A%0AI%27d%20like%20to%20share%20some%20photos%20from%20a%20recent%20match%20for%20the%20Lions%20Wrestling%20Club%20gallery.%20Photos%20attached.%0A%0AEvent%3A%20%0ADate%3A%20%0A%0AThanks%21" class="btn btn-cyan">Submit Photos <span>→</span></a>
+  </section>
+
+  <!-- ====== FOOTER ====== -->
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div class="footer-logo" aria-label="Lions Wrestling"></div>
+      <div>
+        <h4>Quick Links</h4>
+        <div class="footer-links">
+          <a href="Lions Wrestling Club.html">Home</a>
+          <a href="results.html">Results</a>
+          <a href="about.html">About</a>
+          <a href="gallery.html">Gallery</a>
+          <a href="schedule.html">Schedule</a>
+          <a href="contact.html">Contact</a>
+        </div>
+      </div>
+      <div>
+        <h4>Contact Us</h4>
+        <div class="contact-row">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+          9730 Woodland, Cumming, IA 50061
+        </div>
+        <div class="contact-row">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.3 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A18 18 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.3 1.1l-2.2 2.1z"/></svg>
+          515-844-3947
+        </div>
+        <div class="contact-row">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 6h16c1.1 0 2 .9 2 2v8c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V8c0-1.1.9-2 2-2zm0 2v.5l8 5 8-5V8H4zm16 2.4-7.4 4.6a1 1 0 0 1-1.2 0L4 10.4V16h16v-5.6z"/></svg>
+          lionswrestling@dmcschools.org
+        </div>
+        <div class="footer-socials-row">
+          <a href="https://instagram.com/dmclionswrestling" target="_blank" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+            Instagram
+          </a>
+          <a href="https://facebook.com/dmclionswrestling" target="_blank" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 22v-8h2.7l.4-3.2h-3.1V8.7c0-.9.3-1.6 1.6-1.6h1.7V4.2c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.5-4 4.1v2.6H7.6V14h2.8v8h3.1z"/></svg>
+            Facebook
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 Des Moines Christian Lions Wrestling Club</div>
+  </footer>
+
+</div>
+</body>
+</html>
