@@ -49,8 +49,8 @@ export const SiteHeader = ({ cfg }: { cfg: Header }) => {
 
   return (
     <header className="bg-navy text-white relative z-10">
-      <div className="flex items-center px-5 md:px-12 lg:px-[47px] py-[10px] h-[82px]">
-        <Link href="/" aria-label="Lions Wrestling home" className="block w-[66px] h-[72px] shrink-0">
+      <div className="flex items-center gap-3 px-4 sm:px-5 md:px-12 lg:px-[47px] py-[10px] h-[72px] sm:h-[82px]">
+        <Link href="/" aria-label="Lions Wrestling home" className="block w-[58px] h-[64px] sm:w-[66px] sm:h-[72px] shrink-0">
           <img
             src="/logos/lion-head-white-transparent.png"
             alt=""
@@ -59,7 +59,7 @@ export const SiteHeader = ({ cfg }: { cfg: Header }) => {
         </Link>
 
         {!mobile && (
-          <nav className="ml-[200px] flex gap-8" aria-label="Main">
+          <nav className="ml-8 lg:ml-[200px] flex gap-6 lg:gap-8" aria-label="Main">
             {items.map((it) => {
               const active = path === it.href || (it.href !== '/' && path.startsWith(it.href));
               return (
@@ -89,7 +89,7 @@ export const SiteHeader = ({ cfg }: { cfg: Header }) => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Instagram"
-                className="w-8 h-8 rounded-full inline-flex items-center justify-center text-white/70 bg-white/[.06] border border-white/[.08] hover:text-white hover:bg-cyan hover:border-cyan transition"
+                className="w-10 h-10 rounded-full inline-flex items-center justify-center text-white/70 bg-white/[.06] border border-white/[.08] hover:text-white hover:bg-cyan hover:border-cyan transition"
               >
                 <span className="w-[14px] h-[14px] block"><InstagramIcon /></span>
               </a>
@@ -98,7 +98,7 @@ export const SiteHeader = ({ cfg }: { cfg: Header }) => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Facebook"
-                className="w-8 h-8 rounded-full inline-flex items-center justify-center text-white/70 bg-white/[.06] border border-white/[.08] hover:text-white hover:bg-cyan hover:border-cyan transition"
+                className="w-10 h-10 rounded-full inline-flex items-center justify-center text-white/70 bg-white/[.06] border border-white/[.08] hover:text-white hover:bg-cyan hover:border-cyan transition"
               >
                 <span className="w-[14px] h-[14px] block"><FacebookIcon /></span>
               </a>
@@ -106,7 +106,7 @@ export const SiteHeader = ({ cfg }: { cfg: Header }) => {
           )}
           <Link
             href={cfg.ctaHref ?? '/register'}
-            className="btn btn-cyan text-sm font-semibold px-[22px] py-[11px] rounded-lg ml-2 md:ml-[14px]"
+            className="btn btn-cyan text-xs sm:text-sm font-semibold px-3 sm:px-[22px] py-2 sm:py-[11px] rounded-lg ml-1 sm:ml-2 md:ml-[14px] whitespace-nowrap"
           >
             {cfg.ctaLabel ?? 'Join the Lions'}
           </Link>
@@ -116,7 +116,7 @@ export const SiteHeader = ({ cfg }: { cfg: Header }) => {
               aria-label="Toggle menu"
               aria-expanded={open}
               onClick={() => setOpen((v) => !v)}
-              className="ml-2 w-9 h-9 rounded text-white border border-white/[.15] inline-flex items-center justify-center"
+              className="ml-1 w-11 h-11 rounded text-white border border-white/[.15] inline-flex items-center justify-center"
             >
               <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2">
                 {open ? <path d="M6 6l12 12M18 6L6 18" /> : <><path d="M3 6h18" /><path d="M3 12h18" /><path d="M3 18h18" /></>}
@@ -126,12 +126,20 @@ export const SiteHeader = ({ cfg }: { cfg: Header }) => {
         </div>
       </div>
       {mobile && open && (
-        <nav className="bg-navy border-t border-white/10 px-5 py-4 flex flex-col gap-3" aria-label="Mobile">
+        <nav className="bg-navy border-t border-white/10 px-5 py-4 flex flex-col" aria-label="Mobile">
           {items.map((it) => (
-            <Link key={it.label} href={it.href} className="text-white/90 py-1">
+            <Link key={it.label} href={it.href} className="text-white/90 py-3 min-h-[44px] flex items-center text-base">
               {it.label}
             </Link>
           ))}
+          <div className="flex gap-3 pt-3 border-t border-white/10 mt-2">
+            <a href={cfg.instagramUrl ?? '#'} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="w-11 h-11 rounded-full inline-flex items-center justify-center text-white/70 bg-white/[.06] border border-white/[.08]">
+              <span className="w-[14px] h-[14px] block"><InstagramIcon /></span>
+            </a>
+            <a href={cfg.facebookUrl ?? '#'} target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="w-11 h-11 rounded-full inline-flex items-center justify-center text-white/70 bg-white/[.06] border border-white/[.08]">
+              <span className="w-[14px] h-[14px] block"><FacebookIcon /></span>
+            </a>
+          </div>
         </nav>
       )}
     </header>

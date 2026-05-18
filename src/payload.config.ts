@@ -54,6 +54,7 @@ export default buildConfig({
   editor: lexicalEditor({}),
   db: postgresAdapter({
     pool: { connectionString: process.env.DATABASE_URL ?? '' },
+    push: true,
   }),
   secret: process.env.PAYLOAD_SECRET ?? '',
   typescript: {
@@ -62,4 +63,93 @@ export default buildConfig({
   sharp,
   cors: [],
   csrf: process.env.SITE_URL ? [process.env.SITE_URL] : [],
+  onInit: async (payload) => {
+    const adminEmail = process.env.SEED_ADMIN_EMAIL ?? 'admin@dmcschools.org';
+    const adminPassword = process.env.SEED_ADMIN_PASSWORD ?? 'ChangeMeNow_VeryStrong_2026';
+
+    const existingAdmin = await payload.find({
+      collection: 'users',
+      where: { email: { equals: adminEmail } },
+      limit: 1,
+    });
+    if (existingAdmin.docs.length === 0) {
+      await payload.create({
+        collection: 'users',
+        data: { name: 'Site Admin', email: adminEmail, password: adminPassword, role: 'admin', active: true },
+      });
+      payload.logger.info(`Created admin user: ${adminEmail}`);
+    }
+
+    await payload.updateGlobal({
+      slug: 'homepage',
+      data: {
+        heroEyebrow: 'Des Moines Christian Wrestling',
+        heroHeading: 'Forge tough kids, faithful young men, and lifelong champions.',
+        heroSubheading: 'A K–12 wrestling program built on Christ-centered character, technical mastery, and the grit only the mat can teach.',
+        heroPrimaryCtaLabel: 'Register a Wrestler',
+        heroPrimaryCtaHref: '/register',
+        heroSecondaryCtaLabel: 'View Schedule',
+        heroSecondaryCtaHref: '/schedule',
+        missionHeading: 'Built for the long match',
+        programCards: [
+          { title: 'Mini Lions (K–2)', ageRange: 'K – 2', body: 'Fundamentals through play. Mat awareness, position, fall safely.' },
+          { title: 'Youth (3–6)', ageRange: '3rd – 6th', body: 'Real technique, real competition. Local tournaments optional.' },
+          { title: 'Middle & High School', ageRange: '7th – 12th', body: 'Conditioning, technique, dual + tournament season.' },
+        ],
+        testimonialQuote: 'Wrestling at DMC stretched our son in every way — body, mind, and faith. He came home tougher and more humble.',
+        testimonialAuthor: 'Parent of a 7th-grade wrestler',
+        testimonialRole: '2024–25 season',
+      },
+    });
+
+    await payload.updateGlobal({
+      slug: 'header',
+      data: {
+        navItems: [
+          { label: 'Home', type: 'url', url: '/' },
+          { label: 'About', type: 'url', url: '/about' },
+          { label: 'Schedule', type: 'url', url: '/schedule' },
+          { label: 'Results', type: 'url', url: '/results' },
+          { label: 'Gallery', type: 'url', url: '/gallery' },
+          { label: 'Contact', type: 'url', url: '/contact' },
+        ],
+        ctaLabel: 'Join the Lions',
+        ctaHref: '/register',
+      },
+    });
+
+    await payload.updateGlobal({
+      slug: 'footer',
+      data: {
+        quickLinks: [
+          { label: 'Home', href: '/' },
+          { label: 'About', href: '/about' },
+          { label: 'Schedule', href: '/schedule' },
+          { label: 'Results', href: '/results' },
+          { label: 'Gallery', href: '/gallery' },
+          { label: 'Contact', href: '/contact' },
+        ],
+      },
+    });
+
+    await payload.updateGlobal({
+      slug: 'contact-config',
+      data: {
+        recipientEmails: [{ email: 'lionswrestling@dmcschools.org' }],
+        subjectPrefix: '[Lions Wrestling]',
+        autoReplyEnabled: true,
+        autoReplySubject: 'We got your message — Lions Wrestling',
+        rateLimitPerHour: 5,
+      },
+    });
+
+    await payload.updateGlobal({
+      slug: 'site-settings',
+      data: {
+        siteName: 'DMC Lions Wrestling Club',
+        tagline: 'Christ-centered wrestling, K–12.',
+        maintenanceMode: false,
+      },
+    });
+  },
 });

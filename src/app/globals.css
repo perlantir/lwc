@@ -8,12 +8,15 @@ html, body {
   color: var(--text-navy);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
+
+html { -webkit-text-size-adjust: 100%; }
 
 * { box-sizing: border-box; }
 
 a { color: inherit; text-decoration: none; }
-img { display: block; max-width: 100%; }
+img { display: block; max-width: 100%; height: auto; }
 
 /* Page card — fluid below 768px */
 .page-card {
@@ -128,4 +131,19 @@ img { display: block; max-width: 100%; }
 @media (max-width: 767px) {
   .page-banner { padding: 36px 20px 40px; }
   .page-banner h1 { font-size: 32px; line-height: 38px; }
+  .page-banner::after { width: 180px; height: 180px; right: -50px; opacity: .12; }
+}
+
+/* Tiny phones: < 375px */
+@media (max-width: 374px) {
+  .page-banner { padding: 28px 16px 32px; }
+  .page-banner h1 { font-size: 26px; line-height: 32px; }
+  .page-banner::after { display: none; }
+  .btn { padding: 10px 18px; font-size: 13px; }
+  .btn-lg { padding: 12px 22px; font-size: 14px; }
+}
+
+/* Tap targets: ensure interactive elements meet 44px minimum on touch */
+@media (hover: none) and (pointer: coarse) {
+  a.btn, button.btn { min-height: 44px; }
 }
