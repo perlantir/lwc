@@ -4,7 +4,11 @@ import { revalidateGlobal } from '../hooks/revalidate';
 
 export const AboutPage: GlobalConfig = {
   slug: 'about-page',
-  admin: { group: 'Pages' },
+  admin: {
+    group: 'Pages',
+    description:
+      'Controls the /about page heading, story, stats, and values. To add or edit coach bios that show in the "Coaching Staff" section, go to Content → Coaches in the sidebar.',
+  },
   access: { read: isPublic, update: isAdmin },
   hooks: { afterChange: [revalidateGlobal(['/about'])] },
   fields: [

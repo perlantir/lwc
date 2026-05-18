@@ -4,7 +4,11 @@ import { revalidateGlobal } from '../hooks/revalidate';
 
 export const SchedulePage: GlobalConfig = {
   slug: 'schedule-page',
-  admin: { group: 'Pages' },
+  admin: {
+    group: 'Pages',
+    description:
+      'Controls the /schedule page heading and intro. To add or edit matches, tournaments, and practices that show in the list, go to Content → Events in the sidebar.',
+  },
   access: { read: isPublic, update: isAdmin },
   hooks: { afterChange: [revalidateGlobal(['/schedule'])] },
   fields: [

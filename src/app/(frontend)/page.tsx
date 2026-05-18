@@ -99,12 +99,6 @@ const HomePage = async () => {
           ))}
         </div>
 
-        {/* Dots */}
-        <div className="absolute left-0 right-0 bottom-5 z-10 flex justify-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-cyan" />
-          <span className="w-1.5 h-1.5 rounded-full bg-white/40" />
-          <span className="w-1.5 h-1.5 rounded-full bg-white/40" />
-        </div>
       </section>
 
       {/* MISSION */}
