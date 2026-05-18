@@ -4,7 +4,7 @@ import type { NextConfig } from 'next';
 const config: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
-  serverExternalPackages: ['drizzle-kit', '@payloadcms/drizzle'],
+  serverExternalPackages: ['drizzle-kit'],
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: '*.r2.cloudflarestorage.com' },
