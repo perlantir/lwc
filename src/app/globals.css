@@ -18,16 +18,22 @@ html { -webkit-text-size-adjust: 100%; }
 a { color: inherit; text-decoration: none; }
 img { display: block; max-width: 100%; height: auto; }
 
-/* Page card — fluid below 768px */
+/* Page card — fluid on mobile, capped + framed on desktop */
 .page-card {
-  max-width: 941px;
+  max-width: 100%;
   margin: 0 auto;
   background: var(--off-white);
   position: relative;
   overflow: hidden;
 }
 @media (min-width: 768px) {
-  .page-card { box-shadow: var(--soft-shadow); }
+  .page-card {
+    max-width: 1200px;
+    box-shadow: var(--soft-shadow);
+  }
+}
+@media (min-width: 1440px) {
+  .page-card { max-width: 1320px; }
 }
 
 /* Buttons */
