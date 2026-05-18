@@ -40,6 +40,7 @@
     "add-to-calendar-button-react": "^2.8.10",
     "argon2": "^0.41.1",
     "dompurify": "^3.2.3",
+    "drizzle-kit": "0.31.7",
     "file-type": "^19.6.0",
     "graphql": "^16.10.0",
     "jsdom": "^25.0.1",
