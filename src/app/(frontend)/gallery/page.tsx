@@ -1,6 +1,6 @@
 import { getPayload } from 'payload';
 import config from '@payload-config';
-import { PageBanner } from '@/components/PageBanner';
+import Link from 'next/link';
 import { CtaStrip } from '@/components/CtaStrip';
 
 export const revalidate = 600;
@@ -24,59 +24,83 @@ const GalleryPage = async () => {
 
   return (
     <>
-      <PageBanner
-        eyebrow={page.bannerEyebrow ?? 'Gallery'}
-        title={page.bannerTitle ?? 'Lions in action'}
-        body={page.bannerBody ?? undefined}
-        crumbs={[{ label: 'Home', href: '/' }, { label: page.bannerEyebrow ?? 'Gallery' }]}
-      />
+      <section
+        className="relative text-white overflow-hidden"
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(6,27,58,.6) 0%, rgba(6,27,58,.85) 100%), url('/images/hero-bg.jpg') center/cover no-repeat, #061B3A",
+        }}
+      >
+        <div className="px-5 sm:px-8 md:px-14 lg:px-20 xl:px-28 2xl:px-40 py-12 sm:py-14 max-w-[820px]">
+          <div className="text-[12px] text-white/55 mb-4 tracking-wide">
+            <Link href="/" className="text-cyan">Home</Link> <span className="text-white/30 mx-1.5">/</span> {page.bannerEyebrow ?? 'Gallery'}
+          </div>
+          <h1 className="text-[34px] sm:text-[44px] md:text-[52px] font-extrabold leading-[1.05] tracking-tight" style={{ textShadow: '0 4px 24px rgba(0,0,0,.4)' }}>
+            {page.bannerTitle ?? 'Mat Stories. Captured.'}
+          </h1>
+          {page.bannerBody && (
+            <p className="mt-4 max-w-[640px] text-white/80 text-[15px] sm:text-base leading-relaxed">
+              {page.bannerBody}
+            </p>
+          )}
+        </div>
+      </section>
 
       {videoId && (
-        <section className="px-5 sm:px-8 md:px-14 lg:px-20 xl:px-28 2xl:px-40 pt-10">
-          <div className="relative aspect-video rounded-2xl overflow-hidden shadow-soft border border-border">
-            <iframe
-              src={`https://www.youtube-nocookie.com/embed/${videoId}`}
-              title="Featured Lions video"
-              loading="lazy"
-              allow="accelerometer; clipboard-write; encrypted-media; picture-in-picture"
-              allowFullScreen
-              className="absolute inset-0 w-full h-full"
-            />
+        <section className="bg-off-white px-5 sm:px-8 md:px-14 lg:px-20 xl:px-28 2xl:px-40 pt-12">
+          <div className="max-w-[1100px] mx-auto">
+            <div className="eyebrow mb-3">Featured Video</div>
+            <div className="relative aspect-video rounded-xl overflow-hidden shadow-card border border-border bg-navy">
+              <iframe
+                src={`https://www.youtube-nocookie.com/embed/${videoId}`}
+                title="Featured Lions video"
+                loading="lazy"
+                allow="accelerometer; clipboard-write; encrypted-media; picture-in-picture"
+                allowFullScreen
+                className="absolute inset-0 w-full h-full"
+              />
+            </div>
           </div>
         </section>
       )}
 
-      <section className="px-5 sm:px-8 md:px-14 lg:px-20 xl:px-28 2xl:px-40 py-10">
-        {photos.docs.length === 0 ? (
-          <p className="text-muted">{page.emptyMessage}</p>
-        ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-            {photos.docs.map((p) => (
-              <figure
-                key={p.id}
-                className="rounded-xl overflow-hidden bg-border aspect-[4/3] relative"
-                style={{
-                  backgroundImage: typeof p.url === 'string' ? `url(${p.url})` : undefined,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
-                }}
-                role="img"
-                aria-label={p.alt ?? p.caption ?? ''}
-              >
-                {p.caption && (
-                  <figcaption className="sr-only">{p.caption}</figcaption>
-                )}
-              </figure>
-            ))}
+      <section className="bg-off-white px-5 sm:px-8 md:px-14 lg:px-20 xl:px-28 2xl:px-40 py-12">
+        <div className="max-w-[1100px] mx-auto">
+          <div className="flex items-end justify-between flex-wrap gap-3 mb-5">
+            <div>
+              <div className="eyebrow">From the Mat</div>
+              <h2 className="text-[22px] sm:text-[26px] font-extrabold mt-1 tracking-tight">Recent uploads</h2>
+            </div>
+            <a
+              href="mailto:lionswrestling@dmcschools.org?subject=Photo%20submission"
+              className="text-cyan text-[13px] font-bold tracking-widest uppercase inline-flex items-center gap-1.5"
+            >
+              Submit a photo <span aria-hidden>→</span>
+            </a>
           </div>
-        )}
-        <div className="mt-8 text-center">
-          <a
-            href="mailto:lionswrestling@dmcschools.org?subject=Photo%20submission"
-            className="btn btn-outline"
-          >
-            Submit Photos
-          </a>
+          {photos.docs.length === 0 ? (
+            <div className="bg-white border border-border rounded-xl p-12 text-center shadow-soft">
+              <p className="text-muted">{page.emptyMessage}</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+              {photos.docs.map((p) => (
+                <figure
+                  key={p.id}
+                  className="rounded-xl overflow-hidden bg-border aspect-[4/3] relative shadow-soft"
+                  style={{
+                    backgroundImage: typeof p.url === 'string' ? `url(${p.url})` : undefined,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                  }}
+                  role="img"
+                  aria-label={p.alt ?? p.caption ?? ''}
+                >
+                  {p.caption && <figcaption className="sr-only">{p.caption}</figcaption>}
+                </figure>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

@@ -1,6 +1,5 @@
 import { getPayload } from 'payload';
 import config from '@payload-config';
-import { PageBanner } from '@/components/PageBanner';
 import { CtaStrip } from '@/components/CtaStrip';
 import { AddToCalendar } from '@/components/AddToCalendar';
 import { SubscribeModal } from '@/components/SubscribeModal';
@@ -101,42 +100,100 @@ const SchedulePage = async () => {
 
   return (
     <>
-      <PageBanner
-        eyebrow={page.bannerEyebrow ?? 'Schedule'}
-        title={page.bannerTitle ?? '2025–26 Lions Wrestling Calendar'}
-        body={page.bannerBody ?? undefined}
-        crumbs={[{ label: 'Home', href: '/' }, { label: page.bannerEyebrow ?? 'Schedule' }]}
-      />
-
-      <section className="px-5 sm:px-8 md:px-14 lg:px-20 xl:px-28 2xl:px-40 py-10">
-        <div className="flex items-center justify-between gap-4 flex-wrap">
-          <div>
-            <h2 className="text-2xl font-extrabold text-navy">Upcoming events</h2>
-            <p className="text-sm text-muted mt-1">{events.length} events scheduled</p>
+      {/* HERO */}
+      <section
+        className="relative text-white overflow-hidden"
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(6,27,58,.6) 0%, rgba(6,27,58,.85) 100%), url('/images/hero-bg.jpg') center/cover no-repeat, #061B3A",
+        }}
+      >
+        <div className="px-5 sm:px-8 md:px-14 lg:px-20 xl:px-28 2xl:px-40 py-12 sm:py-14 max-w-[820px]">
+          <div className="text-[12px] text-white/55 mb-4 tracking-wide">
+            <a href="/" className="text-cyan">Home</a> <span className="text-white/30 mx-1.5">/</span> {page.bannerEyebrow ?? 'Schedule'}
           </div>
-          <SubscribeModal siteUrl={env.SITE_URL} />
-        </div>
-
-        <div className="mt-8">
-          <h3 className="font-extrabold text-navy text-lg">
-            Matches & Tournaments <span className="text-muted text-sm font-medium ml-2">({matches.length})</span>
-          </h3>
-          {matches.length === 0 ? (
-            <p className="mt-4 text-muted">No upcoming matches yet.</p>
-          ) : (
-            <div className="space-y-3 mt-4">{matches.map(renderCard)}</div>
+          <h1 className="text-[34px] sm:text-[44px] md:text-[52px] font-extrabold leading-[1.05] tracking-tight" style={{ textShadow: '0 4px 24px rgba(0,0,0,.4)' }}>
+            {page.bannerTitle ?? '2025–26 Season Schedule'}
+          </h1>
+          {page.bannerBody && (
+            <p className="mt-4 max-w-[600px] text-white/80 text-[15px] sm:text-base leading-relaxed">
+              {page.bannerBody}
+            </p>
           )}
+          <div className="mt-6 flex flex-wrap items-center gap-4">
+            <SubscribeModal siteUrl={env.SITE_URL} />
+            <a href="/events.ics" className="text-cyan text-sm font-semibold inline-flex items-center gap-2">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>
+              Download Season .ics
+            </a>
+          </div>
         </div>
+      </section>
 
-        <div className="mt-10">
-          <h3 className="font-extrabold text-navy text-lg">
-            Practices <span className="text-muted text-sm font-medium ml-2">({practices.length})</span>
-          </h3>
-          {practices.length === 0 ? (
-            <p className="mt-4 text-muted">No upcoming practices listed.</p>
-          ) : (
-            <div className="space-y-3 mt-4">{practices.map(renderCard)}</div>
-          )}
+      {/* NEXT MATCH HIGHLIGHT */}
+      {matches[0] && (
+        <section className="bg-navy text-white px-5 sm:px-8 md:px-14 lg:px-20 xl:px-28 2xl:px-40 py-8 border-t border-white/5">
+          <div className="rounded-xl bg-white/[.04] border border-white/[.08] p-5 sm:p-6 flex flex-col md:flex-row md:items-center gap-6 max-w-[1100px] mx-auto">
+            <div className="text-center bg-cyan/15 text-cyan rounded-lg py-3 px-4 min-w-[88px]">
+              <div className="text-[12px] uppercase font-semibold tracking-widest">{shortMo(parseDate(matches[0].date).getMonth())}</div>
+              <div className="text-[28px] font-extrabold leading-none">{pad(parseDate(matches[0].date).getDate())}</div>
+              <div className="text-[11px] text-white/65 mt-1">{['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][parseDate(matches[0].date).getDay()]}</div>
+            </div>
+            <div className="flex-1 min-w-0">
+              <span className="inline-block text-[10px] font-bold tracking-widest uppercase bg-cyan/15 text-cyan px-2 py-1 rounded">Next Match · {matches[0].kind === 'home' ? 'Home' : matches[0].kind === 'away' ? 'Away' : 'Tournament'}</span>
+              <h2 className="text-[20px] sm:text-[24px] font-extrabold mt-2">{matches[0].title}</h2>
+              <div className="flex flex-wrap gap-x-5 gap-y-2 mt-2 text-[13px] text-white/80">
+                {matches[0].location && (
+                  <span className="inline-flex items-center gap-1.5">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" className="text-cyan"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z" /></svg>
+                    {matches[0].location}
+                  </span>
+                )}
+                {matches[0].time && (
+                  <span className="inline-flex items-center gap-1.5">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" className="text-cyan"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></svg>
+                    {matches[0].time}
+                  </span>
+                )}
+                {matches[0].notes && (
+                  <span className="inline-flex items-center gap-1.5 text-white/70">{matches[0].notes}</span>
+                )}
+              </div>
+            </div>
+            <div className="shrink-0">
+              <AddToCalendar event={matches[0]} />
+            </div>
+          </div>
+        </section>
+      )}
+
+      <section className="px-5 sm:px-8 md:px-14 lg:px-20 xl:px-28 2xl:px-40 py-12">
+        <div className="max-w-[1100px] mx-auto">
+          <div className="mt-2">
+            <h3 className="font-extrabold text-navy text-[20px] inline-flex items-center gap-2">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-cyan"><path d="M12 2l3 7 7 .5-5 5 1.5 7L12 18l-6.5 3.5L7 14.5 2 9.5 9 9z" /></svg>
+              Upcoming Matches
+              <span className="text-muted text-sm font-medium ml-1">({matches.length})</span>
+            </h3>
+            {matches.length === 0 ? (
+              <p className="mt-4 text-muted">No upcoming matches yet.</p>
+            ) : (
+              <div className="space-y-3 mt-4">{matches.map(renderCard)}</div>
+            )}
+          </div>
+
+          <div className="mt-12">
+            <h3 className="font-extrabold text-navy text-[20px] inline-flex items-center gap-2">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-cyan"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></svg>
+              Upcoming Practices
+              <span className="text-muted text-sm font-medium ml-1">({practices.length})</span>
+            </h3>
+            {practices.length === 0 ? (
+              <p className="mt-4 text-muted">No upcoming practices listed.</p>
+            ) : (
+              <div className="space-y-3 mt-4">{practices.map(renderCard)}</div>
+            )}
+          </div>
         </div>
       </section>
 
