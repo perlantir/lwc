@@ -13,7 +13,45 @@ export interface CalendarEvent {
   notes?: string;
   sequence?: number;
   updatedAt?: string;
+  recurring?: boolean;
+  recurrenceDays?: Array<'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun'>;
+  recurrenceEnd?: string; // YYYY-MM-DD
 }
+
+const DOW_TO_INDEX: Record<string, number> = { sun: 0, mon: 1, tue: 2, wed: 3, thu: 4, fri: 5, sat: 6 };
+
+/** Expand recurring events into individual occurrences within [windowStart, windowEnd]. Pass-through for non-recurring. */
+export const expandOccurrences = (
+  events: CalendarEvent[],
+  windowStart: string,
+  windowEnd: string,
+): CalendarEvent[] => {
+  const start = parseDate(windowStart);
+  const end = parseDate(windowEnd);
+  const out: CalendarEvent[] = [];
+  for (const e of events) {
+    if (!e.recurring || !e.recurrenceDays || e.recurrenceDays.length === 0) {
+      out.push(e);
+      continue;
+    }
+    const seriesStart = parseDate(e.date.slice(0, 10));
+    const seriesEnd = e.recurrenceEnd ? parseDate(e.recurrenceEnd.slice(0, 10)) : end;
+    const cursorStart = seriesStart > start ? seriesStart : start;
+    const cursorEnd = seriesEnd < end ? seriesEnd : end;
+    const dayBits = new Set(e.recurrenceDays.map((d) => DOW_TO_INDEX[d]).filter((x) => x !== undefined));
+    const cursor = new Date(cursorStart);
+    let safetyCounter = 0;
+    while (cursor <= cursorEnd && safetyCounter < 500) {
+      if (dayBits.has(cursor.getDay())) {
+        const iso = `${cursor.getFullYear()}-${pad(cursor.getMonth() + 1)}-${pad(cursor.getDate())}`;
+        out.push({ ...e, id: `${e.id}:${iso}`, date: iso, recurring: false });
+      }
+      cursor.setDate(cursor.getDate() + 1);
+      safetyCounter++;
+    }
+  }
+  return out.sort((a, b) => a.date.localeCompare(b.date));
+};
 
 export interface KindMeta {
   cat: 'match' | 'practice';

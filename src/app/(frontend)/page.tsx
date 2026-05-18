@@ -108,7 +108,7 @@ const HomePage = async () => {
       </section>
 
       {/* MISSION */}
-      <section className="bg-off-white px-5 sm:px-8 md:px-14 py-10 sm:py-14 grid gap-8 md:gap-12 md:grid-cols-2 items-center">
+      <section className="bg-off-white px-5 sm:px-8 md:px-14 lg:px-20 xl:px-28 2xl:px-40 py-10 sm:py-14 grid gap-8 md:gap-12 md:grid-cols-2 items-center">
         <div>
           <div className="eyebrow">Our Mission</div>
           <h2 className="text-[28px] md:text-[30px] leading-[1.15] font-extrabold mt-3 tracking-tight">
@@ -141,7 +141,7 @@ const HomePage = async () => {
       </section>
 
       {/* PROGRAM — dark navy */}
-      <section className="relative bg-navy text-white px-5 sm:px-8 md:px-14 pt-12 pb-24 sm:pb-28 overflow-hidden">
+      <section className="relative bg-navy text-white px-5 sm:px-8 md:px-14 lg:px-20 xl:px-28 2xl:px-40 pt-12 pb-24 sm:pb-28 overflow-hidden">
         <div
           aria-hidden
           className="absolute left-[-60px] top-1/2 -translate-y-1/2 w-[220px] h-[280px] pointer-events-none"
@@ -230,7 +230,7 @@ const HomePage = async () => {
 
       {/* GALLERY STRIP */}
       {photos.docs.length > 0 && (
-        <section className="bg-off-white px-5 sm:px-8 md:px-14 pt-20 sm:pt-24 pb-10">
+        <section className="bg-off-white px-5 sm:px-8 md:px-14 lg:px-20 xl:px-28 2xl:px-40 pt-20 sm:pt-24 pb-10">
           <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
             <div className="eyebrow whitespace-nowrap">Match Highlights</div>
             <Link href="/gallery" className="text-cyan text-[13px] font-bold tracking-widest uppercase inline-flex items-center gap-1.5 whitespace-nowrap">

@@ -13,24 +13,26 @@ const youtubeId = (url: string): string | null => {
 
 const GalleryPage = async () => {
   const payload = await getPayload({ config });
-  const [settings, photos] = await Promise.all([
+  const [page, settings, photos] = await Promise.all([
+    payload.findGlobal({ slug: 'gallery-page' }),
     payload.findGlobal({ slug: 'site-settings' }),
     payload.find({ collection: 'photos', sort: '-date', limit: 60 }),
   ]);
 
-  const videoId = settings.featuredVideoUrl ? youtubeId(settings.featuredVideoUrl) : null;
+  const videoUrl = page.featuredVideoUrl ?? settings.featuredVideoUrl;
+  const videoId = videoUrl ? youtubeId(videoUrl) : null;
 
   return (
     <>
       <PageBanner
-        eyebrow="Gallery"
-        title="Lions in action"
-        body="Photos and clips from practices, duals, and tournaments. Submit your own to lionswrestling@dmcschools.org."
-        crumbs={[{ label: 'Home', href: '/' }, { label: 'Gallery' }]}
+        eyebrow={page.bannerEyebrow ?? 'Gallery'}
+        title={page.bannerTitle ?? 'Lions in action'}
+        body={page.bannerBody ?? undefined}
+        crumbs={[{ label: 'Home', href: '/' }, { label: page.bannerEyebrow ?? 'Gallery' }]}
       />
 
       {videoId && (
-        <section className="px-6 md:px-14 pt-10">
+        <section className="px-5 sm:px-8 md:px-14 lg:px-20 xl:px-28 2xl:px-40 pt-10">
           <div className="relative aspect-video rounded-2xl overflow-hidden shadow-soft border border-border">
             <iframe
               src={`https://www.youtube-nocookie.com/embed/${videoId}`}
@@ -44,9 +46,9 @@ const GalleryPage = async () => {
         </section>
       )}
 
-      <section className="px-6 md:px-14 py-10">
+      <section className="px-5 sm:px-8 md:px-14 lg:px-20 xl:px-28 2xl:px-40 py-10">
         {photos.docs.length === 0 ? (
-          <p className="text-muted">No photos yet. Upload via the admin and tag favorites as "featured."</p>
+          <p className="text-muted">{page.emptyMessage}</p>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
             {photos.docs.map((p) => (

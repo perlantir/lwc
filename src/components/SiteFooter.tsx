@@ -4,8 +4,8 @@ import type { Footer } from '../../payload-types';
 export const SiteFooter = ({ cfg }: { cfg: Footer }) => {
   const links = cfg.quickLinks ?? [];
   return (
-    <footer className="bg-deep-navy text-white/80 px-5 md:px-14 pt-9 pb-7">
-      <div className="grid gap-10 md:grid-cols-[200px_1fr_1fr] items-start">
+    <footer className="bg-deep-navy text-white/80 px-5 md:px-14 lg:px-20 xl:px-28 2xl:px-40 pt-9 pb-7">
+      <div className="grid gap-10 md:grid-cols-[200px_1fr_1fr] items-start max-w-[1600px] mx-auto">
         <div>
           <div
             aria-hidden="true"

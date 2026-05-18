@@ -49,7 +49,7 @@ export const SiteHeader = ({ cfg }: { cfg: Header }) => {
 
   return (
     <header className="bg-navy text-white relative z-10">
-      <div className="flex items-center gap-3 px-4 sm:px-5 md:px-12 lg:px-[47px] py-[10px] h-[72px] sm:h-[82px]">
+      <div className="flex items-center gap-3 px-4 sm:px-5 md:px-12 lg:px-12 xl:px-20 2xl:px-28 py-[10px] h-[72px] sm:h-[82px] max-w-[1600px] mx-auto">
         <Link href="/" aria-label="Lions Wrestling home" className="block w-[58px] h-[64px] sm:w-[66px] sm:h-[72px] shrink-0">
           <img
             src="/logos/lion-head-white-transparent.png"

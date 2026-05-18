@@ -16,7 +16,7 @@ export const CtaStrip = ({
   buttonHref = '/register',
 }: Props) => (
   <section
-    className="relative text-white px-5 md:px-14 py-6 md:py-6 flex flex-col gap-5 md:grid md:items-center md:gap-7"
+    className="relative text-white px-5 md:px-14 lg:px-20 xl:px-28 2xl:px-40 py-6 md:py-6 flex flex-col gap-5 md:grid md:items-center md:gap-7"
     style={{
       background:
         "linear-gradient(90deg, rgba(6,27,58,.92), rgba(6,27,58,.75)), url('/images/cta-bg.jpg') center/cover no-repeat, #061B3A",

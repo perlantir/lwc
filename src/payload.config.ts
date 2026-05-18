@@ -23,6 +23,12 @@ import { Footer } from './globals/Footer';
 import { SiteSettings } from './globals/SiteSettings';
 import { ContactConfig } from './globals/ContactConfig';
 import { Homepage } from './globals/Homepage';
+import { AboutPage } from './globals/AboutPage';
+import { SchedulePage } from './globals/SchedulePage';
+import { ResultsPage } from './globals/ResultsPage';
+import { GalleryPage } from './globals/GalleryPage';
+import { ContactPage } from './globals/ContactPage';
+import { RegisterPage } from './globals/RegisterPage';
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -50,7 +56,19 @@ export default buildConfig({
     Redirects,
     AuditLog,
   ],
-  globals: [Header, Footer, SiteSettings, ContactConfig, Homepage],
+  globals: [
+    Header,
+    Footer,
+    SiteSettings,
+    ContactConfig,
+    Homepage,
+    AboutPage,
+    SchedulePage,
+    ResultsPage,
+    GalleryPage,
+    ContactPage,
+    RegisterPage,
+  ],
   editor: lexicalEditor({}),
   db: postgresAdapter({
     pool: { connectionString: process.env.DATABASE_URL ?? '' },

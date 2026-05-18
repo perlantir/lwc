@@ -10,24 +10,27 @@ export const metadata = { title: 'Results' };
 
 const ResultsPage = async () => {
   const payload = await getPayload({ config });
-  const result = await payload.find({
-    collection: 'recaps',
-    where: { status: { equals: 'published' } },
-    sort: '-date',
-    limit: 30,
-  });
+  const [page, result] = await Promise.all([
+    payload.findGlobal({ slug: 'results-page' }),
+    payload.find({
+      collection: 'recaps',
+      where: { status: { equals: 'published' } },
+      sort: '-date',
+      limit: 30,
+    }),
+  ]);
   return (
     <>
       <PageBanner
-        eyebrow="Results"
-        title="Recent matches & recaps"
-        body="Match recaps, tournament summaries, and notable performances — written by the coaching staff."
-        crumbs={[{ label: 'Home', href: '/' }, { label: 'Results' }]}
+        eyebrow={page.bannerEyebrow ?? 'Results'}
+        title={page.bannerTitle ?? 'Recent matches & recaps'}
+        body={page.bannerBody ?? undefined}
+        crumbs={[{ label: 'Home', href: '/' }, { label: page.bannerEyebrow ?? 'Results' }]}
       />
 
-      <section className="px-6 md:px-14 py-10">
+      <section className="px-5 sm:px-8 md:px-14 lg:px-20 xl:px-28 2xl:px-40 py-10">
         {result.docs.length === 0 ? (
-          <p className="text-muted">Recaps coming soon. Coaches post them after each event.</p>
+          <p className="text-muted">{page.emptyMessage}</p>
         ) : (
           <div className="space-y-6">
             {result.docs.map((r) => {

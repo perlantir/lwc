@@ -4,7 +4,7 @@ import { PageBanner } from '@/components/PageBanner';
 import { CtaStrip } from '@/components/CtaStrip';
 import { AddToCalendar } from '@/components/AddToCalendar';
 import { SubscribeModal } from '@/components/SubscribeModal';
-import { parseDate, shortMo, pad, KINDS, type CalendarEvent } from '@/lib/calendar';
+import { parseDate, shortMo, pad, KINDS, expandOccurrences, type CalendarEvent } from '@/lib/calendar';
 import { env } from '@/env';
 
 export const revalidate = 300;
@@ -13,16 +13,32 @@ export const metadata = { title: 'Schedule' };
 const SchedulePage = async () => {
   const payload = await getPayload({ config });
   const today = new Date().toISOString().slice(0, 10);
-  const result = await payload.find({
-    collection: 'events',
-    where: {
-      and: [{ date: { greater_than_equal: today } }, { status: { equals: 'published' } }],
-    },
-    sort: 'date',
-    limit: 200,
-  });
+  const [page, result] = await Promise.all([
+    payload.findGlobal({ slug: 'schedule-page' }),
+    payload.find({
+      collection: 'events',
+      where: { status: { equals: 'published' } },
+      sort: 'date',
+      limit: 500,
+    }),
+  ]);
 
-  const events: CalendarEvent[] = result.docs.map((d) => ({
+  const rawEvents = result.docs as unknown as Array<{
+    id: number | string;
+    date: string;
+    time?: string | null;
+    title: string;
+    kind?: string;
+    location?: string | null;
+    notes?: string | null;
+    sequence?: number | null;
+    updatedAt: string;
+    recurring?: boolean | null;
+    recurrenceDays?: string[] | null;
+    recurrenceEnd?: string | null;
+  }>;
+
+  const baseEvents: CalendarEvent[] = rawEvents.map((d) => ({
     id: d.id,
     date: d.date.slice(0, 10),
     time: d.time ?? 'All Day',
@@ -32,7 +48,17 @@ const SchedulePage = async () => {
     notes: d.notes ?? undefined,
     sequence: d.sequence ?? 0,
     updatedAt: d.updatedAt,
+    recurring: Boolean(d.recurring),
+    recurrenceDays: (d.recurrenceDays as CalendarEvent['recurrenceDays']) ?? undefined,
+    recurrenceEnd: d.recurrenceEnd ?? undefined,
   }));
+
+  // Show a rolling 4-month window of events (including expanded recurrences)
+  const horizon = new Date();
+  horizon.setMonth(horizon.getMonth() + 4);
+  const horizonStr = horizon.toISOString().slice(0, 10);
+  const expanded = expandOccurrences(baseEvents, today, horizonStr);
+  const events = expanded.filter((e) => e.date >= today);
 
   const matches = events.filter((e) => KINDS[e.kind].cat === 'match');
   const practices = events.filter((e) => e.kind === 'prac');
@@ -76,13 +102,13 @@ const SchedulePage = async () => {
   return (
     <>
       <PageBanner
-        eyebrow="Schedule"
-        title="2025–26 Lions Wrestling Calendar"
-        body="Subscribe once and the Lions schedule stays current on your phone or computer. Or add individual events directly."
-        crumbs={[{ label: 'Home', href: '/' }, { label: 'Schedule' }]}
+        eyebrow={page.bannerEyebrow ?? 'Schedule'}
+        title={page.bannerTitle ?? '2025–26 Lions Wrestling Calendar'}
+        body={page.bannerBody ?? undefined}
+        crumbs={[{ label: 'Home', href: '/' }, { label: page.bannerEyebrow ?? 'Schedule' }]}
       />
 
-      <section className="px-6 md:px-14 py-10">
+      <section className="px-5 sm:px-8 md:px-14 lg:px-20 xl:px-28 2xl:px-40 py-10">
         <div className="flex items-center justify-between gap-4 flex-wrap">
           <div>
             <h2 className="text-2xl font-extrabold text-navy">Upcoming events</h2>
