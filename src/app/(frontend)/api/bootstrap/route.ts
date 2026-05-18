@@ -1,88 +1,85 @@
-import { buildConfig } from 'payload';
-import { postgresAdapter } from '@payloadcms/db-postgres';
-import { lexicalEditor } from '@payloadcms/richtext-lexical';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-import sharp from 'sharp';
+import { NextRequest, NextResponse } from 'next/server';
+import { getPayload } from 'payload';
+import config from '@payload-config';
+import { SEED_EVENTS } from '@/lib/calendar';
 
-import { Users } from './collections/Users';
-import { Events } from './collections/Events';
-import { Recaps } from './collections/Recaps';
-import { Photos } from './collections/Photos';
-import { Albums } from './collections/Albums';
-import { Coaches } from './collections/Coaches';
-import { Pages } from './collections/Pages';
-import { Registrations } from './collections/Registrations';
-import { ContactSubmissions } from './collections/ContactSubmissions';
-import { Media } from './collections/Media';
-import { Redirects } from './collections/Redirects';
-import { AuditLog } from './collections/AuditLog';
+export const dynamic = 'force-dynamic';
+export const maxDuration = 300;
 
-import { Header } from './globals/Header';
-import { Footer } from './globals/Footer';
-import { SiteSettings } from './globals/SiteSettings';
-import { ContactConfig } from './globals/ContactConfig';
-import { Homepage } from './globals/Homepage';
+const requireSecret = (req: NextRequest): NextResponse | null => {
+  const provided = req.headers.get('x-bootstrap-secret') ?? req.nextUrl.searchParams.get('secret');
+  const expected = process.env.PAYLOAD_SECRET;
+  if (!expected || !provided || provided !== expected) {
+    return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
+  }
+  return null;
+};
 
-const filename = fileURLToPath(import.meta.url);
-const dirname = path.dirname(filename);
+export async function POST(req: NextRequest) {
+  const unauthorized = requireSecret(req);
+  if (unauthorized) return unauthorized;
 
-export default buildConfig({
-  admin: {
-    user: Users.slug,
-    meta: {
-      titleSuffix: ' — Lions Wrestling Club Admin',
-      icons: [{ rel: 'icon', type: 'image/png', url: '/logos/lion-head-blue-transparent.png' }],
-    },
-    // Custom graphics can be wired here later via `components.graphics`.
-  },
-  collections: [
-    Users,
-    Events,
-    Recaps,
-    Photos,
-    Albums,
-    Coaches,
-    Pages,
-    Registrations,
-    ContactSubmissions,
-    Media,
-    Redirects,
-    AuditLog,
-  ],
-  globals: [Header, Footer, SiteSettings, ContactConfig, Homepage],
-  editor: lexicalEditor({}),
-  db: postgresAdapter({
-    pool: { connectionString: process.env.DATABASE_URL ?? '' },
-  }),
-  secret: process.env.PAYLOAD_SECRET ?? '',
-  typescript: {
-    outputFile: path.resolve(dirname, '../payload-types.ts'),
-  },
-  sharp,
-  cors: [],
-  csrf: process.env.SITE_URL ? [process.env.SITE_URL] : [],
-  onInit: async (payload) => {
+  const steps: string[] = [];
+  const errors: string[] = [];
+
+  try {
+    const payload = await getPayload({ config });
+    steps.push('payload-init: ok');
+
+    const pushFn = (payload.db as unknown as { push?: () => Promise<unknown> }).push;
+    if (typeof pushFn === 'function') {
+      try {
+        await pushFn.call(payload.db);
+        steps.push('schema-push: ok');
+      } catch (e) {
+        errors.push(`schema-push: ${(e as Error).message}`);
+      }
+    } else {
+      steps.push('schema-push: skipped (push() not available)');
+    }
+
     const adminEmail = process.env.SEED_ADMIN_EMAIL ?? 'admin@dmcschools.org';
     const adminPassword = process.env.SEED_ADMIN_PASSWORD ?? 'ChangeMeNow_VeryStrong_2026';
 
-    let existingAdmin;
-    try {
-      existingAdmin = await payload.find({
-        collection: 'users',
-        where: { email: { equals: adminEmail } },
-        limit: 1,
-      });
-    } catch (e) {
-      payload.logger.warn(`Skipping seed — schema not initialized yet. Hit /api/bootstrap to provision. (${(e as Error).message})`);
-      return;
-    }
+    const existingAdmin = await payload.find({
+      collection: 'users',
+      where: { email: { equals: adminEmail } },
+      limit: 1,
+    });
     if (existingAdmin.docs.length === 0) {
       await payload.create({
         collection: 'users',
         data: { name: 'Site Admin', email: adminEmail, password: adminPassword, role: 'admin', active: true },
       });
-      payload.logger.info(`Created admin user: ${adminEmail}`);
+      steps.push(`admin: created ${adminEmail}`);
+    } else {
+      steps.push(`admin: exists ${adminEmail}`);
+    }
+
+    const existingEvents = await payload.count({ collection: 'events' });
+    if (existingEvents.totalDocs === 0) {
+      let created = 0;
+      for (const e of SEED_EVENTS) {
+        await payload.create({
+          collection: 'events',
+          data: {
+            title: e.title,
+            date: e.date,
+            time: e.time,
+            allDay: e.time === 'All Day',
+            kind: e.kind,
+            location: e.location ?? '',
+            notes: e.notes ?? '',
+            status: 'published',
+            sequence: 0,
+          },
+          context: { disableRevalidate: true },
+        });
+        created++;
+      }
+      steps.push(`events: seeded ${created}`);
+    } else {
+      steps.push(`events: ${existingEvents.totalDocs} already present`);
     }
 
     await payload.updateGlobal({
@@ -106,6 +103,7 @@ export default buildConfig({
         testimonialRole: '2024–25 season',
       },
     });
+    steps.push('homepage: seeded');
 
     await payload.updateGlobal({
       slug: 'header',
@@ -122,6 +120,7 @@ export default buildConfig({
         ctaHref: '/register',
       },
     });
+    steps.push('header: seeded');
 
     await payload.updateGlobal({
       slug: 'footer',
@@ -136,6 +135,7 @@ export default buildConfig({
         ],
       },
     });
+    steps.push('footer: seeded');
 
     await payload.updateGlobal({
       slug: 'contact-config',
@@ -147,6 +147,7 @@ export default buildConfig({
         rateLimitPerHour: 5,
       },
     });
+    steps.push('contact-config: seeded');
 
     await payload.updateGlobal({
       slug: 'site-settings',
@@ -156,5 +157,15 @@ export default buildConfig({
         maintenanceMode: false,
       },
     });
-  },
-});
+    steps.push('site-settings: seeded');
+
+    return NextResponse.json({ ok: errors.length === 0, steps, errors });
+  } catch (e) {
+    errors.push(`fatal: ${(e as Error).message}`);
+    return NextResponse.json({ ok: false, steps, errors }, { status: 500 });
+  }
+}
+
+export async function GET(req: NextRequest) {
+  return POST(req);
+}
