@@ -1,12 +1,14 @@
 import { NextResponse, type NextRequest } from 'next/server';
 
-const setSecurityHeaders = (res: NextResponse, isAdmin: boolean): NextResponse => {
+const setSecurityHeaders = (res: NextResponse): NextResponse => {
   // HSTS only in production
   if (process.env.NODE_ENV === 'production') {
     res.headers.set('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
   }
   res.headers.set('X-Content-Type-Options', 'nosniff');
-  res.headers.set('X-Frame-Options', isAdmin ? 'SAMEORIGIN' : 'DENY');
+  // SAMEORIGIN allows the Payload admin Live Preview iframe (same-origin) to embed pages.
+  // Cross-origin clickjacking is still blocked by `frame-ancestors 'self'` in the CSP.
+  res.headers.set('X-Frame-Options', 'SAMEORIGIN');
   res.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
   res.headers.set(
     'Permissions-Policy',
@@ -33,11 +35,9 @@ const setSecurityHeaders = (res: NextResponse, isAdmin: boolean): NextResponse =
   return res;
 };
 
-export const middleware = (req: NextRequest): NextResponse => {
-  const url = req.nextUrl;
-  const isAdmin = url.pathname.startsWith('/admin') || url.pathname.startsWith('/api');
+export const middleware = (_req: NextRequest): NextResponse => {
   const res = NextResponse.next();
-  return setSecurityHeaders(res, isAdmin);
+  return setSecurityHeaders(res);
 };
 
 export const config = {
