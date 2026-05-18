@@ -109,7 +109,10 @@ export default buildConfig({
   sharp,
   plugins: [
     vercelBlobStorage({
-      collections: { media: true, photos: true },
+      collections: {
+        media: { disablePayloadAccessControl: true },
+        photos: { disablePayloadAccessControl: true },
+      },
       token: process.env.BLOB_READ_WRITE_TOKEN,
     }),
   ],
