@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getPayload } from 'payload';
 import config from '@payload-config';
-import { contactSchema, MIN_FORM_DURATION_MS } from '@/lib/schemas';
+import { contactSchema, MIN_FORM_DURATION_MS, verifyMathChallenge } from '@/lib/schemas';
 import { limitContact } from '@/lib/rate-limit';
 import { verifyTurnstile } from '@/lib/turnstile';
 import { hashIp, ipFromHeaders } from '@/lib/ip';
@@ -25,6 +25,10 @@ export const POST = async (req: NextRequest): Promise<NextResponse> => {
   // Time-trap
   if (Date.now() - data.startedAt < MIN_FORM_DURATION_MS) {
     return NextResponse.json({ error: 'Submission too fast' }, { status: 429 });
+  }
+  // Math captcha
+  if (!verifyMathChallenge(data.mathA, data.mathB, data.mathAnswer)) {
+    return NextResponse.json({ error: 'Math answer incorrect — please try again.' }, { status: 400 });
   }
 
   const ip = ipFromHeaders(req.headers);

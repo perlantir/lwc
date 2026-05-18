@@ -13,8 +13,17 @@ export const contactSchema = z.object({
   website: z.string().max(0, 'Spam detected').optional().default(''),
   startedAt: z.number().int().nonnegative(),
   turnstileToken: z.string().optional(),
+  mathA: z.number().int().nonnegative(),
+  mathB: z.number().int().nonnegative(),
+  mathAnswer: z.string().trim().min(1, 'Answer the math question'),
 });
 export type ContactInput = z.infer<typeof contactSchema>;
+
+export const verifyMathChallenge = (a: number, b: number, answer: string): boolean => {
+  const n = Number(answer.trim());
+  if (!Number.isFinite(n)) return false;
+  return n === a + b;
+};
 
 export const registerSchema = z.object({
   wFirst: z.string().trim().min(1).max(80),

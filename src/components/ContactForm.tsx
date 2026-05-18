@@ -1,21 +1,33 @@
 'use client';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { contactSchema, type ContactInput } from '@/lib/schemas';
 
 const STARTED_AT = Date.now();
 
+const mkMath = (): { a: number; b: number } => ({
+  a: Math.floor(Math.random() * 9) + 1,
+  b: Math.floor(Math.random() * 9) + 1,
+});
+
 export const ContactForm = () => {
   const [done, setDone] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const math = useMemo(mkMath, []);
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<ContactInput>({
     resolver: zodResolver(contactSchema),
-    defaultValues: { startedAt: STARTED_AT, website: '' },
+    defaultValues: {
+      startedAt: STARTED_AT,
+      website: '',
+      mathA: math.a,
+      mathB: math.b,
+      mathAnswer: '',
+    },
   });
 
   const onSubmit = async (data: ContactInput) => {
@@ -107,6 +119,27 @@ export const ContactForm = () => {
         <input type="checkbox" {...register('marketingOptIn')} className="mt-1" />
         Send me occasional news about the Lions Wrestling Club.
       </label>
+
+      {/* Math challenge */}
+      <input type="hidden" {...register('mathA', { valueAsNumber: true })} />
+      <input type="hidden" {...register('mathB', { valueAsNumber: true })} />
+      <div className="bg-cyan/5 border border-cyan/30 rounded-lg p-3 sm:p-4 flex items-center gap-3 flex-wrap">
+        <span className="text-sm font-semibold text-navy">
+          Prove you&apos;re human: <span className="text-cyan font-extrabold">{math.a} + {math.b} =</span>
+        </span>
+        <input
+          {...register('mathAnswer')}
+          inputMode="numeric"
+          autoComplete="off"
+          className="form-input"
+          style={{ width: 80 }}
+          aria-label={`What is ${math.a} plus ${math.b}?`}
+          aria-invalid={Boolean(errors.mathAnswer)}
+        />
+        {errors.mathAnswer?.message && (
+          <span className="text-xs text-red-600">{errors.mathAnswer.message}</span>
+        )}
+      </div>
 
       {submitError && <div className="text-red-600 text-sm">{submitError}</div>}
 

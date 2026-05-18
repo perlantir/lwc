@@ -1,6 +1,7 @@
 import { buildConfig } from 'payload';
 import { postgresAdapter } from '@payloadcms/db-postgres';
 import { lexicalEditor } from '@payloadcms/richtext-lexical';
+import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
@@ -78,6 +79,13 @@ export default buildConfig({
     outputFile: path.resolve(dirname, '../payload-types.ts'),
   },
   sharp,
+  plugins: [
+    vercelBlobStorage({
+      enabled: Boolean(process.env.BLOB_READ_WRITE_TOKEN),
+      collections: { media: true, photos: true },
+      token: process.env.BLOB_READ_WRITE_TOKEN ?? '',
+    }),
+  ],
   cors: [],
   csrf: process.env.SITE_URL ? [process.env.SITE_URL] : [],
   onInit: async (payload) => {
