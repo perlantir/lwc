@@ -3,6 +3,8 @@ import config from '@payload-config';
 import Link from 'next/link';
 import { CtaStrip } from '@/components/CtaStrip';
 import { mediaUrl, type MediaRef } from '@/lib/media';
+import { EditableText } from '@/components/inline/EditableText';
+import { EditableImage } from '@/components/inline/EditableImage';
 
 export const revalidate = 600;
 export const metadata = { title: 'Gallery' };
@@ -25,7 +27,7 @@ const GalleryPage = async () => {
 
   return (
     <>
-      <section
+      <EditableImage globalSlug="gallery-page" fieldPath="bannerImage" className="block"><section
         className="relative text-white overflow-hidden"
         style={{
           background: `linear-gradient(180deg, rgba(6,27,58,.6) 0%, rgba(6,27,58,.85) 100%), url('${mediaUrl(page.bannerImage as MediaRef, '/images/hero-bg.jpg', 'feature')}') center/cover no-repeat, #061B3A`,
@@ -35,16 +37,12 @@ const GalleryPage = async () => {
           <div className="text-[12px] text-white/55 mb-4 tracking-wide">
             <Link href="/" className="text-cyan">Home</Link> <span className="text-white/30 mx-1.5">/</span> {page.bannerEyebrow ?? 'Gallery'}
           </div>
-          <h1 className="text-[34px] sm:text-[44px] md:text-[52px] font-extrabold leading-[1.05] tracking-tight" style={{ textShadow: '0 4px 24px rgba(0,0,0,.4)' }}>
-            {page.bannerTitle ?? 'Mat Stories. Captured.'}
-          </h1>
+          <EditableText as="h1" globalSlug="gallery-page" fieldPath="bannerTitle" value={page.bannerTitle ?? 'Mat Stories. Captured.'} className="text-[34px] sm:text-[44px] md:text-[52px] font-extrabold leading-[1.05] tracking-tight block" style={{ textShadow: '0 4px 24px rgba(0,0,0,.4)' }} />
           {page.bannerBody && (
-            <p className="mt-4 max-w-[640px] text-white/80 text-[15px] sm:text-base leading-relaxed">
-              {page.bannerBody}
-            </p>
+            <EditableText as="p" globalSlug="gallery-page" fieldPath="bannerBody" value={page.bannerBody ?? ''} multiline className="mt-4 max-w-[660px] text-white/80 text-[15px] sm:text-base leading-relaxed block" />
           )}
         </div>
-      </section>
+      </section></EditableImage>
 
       {videoId && (
         <section className="bg-off-white px-5 sm:px-8 md:px-14 lg:px-20 xl:px-28 2xl:px-40 pt-12">
