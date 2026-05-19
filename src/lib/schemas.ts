@@ -10,7 +10,7 @@ export const contactSchema = z.object({
   message: z.string().trim().min(5, 'Tell us a bit more').max(4000),
   marketingOptIn: z.boolean().optional().default(false),
   // Anti-spam
-  website: z.string().max(0, 'Spam detected').optional().default(''),
+  website: z.string().optional().default(''),
   startedAt: z.number().int().nonnegative(),
   turnstileToken: z.string().optional(),
   mathA: z.number().int().nonnegative(),
