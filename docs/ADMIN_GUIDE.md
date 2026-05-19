@@ -1,224 +1,388 @@
-# Lions Wrestling Admin Guide — for coaches
+# Lions Wrestling — Admin Guide
 
-This is for the coaches who run the Lions Wrestling Club website day-to-day. You don't need to know any code. You'll spend most of your time in `/admin`.
+A coach's reference for editing every part of the website. No code knowledge required.
 
-> If something looks wrong or you get stuck, email the site administrator. The site is built so that nothing you do in the admin can take it offline.
+**Login URL:** https://lwc-theta.vercel.app/admin
+**Live site:** https://lwc-theta.vercel.app
+
+---
+
+## Table of contents
+
+1. [Logging in](#1-logging-in)
+2. [What you see when you log in](#2-what-you-see-when-you-log-in)
+3. [Editing page content — three ways](#3-editing-page-content--three-ways)
+4. [Edit the Homepage](#4-edit-the-homepage)
+5. [Edit the About / Schedule / Results / Gallery / Contact / Register pages](#5-edit-the-inner-pages)
+6. [Edit the CTA bar (every page footer)](#6-edit-the-cta-bar)
+7. [Site-wide: logo, favicon, site name, tagline](#7-site-wide-settings)
+8. [Add or edit events (matches, tournaments, practices)](#8-events)
+9. [Recurring events (weekly practice, etc.)](#9-recurring-events)
+10. [Bulk-import events from CSV](#10-bulk-import-events-from-csv)
+11. [Add or edit coaches](#11-coaches)
+12. [Add or edit match recaps (Results page)](#12-recaps)
+13. [Upload photos to the Gallery](#13-photos)
+14. [Upload media for hero / banner images](#14-media)
+15. [View form submissions (contact + registration)](#15-form-submissions)
+16. [Saving + publishing](#16-saving)
+17. [If something goes wrong](#17-troubleshooting)
 
 ---
 
 ## 1. Logging in
 
-1. Go to **https://lionswrestling.dmcschools.org/admin** (your real URL after deployment).
-2. Enter your email and password.
-3. The first time you log in, you'll be asked to enroll **two-factor authentication (2FA)**:
-   - Open your phone's authenticator app (Google Authenticator, Authy, 1Password, etc.).
-   - Scan the QR code displayed in the browser.
-   - Enter the 6-digit code from your app.
-   - **Save the recovery codes** somewhere safe (password manager). You'll need them if you lose your phone.
+Visit **https://lwc-theta.vercel.app/admin** in your browser. You'll see this:
 
-Every time you log in after that, you'll need your password plus the current 6-digit code from your app.
+![Admin login page](./screenshots/01-admin-dashboard.png)
 
-### Forgotten password
-Click **"Forgot password"** on the login page. We'll email you a one-time reset link (valid for 1 hour). If you also lost your 2FA device, contact the site administrator — they'll reset your account.
+Enter your email + password and click **Login**.
 
 ---
 
-## 2. The dashboard
+## 2. What you see when you log in
 
-After login you land on the admin dashboard. From the left sidebar:
+The left sidebar is your map. Sections are grouped:
 
-- **Content** — Events, Recaps, Coaches, Pages
-- **Gallery** — Photos, Albums
-- **Submissions** — Registrations, Contact Submissions
-- **Site Config** — Header, Footer, Site Settings, Homepage, Contact Config
-- **Admin** — Users, Redirects, Audit Log
-- **Media** — generic file uploads (PDFs, banners that aren't gallery photos)
+- **Admin** — Users, redirects, audit logs (rarely needed)
+- **Content** — Events, recaps, coaches, custom pages
+- **Gallery** — Photos and albums
+- **Submissions** — Contact form messages + registrations from parents
+- **Media** — Image library
+- **Site Config** — Header, Footer, Site Settings, Contact Config, Homepage, **CTA Strip**
+- **Pages** — About / Schedule / Results / Gallery / Contact / Register
 
-Each page has a list view (filter, sort, search) and a detail view (edit one record).
-
----
-
-## 3. Adding or editing an event
-
-1. Sidebar → **Content → Events**.
-2. Click **"Create new"** (top right) or click an existing event to edit it.
-3. Fill out:
-   - **Title** — short, like `Dual vs. Johnston`.
-   - **Date** — pick from the calendar.
-   - **Time** — type how it should display: `5:30 PM`, `All Day`, `10:00 AM`.
-   - **All Day** — check this if it's a tournament that runs the full day.
-   - **Kind** — Home Match, Away Match, Tournament, or Practice.
-   - **Location** — where it happens.
-   - **Notes** — anything extra (Senior Night, 14 schools, etc.).
-   - **Status** — Draft hides it from the public site. Published shows it.
-4. **Save**. The public **/schedule** page updates within a minute.
-
-Tip: Coach mode in the admin shows a month-view calendar. Click a day to add an event quickly.
+> 💡 **Tip:** Anything in "Pages" controls the heading/intro of that page. The list items on that page (events, recaps, photos, coaches) live in the matching "Content" or "Gallery" collection.
 
 ---
 
-## 4. Writing a recap
+## 3. Editing page content — three ways
 
-After a match or tournament, post a recap so families see what happened.
+1. **Forms (classic)** — Open a page in the sidebar, type into the fields, click **Save**.
+2. **Live Preview (recommended)** — Open a page, click the **👁 eye icon** next to Save. The right pane shows your live site. Edit on the left → preview updates automatically.
+3. **Inline editing (fastest)** — Open Live Preview. Click any text or hero photo *in the preview itself*. Type to replace, click away to save.
 
-1. Sidebar → **Content → Recaps → Create new**.
-2. Fill out:
-   - **Date** — when the event happened.
-   - **Kicker** — small label above the title, like `Home Dual · CIML`.
-   - **Title** — like `Lions storm Valley HS, 52 – 18`.
-   - **Body** — rich text. Type freely; use the toolbar for bold, lists, headings. Add photos if you want.
-   - **Tags** — optional chips with quick stats. Add one for each: `8 pins`, `Senior Night`, etc.
-   - **Featured** — pin to the homepage if it's a big one.
-   - **Status** — Draft saves without publishing. Published shows it on `/results`.
-3. **Save** (or **Save as draft** to come back later).
+![Live Preview pane open](./screenshots/11-live-preview.png)
 
-You can also **schedule** a recap to publish at a future date — useful for embargoing tournament writeups.
+> 🟦 In Live Preview, hovering over editable text shows a dashed cyan outline. Hovering over a hero image shows a "Click to replace image" overlay.
 
 ---
 
-## 5. Uploading photos
+## 4. Edit the Homepage
 
-1. Sidebar → **Gallery → Photos → Create new**.
-2. Drag and drop an image (JPG, PNG, or WebP).
-3. **Alt text is required** — describe the photo for visually impaired visitors. Example: "Three Lions wrestlers raise their arms after a tournament win."
-4. **Caption** — optional friendly caption.
-5. **Date** — when the photo was taken.
-6. **Album** — pick one (or leave blank).
-7. **Featured** — if checked, this photo can appear in the homepage gallery strip (top 6 featured).
-8. **Save**.
+In the sidebar: **Site Config → Homepage**.
 
-To upload many photos at once, use **Bulk upload** from the Photos list view.
+![Homepage admin form](./screenshots/02-homepage-global.png)
 
-### Creating an album
-Sidebar → **Gallery → Albums → Create new**. Set a title; the slug is auto-filled. Pick a cover photo. Photos can be assigned to the album later.
+The Homepage has 4 tabs:
 
----
+- **Hero**
+  - Hero Eyebrow — Small label above the title
+  - Hero Heading — Big title
+  - Hero Subheading — Line below
+  - Hero Background Image — "Choose from existing" or "Create New" to upload
+  - Hero Primary Cta Label / Href — Big button
+  - Hero Secondary Cta Label / Href — Outline button
 
-## 6. Editing coach bios
+- **Mission**
+  - Mission Heading
+  - Mission Body
+  - Mission Photo
 
-Sidebar → **Content → Coaches**. Each coach is one record with name, role, photo, bio (rich text), email, and a sort order (lower numbers appear first).
+- **Programs** — 3 dark cards. Click **+ Add row** to add a 4th, **X** to remove.
 
-The `/about` page reads from this collection automatically.
+- **Testimonial** — Quote, Author, Role
 
----
-
-## 7. Editing the homepage
-
-Sidebar → **Site Config → Homepage**. You'll see tabs:
-
-- **Hero** — eyebrow, heading, subheading, hero background image, primary + secondary CTA.
-- **Mission** — heading, body text, mission photo.
-- **Programs** — the three program cards.
-- **Testimonial** — quote, author, role.
-
-Edits show up on the public site within a minute.
+Click **Save** when done.
 
 ---
 
-## 8. Reordering the main navigation
+## 5. Edit the inner pages
 
-Sidebar → **Site Config → Header**. Drag items in the **Nav items** list to reorder. Use **Add row** to add a new link. Each item can point to:
+Same pattern for About / Schedule / Results / Gallery / Contact / Register. In the sidebar, click **Pages → [Page name]**.
 
-- An internal URL (e.g. `/about`)
-- A Page from the page builder
-- An external URL (check **Open in new tab**)
+![About Page admin form](./screenshots/03-about-page-global.png)
 
-Save. The header updates everywhere.
+Common fields on every page:
 
----
+- **Banner Eyebrow** — Small label at the top
+- **Banner Title** — Main heading
+- **Banner Body** — Intro paragraph
+- **Banner Image** — Hero background (optional)
 
-## 9. Site settings (name, tagline, favicon, analytics)
+Plus page-specific fields:
 
-Sidebar → **Site Config → Site Settings**. Edit:
-
-- **Site name** — used as the default title.
-- **Tagline** — used in meta descriptions.
-- **Default OG image** — used for social media share previews.
-- **Favicon** — the little icon in the browser tab.
-- **Cloudflare Analytics Token** — leave blank to disable analytics. If you have a token, paste it here.
-- **Featured video URL** — YouTube link shown at the top of `/gallery`.
-- **Maintenance mode** — flip this on to show a "We'll be back shortly" page. Coaches and admins can still access `/admin`.
-
----
-
-## 10. Registrations
-
-Sidebar → **Submissions → Registrations**. Every form submission from `/register` lands here.
-
-- Click a row to view the wrestler and parent info.
-- Update **Status**: New → Contacted → Enrolled (or Archived).
-- Add **Internal notes** that only admins/coaches can see.
-- Export the full list to CSV via the **Export** button (top right).
-
-Coaches **cannot edit** submitted data — that protects the family's submitted info. Only **status** and **internal notes** are editable.
+| Page | Extra fields |
+|---|---|
+| About | Stats (4 numbers), Story (eyebrow/heading/paragraphs/badge), Story Image, Values (3 cards), Staff section heading |
+| Schedule | Subscribe label + description, empty-state message |
+| Results | Empty-state message |
+| Gallery | Featured video YouTube URL, empty-state message |
+| Contact | Form heading, FAQ heading, FAQ list (click "+ Add row") |
+| Register | Form heading, Fees body, Requirements list |
 
 ---
 
-## 11. Contact submissions
+## 6. Edit the CTA bar
 
-Sidebar → **Submissions → Contact Submissions**. Same pattern: view, change status (New / Read / Replied / Archived / Spam), add internal notes. Reply via the **email link** that opens your mail client with the To/Subject pre-filled.
+The blue "Ready to wrestle? Let's get on the mat." bar shows on every page. Edit once, updates everywhere.
 
----
+In the sidebar: **Site Config → Cta Strip**.
 
-## 12. Managing redirects
+![CTA Strip admin form](./screenshots/04-cta-strip-global.png)
 
-Sidebar → **Admin → Redirects**. If a page URL changes (e.g. `/camps-2025` is now `/camps`), add a row:
-
-- **From** — `/camps-2025`
-- **To** — `/camps`
-- **Type** — `301` (permanent) or `302` (temporary)
-- **Enabled** — check to activate
-
-Save. The site will redirect requests automatically.
+- **Heading** — e.g., "Ready to wrestle?"
+- **Accent** — Second line in cyan
+- **Body** — Paragraph
+- **Button Label / Href**
+- **Background Image** — Optional photo behind the dark gradient
 
 ---
 
-## 13. Building a custom page (Pages collection)
+## 7. Site-wide settings
 
-For pages beyond the seven built-in ones (booster club, camps, etc.):
+In the sidebar: **Site Config → Site Settings**.
 
-1. Sidebar → **Content → Pages → Create new**.
-2. **Title** + **Slug** (e.g. `camps`). The URL becomes `/camps`.
-3. **Layout**: click **Add block** to drop in any of: Hero, RichText, CtaStrip, FAQ, Media Embed.
-4. Each block has its own fields — fill them out.
-5. **SEO** tab — optional meta title, description, og image.
-6. **Status** → Published when ready.
+![Site Settings admin form](./screenshots/05-site-settings-global.png)
 
-Use **Live Preview** (top right) to see the page render as you edit.
-
----
-
-## 14. Restoring a previous version
-
-For Events, Recaps, and Pages: click into the record, then **Versions** tab. You'll see every save. Click an older version → **Restore**.
+- **Site Name** — Browser tab title + footer
+- **Tagline** — Default site description
+- **Site Logo** — Lion logo shown in the site header (top-left)
+- **Footer Logo** — Optional separate logo for footer; falls back to Site Logo
+- **Default OG Image** — Social-sharing preview (Facebook, Twitter)
+- **Favicon** — Browser tab icon
+- **Cloudflare Analytics Token** — Optional
+- **Featured Video URL** — YouTube URL for Gallery hero
+- **Maintenance Mode** — Tick to take the site offline
 
 ---
 
-## 15. Inviting a new coach
+## 8. Events
 
-Admins only.
+In the sidebar: **Content → Events**.
 
-1. Sidebar → **Admin → Users → Create new**.
-2. Enter name, email, and pick **Role**:
-   - **Admin** — full access, can manage users.
-   - **Coach** — can edit events, recaps, photos, registrations.
-   - **Viewer** — read-only.
-3. **Save**. The new user gets an email with a link to set their password and enroll 2FA on first login.
+![Events list view](./screenshots/06-events-list.png)
 
-To deactivate someone: open their user record → uncheck **Active** → Save. They can no longer log in but their history is preserved.
+Click an event row to edit, or **Create New** in the top-right to add one.
+
+![Event editor](./screenshots/12-event-editor.png)
+
+Fields:
+
+- **Title** — e.g., "Dual vs. Johnston"
+- **Date** — Click for date picker
+- **Time** — Display string. e.g., "5:30 PM" or "All Day"
+- **All Day** — Checkbox (for the calendar feed)
+- **Kind**:
+  - **Home Match** — Cyan tag
+  - **Away Match** — Navy tag
+  - **Tournament** — Gray tag
+  - **Practice** — Listed under Practices, not Matches
+- **Location**
+- **Notes** — e.g., "Senior Night"
+- **Status** — **Published** to show, **Draft** to hide
+- **Recurrence** — Collapsed by default; expand only if it repeats (next section)
+
+Click **Save**.
 
 ---
 
-## 16. Audit log
+## 9. Recurring events
 
-Sidebar → **Admin → Audit Log**. Read-only record of important actions (logins, role changes, deletes, settings changes). Useful for security review.
+For practices that happen on the same days every week.
+
+1. Create the event normally (Date = first occurrence, Time, Kind = Practice, etc.)
+2. Scroll down to the **Recurrence** section (collapsed). Click to expand.
+3. **Tick the "recurring" checkbox**. Two new fields appear:
+   - **Recurrence Days** — Hold Ctrl/Cmd and click multiple days (Tuesday + Thursday)
+   - **Recurrence End** — Last date of the series
+4. Save.
+
+The Schedule page expands this into individual occurrences automatically.
+
+> 💡 To turn off recurrence later: untick the checkbox.
 
 ---
 
-## 17. Need help?
+## 10. Bulk-import events from CSV
 
-- Email the site administrator if you're stuck.
-- The site cannot be broken from inside the admin — if you misclick something, you can almost always undo via Versions.
-- For 2FA recovery, the administrator can reset your account.
+For loading a full season at once.
 
-Welcome aboard. Go Lions. 🦁
+URL: **https://lwc-theta.vercel.app/admin-tools/import-events**
+
+![Bulk import UI](./screenshots/10-bulk-import-events.png)
+
+### CSV format
+
+First row is headers. **Required columns:** `title`, `date`, `kind`.
+
+| Column | Required | Format | Example |
+|---|---|---|---|
+| title | yes | text | `Dual vs. Johnston` |
+| date | yes | YYYY-MM-DD | `2026-11-15` |
+| kind | yes | `home` / `away` / `tour` / `prac` | `home` |
+| time | no | display text | `5:30 PM` or `All Day` |
+| location | no | text | `Lions Gym, DMC` |
+| notes | no | text | `Senior Night` |
+| recurring | no | `true` / `false` | `true` |
+| recurrenceDays | no | days separated by `;` or `\|` | `tue;thu` |
+| recurrenceEnd | no | YYYY-MM-DD | `2027-02-28` |
+
+Allowed `recurrenceDays` (3-letter lower-case): `mon`, `tue`, `wed`, `thu`, `fri`, `sat`, `sun`.
+
+### Example CSV
+
+```csv
+title,date,time,kind,location,notes,recurring,recurrenceDays,recurrenceEnd
+Mid-Iowa Open,2026-11-07,All Day,tour,Indianola HS,16 schools,false,,
+Dual vs. Johnston Dragons,2026-11-15,5:30 PM,home,"Lions Gym, DMC",Senior Night,false,,
+Varsity Practice,2026-11-03,3:45 PM,prac,Wrestling Room,,true,tue;thu,2027-02-28
+Sectional Tournament,2027-02-19,10:00 AM,tour,TBD,State qualifier,false,,
+```
+
+> ⚠️ **Notes with commas or quotes:** wrap the cell in double-quotes (`"Lions Gym, DMC"`). A double-quote inside a quoted cell is written `""`.
+
+### Upload steps
+
+1. Save CSV from Excel / Google Sheets (File → Download → Comma Separated Values).
+2. On the upload page, click **Choose file**, pick the CSV.
+3. Click **Import events**.
+4. Green confirmation: "Imported N events." Any failed rows are listed with the reason.
+
+---
+
+## 11. Coaches
+
+In the sidebar: **Content → Coaches**.
+
+![Coaches list](./screenshots/08-coaches-list.png)
+
+Click **Create New** to add. Fields:
+
+- **Name**
+- **Role** — e.g., "Head Coach", "Assistant Coach"
+- **Bio** — Rich text (bold, italic, lists, links)
+- **Photo** — Recommended square ≥400×400
+- **Email** — Direct contact link
+- **Order** — Lower number = earlier in the list
+
+---
+
+## 12. Recaps
+
+Match recaps shown on /results. In the sidebar: **Content → Recaps**.
+
+![Recaps list](./screenshots/07-recaps-list.png)
+
+Fields:
+
+- **Title** — e.g., "Lions storm Valley HS, 52 – 18"
+- **Kicker** — Small label above the title, e.g., "Home Dual"
+- **Date** — When the event happened
+- **Body** — Rich text (Lexical editor: bold, italic, links, lists, headings)
+- **Tags** — Array of small labels shown at the bottom
+- **Status** — Published / Draft
+
+---
+
+## 13. Photos
+
+Photos shown on /gallery and the homepage gallery strip. In the sidebar: **Gallery → Photos**.
+
+![Photos list](./screenshots/09-photos-list.png)
+
+For each photo:
+
+- Upload an image (JPG / PNG / WebP)
+- **Alt** — Description for screen readers + SEO (required)
+- **Caption** — Visible on hover
+- **Featured** — Tick to show on the homepage strip
+- **Date** — Used to sort
+
+---
+
+## 14. Media
+
+All uploaded images live in **Media → Media**. Direct uploads (Photos and Coaches) automatically end up here.
+
+Click any image to:
+- Replace it
+- Edit alt text + caption
+- See where it's used
+
+Files are stored in Vercel Blob and served via CDN.
+
+---
+
+## 15. Form submissions
+
+### Contact submissions
+
+**Submissions → Contact Submissions** — every message from /contact.
+
+Click a row to view the full message. Mark each as:
+- **New** (default)
+- **Read**
+- **Replied**
+
+### Registrations
+
+**Submissions → Registrations** — every wrestler signup from /register.
+
+Each row has the wrestler info, parent info, and signup date. Use the API tab in the top-right to export to JSON.
+
+---
+
+## 16. Saving
+
+Click **Save** in the top-right of any document editor.
+
+Pages cache for **~10 minutes** for performance. Your edit IS saved immediately to the database — the public site just takes up to 10 min to refresh. To verify your change is live right now:
+
+- Open Live Preview (👁 icon) — always shows fresh content
+- Or open the live site in a private window (skips browser cache)
+
+---
+
+## 17. Troubleshooting
+
+| Problem | Fix |
+|---|---|
+| "I uploaded an image but it didn't show up" | Wait up to 10 min, or hard-refresh (Cmd+Shift+R / Ctrl+Shift+R) |
+| "I edited text but the live site still shows old text" | Same — cache. Use Live Preview to confirm. |
+| "I can't log in" | Click "Forgot password?" to receive a reset link. |
+| "White screen on /admin" | Hard refresh. If still broken, contact the dev. |
+| "CSV import says rows failed" | The error tells you which row + why. Common: invalid date, invalid `kind`, missing title. |
+| "Recurrence Days field isn't there" | You haven't ticked the recurring checkbox yet. |
+| "I deleted something by accident" | Contact the dev; the database has point-in-time backups. |
+
+---
+
+## Quick reference: where each piece of the public site lives
+
+| Public element | Edit in admin |
+|---|---|
+| Browser tab title + site name | Site Config → Site Settings → Site Name |
+| Site header logo | Site Config → Site Settings → Site Logo |
+| Top navigation menu | Site Config → Header → Nav Items |
+| Footer logo + address/phone/email | Site Config → Footer |
+| Footer social links | Site Config → Footer |
+| Homepage hero (heading + photo) | Site Config → Homepage → Hero tab |
+| Mission section | Site Config → Homepage → Mission tab |
+| Program cards | Site Config → Homepage → Programs tab |
+| Testimonial quote | Site Config → Homepage → Testimonial tab |
+| "Ready to wrestle?" CTA bar | Site Config → Cta Strip |
+| About page content | Pages → About Page |
+| Coach bios | Content → Coaches |
+| Schedule page intro | Pages → Schedule Page |
+| Schedule events | Content → Events (or bulk-import) |
+| Results page intro | Pages → Results Page |
+| Match recap entries | Content → Recaps |
+| Gallery page intro + featured video | Pages → Gallery Page |
+| Gallery photos | Gallery → Photos |
+| Contact page heading + FAQs | Pages → Contact Page |
+| Contact form recipient emails + rate limit | Site Config → Contact Config |
+| Register page + fees + requirements | Pages → Register Page |
+
+---
+
+**Questions or stuck?** Email the dev with a screenshot of what you're seeing.
