@@ -2,9 +2,19 @@ import type { GlobalConfig } from 'payload';
 import { isAdminOrCoach, isPublic } from '../access';
 import { revalidateGlobal } from '../hooks/revalidate';
 
+const SITE_URL = process.env.SITE_URL ?? 'http://localhost:3000';
+const LP_BREAKPOINTS = [
+  { label: 'Mobile', name: 'mobile', width: 375, height: 812 },
+  { label: 'Tablet', name: 'tablet', width: 768, height: 1024 },
+  { label: 'Desktop', name: 'desktop', width: 1440, height: 900 },
+];
+
 export const Homepage: GlobalConfig = {
   slug: 'homepage',
-  admin: { group: 'Site Config' },
+  admin: {
+    group: 'Site Config',
+    livePreview: { url: SITE_URL, breakpoints: LP_BREAKPOINTS },
+  },
   access: { read: isPublic, update: isAdminOrCoach },
   hooks: { afterChange: [revalidateGlobal(['/'])] },
   fields: [

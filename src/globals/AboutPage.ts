@@ -8,6 +8,14 @@ export const AboutPage: GlobalConfig = {
     group: 'Pages',
     description:
       'Controls the /about page heading, story, stats, and values. To add or edit coach bios that show in the "Coaching Staff" section, go to Content → Coaches in the sidebar.',
+    livePreview: {
+      url: `${process.env.SITE_URL ?? 'http://localhost:3000'}/about`,
+      breakpoints: [
+        { label: 'Mobile', name: 'mobile', width: 375, height: 812 },
+        { label: 'Tablet', name: 'tablet', width: 768, height: 1024 },
+        { label: 'Desktop', name: 'desktop', width: 1440, height: 900 },
+      ],
+    },
   },
   access: { read: isPublic, update: isAdmin },
   hooks: { afterChange: [revalidateGlobal(['/about'])] },

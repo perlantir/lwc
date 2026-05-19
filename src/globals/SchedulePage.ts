@@ -8,6 +8,14 @@ export const SchedulePage: GlobalConfig = {
     group: 'Pages',
     description:
       'Controls the /schedule page heading and intro. To add or edit matches, tournaments, and practices that show in the list, go to Content → Events in the sidebar.',
+    livePreview: {
+      url: `${process.env.SITE_URL ?? 'http://localhost:3000'}/schedule`,
+      breakpoints: [
+        { label: 'Mobile', name: 'mobile', width: 375, height: 812 },
+        { label: 'Tablet', name: 'tablet', width: 768, height: 1024 },
+        { label: 'Desktop', name: 'desktop', width: 1440, height: 900 },
+      ],
+    },
   },
   access: { read: isPublic, update: isAdmin },
   hooks: { afterChange: [revalidateGlobal(['/schedule'])] },

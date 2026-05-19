@@ -8,6 +8,14 @@ export const ResultsPage: GlobalConfig = {
     group: 'Pages',
     description:
       'This page controls the HEADING and INTRO at the top of /results only. To add or edit individual match recaps that show in the list below, go to Content → Recaps in the left sidebar.',
+    livePreview: {
+      url: `${process.env.SITE_URL ?? 'http://localhost:3000'}/results`,
+      breakpoints: [
+        { label: 'Mobile', name: 'mobile', width: 375, height: 812 },
+        { label: 'Tablet', name: 'tablet', width: 768, height: 1024 },
+        { label: 'Desktop', name: 'desktop', width: 1440, height: 900 },
+      ],
+    },
   },
   access: { read: isPublic, update: isAdmin },
   hooks: { afterChange: [revalidateGlobal(['/results'])] },
