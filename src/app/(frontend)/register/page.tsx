@@ -36,7 +36,7 @@ const RegisterPage = async () => {
       <section className="bg-off-white px-5 sm:px-8 md:px-14 lg:px-20 xl:px-28 2xl:px-40 py-12 grid gap-8 md:gap-10 md:grid-cols-[1fr_320px] max-w-[1200px] mx-auto">
         <div>
           <div className="eyebrow">Step 1 of 1</div>
-          <h2 className="text-[22px] sm:text-[26px] font-extrabold text-navy mt-1 tracking-tight">{page.formHeading ?? 'Wrestler Registration'}</h2>
+          <EditableText as="h2" globalSlug="register-page" fieldPath="formHeading" value={page.formHeading ?? 'Wrestler Registration'} className="text-[22px] sm:text-[26px] font-extrabold text-navy mt-1 tracking-tight block" />
           <p className="text-muted text-sm mt-1">Takes about 2 minutes. A coach replies within 3 business days.</p>
           <div className="mt-6 bg-white rounded-xl border border-border p-5 sm:p-6 shadow-soft">
             <RegisterForm />
@@ -49,7 +49,7 @@ const RegisterPage = async () => {
                 <svg viewBox="0 0 24 24" width="14" height="14" className="text-cyan" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /><path d="M12 6v12M9 9.5h6M9 14.5h6" /></svg>
                 Fees
               </h3>
-              <p className="text-[13px] text-white/85 mt-2 leading-6">{page.feesBody}</p>
+              <EditableText as="p" globalSlug="register-page" fieldPath="feesBody" value={page.feesBody} multiline className="text-[13px] text-white/85 mt-2 leading-6 block" />
             </div>
           )}
           {requirements.length > 0 && (

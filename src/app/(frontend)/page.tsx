@@ -301,11 +301,14 @@ const HomePage = async () => {
           />
           <div className="relative max-w-[680px] pl-2 sm:pl-20">
             <div className="text-cyan font-serif text-[64px] sm:text-[88px] leading-[.6] font-bold">&ldquo;</div>
-            <p className="text-[18px] sm:text-[22px] leading-[1.4] font-medium text-text-navy mt-2">
-              {homepage.testimonialQuote}
-            </p>
-            <div className="mt-4 text-cyan text-[14px] font-semibold">
-              — {homepage.testimonialAuthor}{homepage.testimonialRole ? ` · ${homepage.testimonialRole}` : ''}
+            <EditableText as="p" globalSlug="homepage" fieldPath="testimonialQuote" value={homepage.testimonialQuote} multiline className="text-[18px] sm:text-[22px] leading-[1.4] font-medium text-text-navy mt-2 block" />
+            <div className="mt-4 text-cyan text-[14px] font-semibold flex flex-wrap gap-1">
+              <span>—</span>
+              <EditableText as="span" globalSlug="homepage" fieldPath="testimonialAuthor" value={homepage.testimonialAuthor ?? ''} />
+              {homepage.testimonialRole && <>
+                <span>·</span>
+                <EditableText as="span" globalSlug="homepage" fieldPath="testimonialRole" value={homepage.testimonialRole} />
+              </>}
             </div>
           </div>
         </section>

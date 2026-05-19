@@ -68,7 +68,8 @@ const SchedulePage = async () => {
   const renderCard = (e: CalendarEvent) => {
     const d = parseDate(e.date);
     const tagText = e.kind === 'home' ? 'Home' : e.kind === 'away' ? 'Away' : e.kind === 'tour' ? 'Tournament' : 'Practice';
-    const subline = [e.location, e.notes].filter(Boolean).join(' · ');
+    // For expanded recurring instances, e.id is "${baseId}:${iso}" — split out the real DB id.
+    const baseId = typeof e.id === 'string' && e.id.includes(':') ? e.id.split(':')[0] : e.id;
     return (
       <article
         key={e.id}
@@ -79,8 +80,22 @@ const SchedulePage = async () => {
           <div className="text-lg font-extrabold">{pad(d.getDate())}</div>
         </div>
         <div>
-          <div className="font-bold text-navy">{e.title}</div>
-          <div className="text-xs text-muted mt-1">{subline}</div>
+          <EditableText
+            as="div"
+            collectionSlug="events"
+            docId={baseId as number | string}
+            fieldPath="title"
+            value={e.title}
+            className="font-bold text-navy block"
+          />
+          <EditableText
+            as="div"
+            collectionSlug="events"
+            docId={baseId as number | string}
+            fieldPath="location"
+            value={e.location ?? ''}
+            className="text-xs text-muted mt-1 block"
+          />
         </div>
         <span
           className={`text-xs font-bold uppercase tracking-wider px-2 py-1 rounded ${
@@ -139,24 +154,29 @@ const SchedulePage = async () => {
             </div>
             <div className="flex-1 min-w-0">
               <span className="inline-block text-[10px] font-bold tracking-widest uppercase bg-cyan/15 text-cyan px-2 py-1 rounded">Next Match · {matches[0].kind === 'home' ? 'Home' : matches[0].kind === 'away' ? 'Away' : 'Tournament'}</span>
-              <h2 className="text-[20px] sm:text-[24px] font-extrabold mt-2">{matches[0].title}</h2>
-              <div className="flex flex-wrap gap-x-5 gap-y-2 mt-2 text-[13px] text-white/80">
-                {matches[0].location && (
-                  <span className="inline-flex items-center gap-1.5">
-                    <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" className="text-cyan"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z" /></svg>
-                    {matches[0].location}
-                  </span>
-                )}
-                {matches[0].time && (
-                  <span className="inline-flex items-center gap-1.5">
-                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" className="text-cyan"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></svg>
-                    {matches[0].time}
-                  </span>
-                )}
-                {matches[0].notes && (
-                  <span className="inline-flex items-center gap-1.5 text-white/70">{matches[0].notes}</span>
-                )}
-              </div>
+              {(() => {
+                const m = matches[0]; const mid = typeof m.id === 'string' && m.id.includes(':') ? m.id.split(':')[0] : m.id;
+                return <>
+                  <EditableText as="h2" collectionSlug="events" docId={mid as number | string} fieldPath="title" value={m.title} className="text-[20px] sm:text-[24px] font-extrabold mt-2 block" />
+                  <div className="flex flex-wrap gap-x-5 gap-y-2 mt-2 text-[13px] text-white/80">
+                    {m.location && (
+                      <span className="inline-flex items-center gap-1.5">
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" className="text-cyan"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z" /></svg>
+                        <EditableText as="span" collectionSlug="events" docId={mid as number | string} fieldPath="location" value={m.location} />
+                      </span>
+                    )}
+                    {m.time && (
+                      <span className="inline-flex items-center gap-1.5">
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" className="text-cyan"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></svg>
+                        <EditableText as="span" collectionSlug="events" docId={mid as number | string} fieldPath="time" value={m.time} />
+                      </span>
+                    )}
+                    {m.notes && (
+                      <EditableText as="span" collectionSlug="events" docId={mid as number | string} fieldPath="notes" value={m.notes} className="inline-flex items-center gap-1.5 text-white/70" />
+                    )}
+                  </div>
+                </>;
+              })()}
             </div>
             <div className="shrink-0">
               <AddToCalendar event={matches[0]} />

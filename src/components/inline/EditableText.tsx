@@ -14,17 +14,7 @@ type Tag = 'span' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p' | 'div' | 'a';
  *
  * Field path supports dotted paths and array indices: `programCards.0.title`.
  */
-export const EditableText = ({
-  globalSlug,
-  fieldPath,
-  value,
-  as = 'span',
-  multiline = false,
-  className,
-  style,
-  children,
-}: {
-  globalSlug: string;
+type CommonProps = {
   fieldPath: string;
   value: string | undefined | null;
   as?: Tag;
@@ -32,7 +22,24 @@ export const EditableText = ({
   className?: string;
   style?: CSSProperties;
   children?: ReactNode;
-}) => {
+};
+
+type Props =
+  | (CommonProps & { globalSlug: string; collectionSlug?: never; docId?: never })
+  | (CommonProps & { collectionSlug: string; docId: number | string; globalSlug?: never });
+
+export const EditableText = ({
+  globalSlug,
+  collectionSlug,
+  docId,
+  fieldPath,
+  value,
+  as = 'span',
+  multiline = false,
+  className,
+  style,
+  children,
+}: Props) => {
   const [isPreview, setIsPreview] = useState(false);
   const [editing, setEditing] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -69,17 +76,16 @@ export const EditableText = ({
       const parts = fieldPath.split('.');
       const hasArrayIndex = parts.some((p) => /^\d+$/.test(p));
       let body: Record<string, unknown>;
+      const isCollection = Boolean(collectionSlug);
+      const getEndpoint = isCollection
+        ? `/api/${collectionSlug}/${docId}?depth=0`
+        : `/api/globals/${globalSlug}?depth=0`;
+      const putEndpoint = isCollection ? `/api/${collectionSlug}/${docId}` : `/api/globals/${globalSlug}`;
+      const putMethod = isCollection ? 'PATCH' : 'POST';
       if (hasArrayIndex) {
-        // Fetch the full current global, mutate the field at the dotted path,
-        // and POST the merged top-level field back. This is needed for arrays
-        // because Payload replaces arrays on POST rather than merging.
-        const cur = await fetch(`/api/globals/${globalSlug}?depth=0`, {
-          credentials: 'include',
-        }).then((r) => r.json());
+        const cur = await fetch(getEndpoint, { credentials: 'include' }).then((r) => r.json());
         const rootKey = parts[0] as string;
-        // Deep clone the slice we mutate
         const sliceClone: unknown = JSON.parse(JSON.stringify(cur[rootKey] ?? []));
-        // Walk into the slice and set the leaf
         let cursorRef: any = sliceClone;
         for (let i = 1; i < parts.length - 1; i++) {
           const k = parts[i] as string;
@@ -99,8 +105,8 @@ export const EditableText = ({
         }
         cursor[parts[parts.length - 1] as string] = newValue;
       }
-      const res = await fetch(`/api/globals/${globalSlug}`, {
-        method: 'POST',
+      const res = await fetch(putEndpoint, {
+        method: putMethod,
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
@@ -111,10 +117,8 @@ export const EditableText = ({
         console.error('[inline-edit] save failed', res.status, txt);
         return;
       }
-      // Tell parent admin to reload — its listener reloads the whole page,
-      // which also reloads this iframe so both panes show the new value.
       window.parent?.postMessage(
-        { type: 'lwc-inline-saved', globalSlug, fieldPath, value: newValue },
+        { type: 'lwc-inline-saved', globalSlug, collectionSlug, docId, fieldPath, value: newValue },
         '*',
       );
     } finally {

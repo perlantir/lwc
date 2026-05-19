@@ -42,7 +42,7 @@ const ContactPage = async () => {
       <section className="bg-off-white px-5 sm:px-8 md:px-14 lg:px-20 xl:px-28 2xl:px-40 py-12 grid gap-8 md:gap-10 md:grid-cols-[1fr_320px] max-w-[1200px] mx-auto">
         <div>
           <div className="eyebrow">Direct Line</div>
-          <h2 className="text-[22px] sm:text-[26px] font-extrabold text-navy mt-1 tracking-tight">{page.formHeading ?? 'Tell us about you'}</h2>
+          <EditableText as="h2" globalSlug="contact-page" fieldPath="formHeading" value={page.formHeading ?? 'Tell us about you'} className="text-[22px] sm:text-[26px] font-extrabold text-navy mt-1 tracking-tight block" />
           <p className="text-muted text-sm mt-1">All fields marked required. We&apos;ll route your note to the right coach.</p>
           <div className="mt-6 bg-white rounded-xl border border-border p-5 sm:p-6 shadow-soft">
             <ContactForm />
@@ -87,7 +87,7 @@ const ContactPage = async () => {
           <div className="max-w-[820px] mx-auto">
             <div className="text-center">
               <div className="eyebrow">Quick Answers</div>
-              <h2 className="text-[22px] sm:text-[26px] font-extrabold text-navy mt-1 tracking-tight">{page.faqHeading ?? 'Frequently asked'}</h2>
+              <EditableText as="h2" globalSlug="contact-page" fieldPath="faqHeading" value={page.faqHeading ?? 'Frequently asked'} className="text-[22px] sm:text-[26px] font-extrabold text-navy mt-1 tracking-tight block" />
             </div>
             <div className="mt-6 space-y-2.5">
               {faqs.map((f, i) => (

@@ -66,8 +66,8 @@ const GalleryPage = async () => {
         <div className="max-w-[1100px] mx-auto">
           <div className="flex items-end justify-between flex-wrap gap-3 mb-5">
             <div>
-              <div className="eyebrow">From the Mat</div>
-              <h2 className="text-[22px] sm:text-[26px] font-extrabold mt-1 tracking-tight">Recent uploads</h2>
+              <EditableText as="div" globalSlug="gallery-page" fieldPath="bannerEyebrow" value={page.bannerEyebrow ?? 'From the Mat'} className="eyebrow" />
+              <EditableText as="h2" globalSlug="gallery-page" fieldPath="bannerTitle" value={page.bannerTitle ?? 'Recent uploads'} className="text-[22px] sm:text-[26px] font-extrabold mt-1 tracking-tight block" />
             </div>
             <a
               href="mailto:lionswrestling@dmcschools.org?subject=Photo%20submission"

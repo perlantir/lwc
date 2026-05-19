@@ -97,10 +97,8 @@ const AboutPage = async () => {
       {/* STORY */}
       <section className="bg-off-white px-5 sm:px-8 md:px-14 lg:px-20 xl:px-28 2xl:px-40 py-12 sm:py-16 grid gap-8 md:gap-12 md:grid-cols-[1fr_360px] items-start">
         <div>
-          <div className="eyebrow">{page.storyEyebrow ?? 'Our Story'}</div>
-          <h2 className="text-[26px] sm:text-[30px] md:text-[34px] font-extrabold mt-2 leading-tight tracking-tight">
-            {page.storyHeading}
-          </h2>
+          <EditableText as="div" globalSlug="about-page" fieldPath="storyEyebrow" value={page.storyEyebrow ?? 'Our Story'} className="eyebrow" />
+          <EditableText as="h2" globalSlug="about-page" fieldPath="storyHeading" value={page.storyHeading} className="text-[26px] sm:text-[30px] md:text-[34px] font-extrabold mt-2 leading-tight tracking-tight block" />
           {storyParas.map((p, i) => (
             <EditableText
               key={i}
@@ -119,8 +117,8 @@ const AboutPage = async () => {
             style={{ backgroundImage: `url('${storyImg}')` }}
           />
           <div className="absolute bottom-4 right-4 bg-white/95 backdrop-blur px-4 py-3 rounded-lg shadow-soft">
-            <div className="text-navy text-[18px] font-extrabold leading-tight">{page.storyBadgeBig ?? 'Est. 2002'}</div>
-            <div className="text-muted text-[11px] tracking-wide">{page.storyBadgeSmall ?? 'Des Moines Christian'}</div>
+            <EditableText as="div" globalSlug="about-page" fieldPath="storyBadgeBig" value={page.storyBadgeBig ?? 'Est. 2002'} className="text-navy text-[18px] font-extrabold leading-tight block" />
+            <EditableText as="div" globalSlug="about-page" fieldPath="storyBadgeSmall" value={page.storyBadgeSmall ?? 'Des Moines Christian'} className="text-muted text-[11px] tracking-wide block" />
           </div>
         </div>
       </section>
@@ -128,8 +126,8 @@ const AboutPage = async () => {
       {/* VALUES */}
       <section className="bg-off-white px-5 sm:px-8 md:px-14 lg:px-20 xl:px-28 2xl:px-40 pb-14">
         <div className="text-center">
-          <div className="eyebrow">{page.valuesEyebrow ?? 'Three Pillars'}</div>
-          <h2 className="text-[26px] sm:text-[30px] font-extrabold mt-2 tracking-tight">{page.valuesHeading ?? 'What we stand for'}</h2>
+          <EditableText as="div" globalSlug="about-page" fieldPath="valuesEyebrow" value={page.valuesEyebrow ?? 'Three Pillars'} className="eyebrow" />
+          <EditableText as="h2" globalSlug="about-page" fieldPath="valuesHeading" value={page.valuesHeading ?? 'What we stand for'} className="text-[26px] sm:text-[30px] font-extrabold mt-2 tracking-tight block" />
         </div>
         <div className="grid gap-5 md:grid-cols-3 mt-8 max-w-[1100px] mx-auto">
           {values.map((v, i) => (
@@ -153,8 +151,8 @@ const AboutPage = async () => {
       {/* COACHING STAFF — dark navy */}
       <section className="bg-navy text-white px-5 sm:px-8 md:px-14 lg:px-20 xl:px-28 2xl:px-40 py-14">
         <div className="text-center">
-          <div className="eyebrow">{page.staffEyebrow ?? 'Coaching Staff'}</div>
-          <h2 className="text-[26px] sm:text-[30px] font-extrabold mt-2 tracking-tight">{page.staffHeading ?? 'The men in the corner'}</h2>
+          <EditableText as="div" globalSlug="about-page" fieldPath="staffEyebrow" value={page.staffEyebrow ?? 'Coaching Staff'} className="eyebrow" />
+          <EditableText as="h2" globalSlug="about-page" fieldPath="staffHeading" value={page.staffHeading ?? 'The men in the corner'} className="text-[26px] sm:text-[30px] font-extrabold mt-2 tracking-tight block" />
         </div>
         {coaches.docs.length === 0 ? (
           <p className="mt-8 text-white/65 text-center">{page.staffEmptyMessage}</p>
@@ -164,12 +162,11 @@ const AboutPage = async () => {
               <article key={c.id} className="rounded-xl overflow-hidden bg-white/[.04] border border-white/[.08]">
                 <div className="aspect-[3/2] bg-deep-navy bg-cover bg-center" style={{ backgroundImage: "url('/images/mission-photo.jpg')" }} />
                 <div className="p-5">
-                  {c.role && <div className="text-cyan text-[11px] font-bold tracking-widest uppercase">{c.role}</div>}
-                  <h3 className="font-extrabold text-white text-[17px] mt-1">{c.name}</h3>
-                  {c.bio && <p className="text-white/70 text-[13px] mt-2 leading-5">{String(c.bio).slice(0, 200)}</p>}
+                  {c.role && <EditableText as="div" collectionSlug="coaches" docId={c.id} fieldPath="role" value={c.role} className="text-cyan text-[11px] font-bold tracking-widest uppercase block" />}
+                  <EditableText as="h3" collectionSlug="coaches" docId={c.id} fieldPath="name" value={c.name} className="font-extrabold text-white text-[17px] mt-1 block" />
                   {c.email && (
                     <a href={`mailto:${c.email}`} className="text-cyan text-[13px] mt-3 inline-block">
-                      {c.email}
+                      <EditableText as="span" collectionSlug="coaches" docId={c.id} fieldPath="email" value={c.email} />
                     </a>
                   )}
                 </div>

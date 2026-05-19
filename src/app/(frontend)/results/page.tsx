@@ -52,8 +52,8 @@ const ResultsPage = async () => {
       <section className="px-5 sm:px-8 md:px-14 lg:px-20 xl:px-28 2xl:px-40 py-12">
         <div className="max-w-[900px] mx-auto">
           <div className="mb-6">
-            <div className="eyebrow">Coach&apos;s Recap</div>
-            <h2 className="text-[26px] sm:text-[30px] font-extrabold mt-2 tracking-tight">The latest from the mat</h2>
+            <EditableText as="div" globalSlug="results-page" fieldPath="bannerEyebrow" value={page.bannerEyebrow ?? 'Coach’s Recap'} className="eyebrow" />
+            <EditableText as="h2" globalSlug="results-page" fieldPath="bannerTitle" value={page.bannerTitle ?? 'The latest from the mat'} className="text-[26px] sm:text-[30px] font-extrabold mt-2 tracking-tight block" />
           </div>
         {result.docs.length === 0 ? (
           <p className="text-muted">{page.emptyMessage}</p>
@@ -69,8 +69,8 @@ const ResultsPage = async () => {
                     <div className="text-[10px] text-cyan/70">{d.getFullYear()}</div>
                   </div>
                   <div>
-                    {r.kicker && <div className="eyebrow">{r.kicker}</div>}
-                    <h2 className="text-xl md:text-2xl font-extrabold text-navy mt-1">{r.title}</h2>
+                    {r.kicker && <EditableText as="div" collectionSlug="recaps" docId={r.id} fieldPath="kicker" value={r.kicker} className="eyebrow" />}
+                    <EditableText as="h2" collectionSlug="recaps" docId={r.id} fieldPath="title" value={r.title} className="text-xl md:text-2xl font-extrabold text-navy mt-1 block" />
                     {r.body && (
                       <div className="mt-3 text-text-navy/85 leading-7 prose prose-sm max-w-none">
                         <RichText data={r.body} />
