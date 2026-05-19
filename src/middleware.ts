@@ -24,7 +24,7 @@ const setSecurityHeaders = (res: NextResponse): NextResponse => {
     "img-src 'self' data: blob: https:",
     "font-src 'self' data:",
     "connect-src 'self' https://challenges.cloudflare.com https://static.cloudflareinsights.com https://api.resend.com",
-    "frame-src https://www.youtube-nocookie.com https://challenges.cloudflare.com",
+    "frame-src 'self' https://www.youtube-nocookie.com https://challenges.cloudflare.com",
     "object-src 'none'",
     "base-uri 'self'",
     "form-action 'self'",
