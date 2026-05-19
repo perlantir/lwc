@@ -6,4 +6,5 @@ export const importMap: ImportMap = {
   '@payloadcms/storage-vercel-blob/client#VercelBlobClientUploadHandler':
     VercelBlobClientUploadHandler,
   '@/components/admin/AdminInlineListener': AdminInlineListener,
+  '@/components/admin/AdminInlineListener#default': AdminInlineListener,
 };
