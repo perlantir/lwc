@@ -108,7 +108,10 @@ const SchedulePage = async () => {
         >
           {tagText}
         </span>
-        <span className="text-sm text-muted hidden md:inline">{e.time}</span>
+        <span className="text-sm text-text-navy/85 font-medium inline-flex items-center gap-1.5">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2" className="text-cyan shrink-0"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></svg>
+          {e.time}
+        </span>
         <div className="col-span-3 md:col-span-1">
           <AddToCalendar event={e} />
         </div>
