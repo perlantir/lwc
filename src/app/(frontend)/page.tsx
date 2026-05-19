@@ -5,6 +5,8 @@ import { CtaStrip } from '@/components/CtaStrip';
 import { ButtonLink } from '@/components/Button';
 import { parseDate, shortMo, pad } from '@/lib/calendar';
 import { mediaUrl, type MediaRef } from '@/lib/media';
+import { EditableText } from '@/components/inline/EditableText';
+import { EditableImage } from '@/components/inline/EditableImage';
 
 export const revalidate = 600;
 
@@ -37,40 +39,46 @@ const HomePage = async () => {
   return (
     <>
       {/* HERO */}
-      <section
-        className="relative text-white overflow-hidden min-h-[520px] md:min-h-[560px]"
-        style={{
-          background: `linear-gradient(180deg, rgba(6,27,58,.35) 0%, rgba(6,27,58,.35) 50%, rgba(6,27,58,.75) 100%), url('${heroBgUrl}') center/cover no-repeat, #061B3A`,
-        }}
-      >
-        <div
-          aria-hidden="true"
-          className="absolute -right-12 top-6 w-[240px] h-[240px] sm:-right-16 sm:top-10 sm:w-[320px] sm:h-[320px] md:w-[380px] md:h-[380px] opacity-20 pointer-events-none"
-          style={{ background: "url('/logos/lion-head-blue-transparent.png') center/contain no-repeat" }}
-        />
-        <div className="relative z-10 pt-16 sm:pt-20 md:pt-[78px] pb-28 text-center px-5">
-          <h1
-            className="font-extrabold tracking-tight"
-            style={{
-              fontSize: 'clamp(36px, 7vw, 60px)',
-              lineHeight: 'clamp(42px, 7.5vw, 70px)',
-              textShadow: '0 4px 24px rgba(0,0,0,.4)',
-            }}
-          >
-            {homepage.heroHeading ?? 'Lions Wrestling Club'}
-          </h1>
-          {homepage.heroSubheading && (
-            <p
-              className="mt-2 font-medium max-w-[720px] mx-auto"
+      <EditableImage globalSlug="homepage" fieldPath="heroBackgroundImage" className="block">
+        <section
+          className="relative text-white overflow-hidden min-h-[520px] md:min-h-[560px]"
+          style={{
+            background: `linear-gradient(180deg, rgba(6,27,58,.35) 0%, rgba(6,27,58,.35) 50%, rgba(6,27,58,.75) 100%), url('${heroBgUrl}') center/cover no-repeat, #061B3A`,
+          }}
+        >
+          <div
+            aria-hidden="true"
+            className="absolute -right-12 top-6 w-[240px] h-[240px] sm:-right-16 sm:top-10 sm:w-[320px] sm:h-[320px] md:w-[380px] md:h-[380px] opacity-20 pointer-events-none"
+            style={{ background: "url('/logos/lion-head-blue-transparent.png') center/contain no-repeat" }}
+          />
+          <div className="relative z-10 pt-16 sm:pt-20 md:pt-[78px] pb-28 text-center px-5">
+            <EditableText
+              as="h1"
+              globalSlug="homepage"
+              fieldPath="heroHeading"
+              value={homepage.heroHeading ?? 'Lions Wrestling Club'}
+              className="font-extrabold tracking-tight"
               style={{
-                fontSize: 'clamp(15px, 1.6vw, 22px)',
-                textShadow: '0 2px 12px rgba(0,0,0,.5)',
-                color: 'rgba(255,255,255,.92)',
+                fontSize: 'clamp(36px, 7vw, 60px)',
+                lineHeight: 'clamp(42px, 7.5vw, 70px)',
+                textShadow: '0 4px 24px rgba(0,0,0,.4)',
               }}
-            >
-              {homepage.heroSubheading}
-            </p>
-          )}
+            />
+            {homepage.heroSubheading && (
+              <EditableText
+                as="p"
+                globalSlug="homepage"
+                fieldPath="heroSubheading"
+                value={homepage.heroSubheading}
+                multiline
+                className="mt-2 font-medium max-w-[720px] mx-auto"
+                style={{
+                  fontSize: 'clamp(15px, 1.6vw, 22px)',
+                  textShadow: '0 2px 12px rgba(0,0,0,.5)',
+                  color: 'rgba(255,255,255,.92)',
+                }}
+              />
+            )}
           {homepage.heroPrimaryCtaLabel && (
             <div className="mt-6">
               <ButtonLink href={homepage.heroPrimaryCtaHref ?? '/register'} variant="cyan" size="lg">
@@ -102,19 +110,28 @@ const HomePage = async () => {
           ))}
         </div>
 
-      </section>
+        </section>
+      </EditableImage>
 
       {/* MISSION */}
       <section className="bg-off-white px-5 sm:px-8 md:px-14 lg:px-20 xl:px-28 2xl:px-40 py-10 sm:py-14 grid gap-8 md:gap-12 md:grid-cols-2 items-center">
         <div>
           <div className="eyebrow">Our Mission</div>
-          <h2 className="text-[28px] md:text-[30px] leading-[1.15] font-extrabold mt-3 tracking-tight">
-            {homepage.missionHeading ?? 'Building Champions On and Off the Mat'}
-          </h2>
-          <p className="mt-4 text-[14px] leading-[22px] text-[#3F4E62] max-w-[420px]">
-            {homepage.missionBody ??
-              'We develop student-athletes who strive for excellence in wrestling and in life. Through faith, discipline, and dedication, we prepare our athletes to lead with integrity.'}
-          </p>
+          <EditableText
+            as="h2"
+            globalSlug="homepage"
+            fieldPath="missionHeading"
+            value={homepage.missionHeading ?? 'Building Champions On and Off the Mat'}
+            className="text-[28px] md:text-[30px] leading-[1.15] font-extrabold mt-3 tracking-tight block"
+          />
+          <EditableText
+            as="p"
+            globalSlug="homepage"
+            fieldPath="missionBody"
+            value={homepage.missionBody ?? 'We develop student-athletes who strive for excellence in wrestling and in life. Through faith, discipline, and dedication, we prepare our athletes to lead with integrity.'}
+            multiline
+            className="mt-4 text-[14px] leading-[22px] text-[#3F4E62] max-w-[420px] block"
+          />
           <div className="flex gap-2.5 flex-wrap mt-6">
             {['Faith', 'Discipline', 'Excellence'].map((p) => (
               <span
@@ -130,11 +147,13 @@ const HomePage = async () => {
             ))}
           </div>
         </div>
-        <div
-          aria-label="Coach with wrestlers"
-          className="rounded-xl bg-cover bg-center w-full shadow-card aspect-[380/270]"
-          style={{ backgroundImage: `url('${missionPhotoUrl}')` }}
-        />
+        <EditableImage globalSlug="homepage" fieldPath="missionPhoto" className="block">
+          <div
+            aria-label="Coach with wrestlers"
+            className="rounded-xl bg-cover bg-center w-full shadow-card aspect-[380/270]"
+            style={{ backgroundImage: `url('${missionPhotoUrl}')` }}
+          />
+        </EditableImage>
       </section>
 
       {/* PROGRAM — dark navy */}
