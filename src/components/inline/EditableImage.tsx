@@ -73,7 +73,12 @@ export const EditableImage = ({
         console.error('[inline-img] attach failed', patchRes.status, await patchRes.text());
         return;
       }
-      window.location.reload();
+      // Ask parent admin to reload — its listener reloads the whole page,
+      // which refreshes both the admin form and this iframe.
+      window.parent?.postMessage(
+        { type: 'lwc-inline-saved', globalSlug, fieldPath, mediaId: doc.id },
+        '*',
+      );
     } finally {
       setUploading(false);
     }

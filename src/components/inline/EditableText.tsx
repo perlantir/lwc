@@ -67,20 +67,37 @@ export const EditableText = ({
     try {
       setSaving(true);
       const parts = fieldPath.split('.');
-      const body: Record<string, unknown> = {};
-      let cursor = body;
-      for (let i = 0; i < parts.length - 1; i++) {
-        const key = parts[i] as string;
-        const nextKey = parts[i + 1] as string;
-        const nextIsIndex = /^\d+$/.test(nextKey);
-        cursor[key] = nextIsIndex ? [] : {};
-        cursor = cursor[key] as Record<string, unknown>;
-      }
-      const lastKey = parts[parts.length - 1] as string;
-      if (/^\d+$/.test(lastKey)) {
-        (cursor as unknown as unknown[])[Number(lastKey)] = newValue;
+      const hasArrayIndex = parts.some((p) => /^\d+$/.test(p));
+      let body: Record<string, unknown>;
+      if (hasArrayIndex) {
+        // Fetch the full current global, mutate the field at the dotted path,
+        // and POST the merged top-level field back. This is needed for arrays
+        // because Payload replaces arrays on POST rather than merging.
+        const cur = await fetch(`/api/globals/${globalSlug}?depth=0`, {
+          credentials: 'include',
+        }).then((r) => r.json());
+        const rootKey = parts[0] as string;
+        // Deep clone the slice we mutate
+        const sliceClone: unknown = JSON.parse(JSON.stringify(cur[rootKey] ?? []));
+        // Walk into the slice and set the leaf
+        let cursorRef: any = sliceClone;
+        for (let i = 1; i < parts.length - 1; i++) {
+          const k = parts[i] as string;
+          cursorRef = /^\d+$/.test(k) ? cursorRef[Number(k)] : cursorRef[k];
+        }
+        const lastKey = parts[parts.length - 1] as string;
+        if (/^\d+$/.test(lastKey)) cursorRef[Number(lastKey)] = newValue;
+        else cursorRef[lastKey] = newValue;
+        body = { [rootKey]: sliceClone };
       } else {
-        cursor[lastKey] = newValue;
+        body = {};
+        let cursor: Record<string, unknown> = body;
+        for (let i = 0; i < parts.length - 1; i++) {
+          const key = parts[i] as string;
+          cursor[key] = {};
+          cursor = cursor[key] as Record<string, unknown>;
+        }
+        cursor[parts[parts.length - 1] as string] = newValue;
       }
       const res = await fetch(`/api/globals/${globalSlug}`, {
         method: 'POST',
@@ -94,12 +111,12 @@ export const EditableText = ({
         console.error('[inline-edit] save failed', res.status, txt);
         return;
       }
-      // Nudge parent admin to refresh its form state if listening
+      // Tell parent admin to reload — its listener reloads the whole page,
+      // which also reloads this iframe so both panes show the new value.
       window.parent?.postMessage(
         { type: 'lwc-inline-saved', globalSlug, fieldPath, value: newValue },
         '*',
       );
-      window.location.reload();
     } finally {
       setSaving(false);
     }

@@ -62,7 +62,7 @@ const RegisterPage = async () => {
                 {requirements.map((r, i) => (
                   <li key={i} className="flex items-start gap-2">
                     <svg viewBox="0 0 24 24" width="12" height="12" className="text-cyan mt-1 shrink-0" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12l5 5L20 7" /></svg>
-                    <span>{r.item}</span>
+                    <EditableText as="span" globalSlug="register-page" fieldPath={`requirements.${i}.item`} value={r.item} />
                   </li>
                 ))}
               </ul>

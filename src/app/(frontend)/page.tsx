@@ -188,9 +188,30 @@ const HomePage = async () => {
                   {i === 2 && <><path d="M12 2v6" /><path d="M5 9l7-7 7 7" /><circle cx="12" cy="15" r="6" /></>}
                 </svg>
               </div>
-              <h3 className="font-bold text-[17px] text-white">{c.title}</h3>
-              {c.ageRange && <div className="text-cyan/90 text-[11px] font-bold tracking-widest mt-1 uppercase">{c.ageRange}</div>}
-              <p className="text-white/75 text-[13px] leading-[19px] mt-2">{c.body}</p>
+              <EditableText
+                as="h3"
+                globalSlug="homepage"
+                fieldPath={`programCards.${i}.title`}
+                value={c.title}
+                className="font-bold text-[17px] text-white block"
+              />
+              {c.ageRange && (
+                <EditableText
+                  as="div"
+                  globalSlug="homepage"
+                  fieldPath={`programCards.${i}.ageRange`}
+                  value={c.ageRange}
+                  className="text-cyan/90 text-[11px] font-bold tracking-widest mt-1 uppercase block"
+                />
+              )}
+              <EditableText
+                as="p"
+                globalSlug="homepage"
+                fieldPath={`programCards.${i}.body`}
+                value={c.body}
+                multiline
+                className="text-white/75 text-[13px] leading-[19px] mt-2 block"
+              />
               {c.ctaHref && (
                 <Link href={c.ctaHref} className="inline-flex items-center gap-1 mt-4 text-cyan text-[13px] font-semibold hover:text-cyan-dark">
                   {c.ctaLabel ?? 'Learn More'} <span aria-hidden>→</span>

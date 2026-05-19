@@ -93,10 +93,10 @@ const ContactPage = async () => {
               {faqs.map((f, i) => (
                 <details key={i} className="bg-white border border-border rounded-xl p-4 group">
                   <summary className="cursor-pointer font-semibold text-navy text-[14px] flex items-center justify-between list-none">
-                    <span>{f.question}</span>
+                    <EditableText as="span" globalSlug="contact-page" fieldPath={`faqs.${i}.question`} value={f.question} />
                     <span className="text-cyan transition group-open:rotate-45 text-xl leading-none">+</span>
                   </summary>
-                  <p className="text-[14px] text-text-navy/80 mt-3 leading-6">{f.answer}</p>
+                  <EditableText as="p" globalSlug="contact-page" fieldPath={`faqs.${i}.answer`} value={f.answer} multiline className="text-[14px] text-text-navy/80 mt-3 leading-6 block" />
                 </details>
               ))}
             </div>

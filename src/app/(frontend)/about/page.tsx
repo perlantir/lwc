@@ -74,8 +74,20 @@ const AboutPage = async () => {
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-8 max-w-[1100px] mx-auto">
             {stats.map((s, i) => (
               <div key={i} className="text-center">
-                <div className="text-cyan text-[34px] sm:text-[44px] font-extrabold leading-none">{s.value}</div>
-                <div className="text-white/70 text-[12px] sm:text-[13px] font-medium mt-2 tracking-wide uppercase">{s.label}</div>
+                <EditableText
+                  as="div"
+                  globalSlug="about-page"
+                  fieldPath={`stats.${i}.value`}
+                  value={s.value}
+                  className="text-cyan text-[34px] sm:text-[44px] font-extrabold leading-none block"
+                />
+                <EditableText
+                  as="div"
+                  globalSlug="about-page"
+                  fieldPath={`stats.${i}.label`}
+                  value={s.label}
+                  className="text-white/70 text-[12px] sm:text-[13px] font-medium mt-2 tracking-wide uppercase block"
+                />
               </div>
             ))}
           </div>
@@ -90,9 +102,15 @@ const AboutPage = async () => {
             {page.storyHeading}
           </h2>
           {storyParas.map((p, i) => (
-            <p key={i} className="mt-4 text-text-navy/85 text-[15px] leading-7 max-w-[620px]">
-              {p.text}
-            </p>
+            <EditableText
+              key={i}
+              as="p"
+              globalSlug="about-page"
+              fieldPath={`storyParagraphs.${i}.text`}
+              value={p.text}
+              multiline
+              className="mt-4 text-text-navy/85 text-[15px] leading-7 max-w-[620px] block"
+            />
           ))}
         </div>
         <div className="relative">
@@ -122,9 +140,11 @@ const AboutPage = async () => {
               <div className="w-12 h-12 rounded-full bg-cyan/10 text-cyan flex items-center justify-center">
                 {ICONS[v.title as keyof typeof ICONS] ?? ICONS.Faith}
               </div>
-              <h3 className="font-extrabold text-navy text-lg mt-4">{v.title}</h3>
-              {v.verse && <div className="text-cyan text-[12px] font-semibold tracking-widest uppercase mt-1">{v.verse}</div>}
-              <p className="text-text-navy/75 text-sm mt-3 leading-6">{v.body}</p>
+              <EditableText as="h3" globalSlug="about-page" fieldPath={`values.${i}.title`} value={v.title} className="font-extrabold text-navy text-lg mt-4 block" />
+              {v.verse && (
+                <EditableText as="div" globalSlug="about-page" fieldPath={`values.${i}.verse`} value={v.verse} className="text-cyan text-[12px] font-semibold tracking-widest uppercase mt-1 block" />
+              )}
+              <EditableText as="p" globalSlug="about-page" fieldPath={`values.${i}.body`} value={v.body} multiline className="text-text-navy/75 text-sm mt-3 leading-6 block" />
             </article>
           ))}
         </div>

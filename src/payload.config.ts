@@ -70,6 +70,9 @@ export default buildConfig({
         return `${base}${path}`;
       },
     },
+    components: {
+      providers: ['@/components/admin/AdminInlineListener'],
+    },
   },
   collections: [
     Users,
