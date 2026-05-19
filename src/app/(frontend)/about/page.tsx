@@ -112,10 +112,12 @@ const AboutPage = async () => {
           ))}
         </div>
         <div className="relative">
-          <div
-            className="rounded-xl bg-cover bg-center w-full aspect-[360/280] shadow-card"
-            style={{ backgroundImage: `url('${storyImg}')` }}
-          />
+          <EditableImage globalSlug="about-page" fieldPath="storyImage" className="block">
+            <div
+              className="rounded-xl bg-cover bg-center w-full aspect-[360/280] shadow-card"
+              style={{ backgroundImage: `url('${storyImg}')` }}
+            />
+          </EditableImage>
           <div className="absolute bottom-4 right-4 bg-white/95 backdrop-blur px-4 py-3 rounded-lg shadow-soft">
             <EditableText as="div" globalSlug="about-page" fieldPath="storyBadgeBig" value={page.storyBadgeBig ?? 'Est. 2002'} className="text-navy text-[18px] font-extrabold leading-tight block" />
             <EditableText as="div" globalSlug="about-page" fieldPath="storyBadgeSmall" value={page.storyBadgeSmall ?? 'Des Moines Christian'} className="text-muted text-[11px] tracking-wide block" />

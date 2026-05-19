@@ -30,6 +30,7 @@ import { ResultsPage } from './globals/ResultsPage';
 import { GalleryPage } from './globals/GalleryPage';
 import { ContactPage } from './globals/ContactPage';
 import { RegisterPage } from './globals/RegisterPage';
+import { CtaStripGlobal } from './globals/CtaStripGlobal';
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -100,6 +101,7 @@ export default buildConfig({
     GalleryPage,
     ContactPage,
     RegisterPage,
+    CtaStripGlobal,
   ],
   editor: lexicalEditor({}),
   db: postgresAdapter({
