@@ -70,7 +70,7 @@ const FrontendLayout = async ({ children }: { children: React.ReactNode }) => {
             <SiteFooter
               cfg={footerCfg as unknown as FooterCfg}
               logoUrl={mediaUrl(
-                (settings as { footerLogo?: MediaRef }).footerLogo ?? (settings as { siteLogo?: MediaRef }).siteLogo,
+                (settings as { footerLogo?: MediaRef }).footerLogo,
                 '/logos/lion-head-white-transparent.png',
                 'card',
               )}

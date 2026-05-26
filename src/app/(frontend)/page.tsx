@@ -289,7 +289,11 @@ const HomePage = async () => {
           />
           <div className="relative max-w-[680px] pl-2 sm:pl-20">
             <div className="text-cyan font-serif text-[64px] sm:text-[88px] leading-[.6] font-bold">&ldquo;</div>
-            <EditableText as="p" globalSlug="homepage" fieldPath="testimonialQuote" value={homepage.testimonialQuote} multiline className="text-[18px] sm:text-[22px] leading-[1.4] font-medium text-text-navy mt-2 block" />
+            <div className="text-[18px] sm:text-[22px] leading-[1.4] font-medium text-text-navy mt-2">
+              <span aria-hidden>&ldquo;</span>
+              <EditableText as="span" globalSlug="homepage" fieldPath="testimonialQuote" value={homepage.testimonialQuote} multiline />
+              <span aria-hidden>&rdquo;</span>
+            </div>
             <div className="mt-4 text-cyan text-[14px] font-semibold flex flex-wrap gap-1">
               <span>—</span>
               <EditableText as="span" globalSlug="homepage" fieldPath="testimonialAuthor" value={homepage.testimonialAuthor ?? ''} />

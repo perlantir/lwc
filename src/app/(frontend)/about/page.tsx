@@ -1,6 +1,7 @@
 import { getPayload } from 'payload';
 import config from '@payload-config';
 import Link from 'next/link';
+import { RichText } from '@payloadcms/richtext-lexical/react';
 import { CtaStrip } from '@/components/CtaStrip';
 import { mediaUrl, type MediaRef } from '@/lib/media';
 import { EditableText } from '@/components/inline/EditableText';
@@ -191,13 +192,26 @@ const AboutPage = async () => {
         {coaches.docs.length === 0 ? (
           <p className="mt-8 text-white/65 text-center">{page.staffEmptyMessage}</p>
         ) : (
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 mt-8 max-w-[1100px] mx-auto">
+          <div
+            className={`grid gap-5 mt-8 mx-auto ${
+              coaches.docs.length === 1
+                ? 'max-w-[420px]'
+                : coaches.docs.length === 2
+                  ? 'sm:grid-cols-2 max-w-[820px]'
+                  : 'sm:grid-cols-2 lg:grid-cols-3 max-w-[1100px]'
+            }`}
+          >
             {coaches.docs.map((c) => (
               <article key={c.id} className="rounded-xl overflow-hidden bg-white/[.04] border border-white/[.08]">
                 <div className="aspect-[3/2] bg-deep-navy bg-cover bg-center" style={{ backgroundImage: "url('/images/mission-photo.jpg')" }} />
                 <div className="p-5">
                   {c.role && <EditableText as="div" collectionSlug="coaches" docId={c.id} fieldPath="role" value={c.role} className="text-cyan text-[11px] font-bold tracking-widest uppercase block" />}
                   <EditableText as="h3" collectionSlug="coaches" docId={c.id} fieldPath="name" value={c.name} className="font-extrabold text-white text-[17px] mt-1 block" />
+                  {c.bio && (
+                    <div className="text-white/75 text-[13px] mt-2 leading-5 prose prose-sm prose-invert max-w-none">
+                      <RichText data={c.bio as Parameters<typeof RichText>[0]['data']} />
+                    </div>
+                  )}
                   {c.email && (
                     <a href={`mailto:${c.email}`} className="text-cyan text-[13px] mt-3 inline-block">
                       <EditableText as="span" collectionSlug="coaches" docId={c.id} fieldPath="email" value={c.email} />
