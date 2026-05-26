@@ -26,13 +26,6 @@ const HomePage = async () => {
     sort: 'date',
     limit: 3,
   });
-  const photos = await payload.find({
-    collection: 'photos',
-    where: { featured: { equals: true } },
-    sort: '-date',
-    limit: 6,
-  });
-
   const heroBgUrl = mediaUrl(homepage.heroBackgroundImage as MediaRef, '/images/hero-bg.jpg', 'feature');
   const missionPhotoUrl = mediaUrl(homepage.missionPhoto as MediaRef, '/images/mission-photo.jpg', 'feature');
 
@@ -64,6 +57,16 @@ const HomePage = async () => {
                 textShadow: '0 4px 24px rgba(0,0,0,.4)',
               }}
             />
+            {(homepage as { heroAttribution?: string }).heroAttribution && (
+              <EditableText
+                as="p"
+                globalSlug="homepage"
+                fieldPath="heroAttribution"
+                value={(homepage as { heroAttribution?: string }).heroAttribution ?? ''}
+                className="mt-1 text-white/85 italic text-[14px] sm:text-[16px] block"
+                style={{ textShadow: '0 2px 8px rgba(0,0,0,.5)' }}
+              />
+            )}
             {homepage.heroSubheading && (
               <EditableText
                 as="p"
@@ -174,7 +177,15 @@ const HomePage = async () => {
             Developing Complete Wrestlers
           </h2>
         </div>
-        <div className="mt-7 grid gap-4 sm:grid-cols-2 md:grid-cols-3 relative">
+        <div
+          className={`mt-7 grid gap-4 relative justify-center ${
+            ((homepage.programCards as unknown[]) ?? []).length === 1
+              ? 'sm:grid-cols-1 max-w-[420px] mx-auto'
+              : ((homepage.programCards as unknown[]) ?? []).length === 2
+                ? 'sm:grid-cols-2 max-w-[820px] mx-auto'
+                : 'sm:grid-cols-2 md:grid-cols-3'
+          }`}
+        >
           {((homepage.programCards ?? []) as Array<{ title?: string; ageRange?: string; body?: string; ctaLabel?: string; ctaHref?: string }>).map((c, i) => (
             <article
               key={i}
@@ -264,29 +275,6 @@ const HomePage = async () => {
           </div>
         </div>
       </section>
-
-      {/* GALLERY STRIP */}
-      {photos.docs.length > 0 && (
-        <section className="bg-off-white px-5 sm:px-8 md:px-14 lg:px-20 xl:px-28 2xl:px-40 pt-20 sm:pt-24 pb-10">
-          <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
-            <div className="eyebrow whitespace-nowrap">Match Highlights</div>
-            <Link href="/gallery" className="text-cyan text-[13px] font-bold tracking-widest uppercase inline-flex items-center gap-1.5 whitespace-nowrap">
-              View Gallery <span aria-hidden>→</span>
-            </Link>
-          </div>
-          <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">
-            {photos.docs.slice(0, 6).map((p) => (
-              <div
-                key={p.id}
-                className="rounded-[10px] bg-cover bg-center aspect-[132/92] shadow-soft"
-                style={{ backgroundImage: typeof p.url === 'string' ? `url(${p.url})` : undefined }}
-                role="img"
-                aria-label={p.alt ?? p.caption ?? ''}
-              />
-            ))}
-          </div>
-        </section>
-      )}
 
       {/* TESTIMONIAL */}
       {homepage.testimonialQuote && (

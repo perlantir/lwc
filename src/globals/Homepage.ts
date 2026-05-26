@@ -31,6 +31,11 @@ export const Homepage: GlobalConfig = {
               defaultValue: 'Forge tough kids, faithful young men, and lifelong champions.',
             },
             {
+              name: 'heroAttribution',
+              type: 'text',
+              admin: { description: 'Small line below the heading (e.g., a Bible verse reference). Leave blank to hide.' },
+            },
+            {
               name: 'heroSubheading',
               type: 'textarea',
               defaultValue:

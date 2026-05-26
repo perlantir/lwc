@@ -3,7 +3,7 @@ import { env } from '@/env';
 
 const sitemap = (): MetadataRoute.Sitemap => {
   const base = env.SITE_URL.replace(/\/$/, '');
-  const routes = ['/', '/about', '/schedule', '/results', '/gallery', '/contact', '/register'];
+  const routes = ['/', '/about', '/schedule', '/contact', '/register'];
   const now = new Date();
   return routes.map((r) => ({
     url: `${base}${r}`,

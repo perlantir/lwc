@@ -26,8 +26,6 @@ import { ContactConfig } from './globals/ContactConfig';
 import { Homepage } from './globals/Homepage';
 import { AboutPage } from './globals/AboutPage';
 import { SchedulePage } from './globals/SchedulePage';
-import { ResultsPage } from './globals/ResultsPage';
-import { GalleryPage } from './globals/GalleryPage';
 import { ContactPage } from './globals/ContactPage';
 import { RegisterPage } from './globals/RegisterPage';
 import { CtaStripGlobal } from './globals/CtaStripGlobal';
@@ -45,8 +43,6 @@ const GLOBAL_TO_PATH: Record<string, string> = {
   homepage: '/',
   'about-page': '/about',
   'schedule-page': '/schedule',
-  'results-page': '/results',
-  'gallery-page': '/gallery',
   'contact-page': '/contact',
   'register-page': '/register',
   header: '/',
@@ -97,8 +93,6 @@ export default buildConfig({
     Homepage,
     AboutPage,
     SchedulePage,
-    ResultsPage,
-    GalleryPage,
     ContactPage,
     RegisterPage,
     CtaStripGlobal,
@@ -175,8 +169,6 @@ export default buildConfig({
           { label: 'Home', type: 'url', url: '/' },
           { label: 'About', type: 'url', url: '/about' },
           { label: 'Schedule', type: 'url', url: '/schedule' },
-          { label: 'Results', type: 'url', url: '/results' },
-          { label: 'Gallery', type: 'url', url: '/gallery' },
           { label: 'Contact', type: 'url', url: '/contact' },
         ],
         ctaLabel: 'Join the Lions',
@@ -191,8 +183,6 @@ export default buildConfig({
           { label: 'Home', href: '/' },
           { label: 'About', href: '/about' },
           { label: 'Schedule', href: '/schedule' },
-          { label: 'Results', href: '/results' },
-          { label: 'Gallery', href: '/gallery' },
           { label: 'Contact', href: '/contact' },
         ],
       },

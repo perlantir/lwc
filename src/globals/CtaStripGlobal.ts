@@ -18,7 +18,7 @@ export const CtaStripGlobal: GlobalConfig = {
     },
   },
   access: { read: isPublic, update: isAdmin },
-  hooks: { afterChange: [revalidateGlobal(['/', '/about', '/schedule', '/results', '/gallery', '/contact', '/register'])] },
+  hooks: { afterChange: [revalidateGlobal(['/', '/about', '/schedule', '/contact', '/register'])] },
   fields: [
     { name: 'heading', type: 'text', defaultValue: 'Ready to wrestle?' },
     { name: 'accent', type: 'text', defaultValue: "Let's get on the mat." },

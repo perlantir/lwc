@@ -6,7 +6,7 @@ export const SiteSettings: GlobalConfig = {
   slug: 'site-settings',
   admin: { group: 'Site Config' },
   access: { read: isPublic, update: isAdmin },
-  hooks: { afterChange: [revalidateGlobal(['/', '/about', '/schedule', '/results', '/gallery', '/contact', '/register'])] },
+  hooks: { afterChange: [revalidateGlobal(['/', '/about', '/schedule', '/contact', '/register'])] },
   fields: [
     { name: 'siteName', type: 'text', defaultValue: 'DMC Lions Wrestling Club' },
     { name: 'tagline', type: 'text' },
@@ -19,7 +19,6 @@ export const SiteSettings: GlobalConfig = {
       type: 'text',
       admin: { description: 'Optional. If set, the cookieless CF analytics beacon loads.' },
     },
-    { name: 'featuredVideoUrl', type: 'text', admin: { description: 'YouTube URL for /gallery hero' } },
     { name: 'maintenanceMode', type: 'checkbox', defaultValue: false },
   ],
 };
