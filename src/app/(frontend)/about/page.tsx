@@ -3,7 +3,7 @@ import config from '@payload-config';
 import Link from 'next/link';
 import { RichText } from '@payloadcms/richtext-lexical/react';
 import { CtaStrip } from '@/components/CtaStrip';
-import { mediaUrl, type MediaRef } from '@/lib/media';
+import { mediaUrl, mediaFocalPoint, type MediaRef } from '@/lib/media';
 import { EditableText } from '@/components/inline/EditableText';
 import { EditableImage } from '@/components/inline/EditableImage';
 
@@ -203,9 +203,18 @@ const AboutPage = async () => {
           >
             {coaches.docs.map((c) => {
               const photoUrl = mediaUrl(c.photo as MediaRef, '/images/mission-photo.jpg', 'feature');
+              const focal = mediaFocalPoint(c.photo as MediaRef);
               return (
               <article key={c.id} className="rounded-xl overflow-hidden bg-white/[.04] border border-white/[.08]">
-                <div className="aspect-[3/2] bg-deep-navy bg-cover bg-center" style={{ backgroundImage: `url('${photoUrl}')` }} />
+                <div className="aspect-[3/2] bg-deep-navy overflow-hidden">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={photoUrl}
+                    alt={c.name}
+                    className="w-full h-full object-cover"
+                    style={{ objectPosition: focal }}
+                  />
+                </div>
                 <div className="p-5">
                   {c.role && <EditableText as="div" collectionSlug="coaches" docId={c.id} fieldPath="role" value={c.role} className="text-cyan text-[11px] font-bold tracking-widest uppercase block" />}
                   <EditableText as="h3" collectionSlug="coaches" docId={c.id} fieldPath="name" value={c.name} className="font-extrabold text-white text-[17px] mt-1 block" />
