@@ -69,6 +69,38 @@ const AboutPage = async () => {
       </section></EditableImage>
 
       {/* STATS STRIP */}
+      {/* MISSION STATEMENT */}
+      {(page as { missionBody?: string }).missionBody && (
+        <section className="bg-off-white px-5 sm:px-8 md:px-14 lg:px-20 xl:px-28 2xl:px-40 py-12 sm:py-16 text-center">
+          <div className="max-w-[780px] mx-auto">
+            <EditableText
+              as="div"
+              globalSlug="about-page"
+              fieldPath="missionEyebrow"
+              value={(page as { missionEyebrow?: string }).missionEyebrow ?? 'Our Mission'}
+              className="eyebrow"
+            />
+            {(page as { missionHeading?: string }).missionHeading && (
+              <EditableText
+                as="h2"
+                globalSlug="about-page"
+                fieldPath="missionHeading"
+                value={(page as { missionHeading?: string }).missionHeading ?? ''}
+                className="text-[26px] sm:text-[30px] font-extrabold mt-2 tracking-tight block"
+              />
+            )}
+            <EditableText
+              as="p"
+              globalSlug="about-page"
+              fieldPath="missionBody"
+              value={(page as { missionBody?: string }).missionBody ?? ''}
+              multiline
+              className="mt-4 text-[20px] sm:text-[24px] leading-[1.4] font-medium text-text-navy block"
+            />
+          </div>
+        </section>
+      )}
+
       {stats.length > 0 && (
         <section className="bg-navy text-white px-5 sm:px-8 md:px-14 lg:px-20 xl:px-28 2xl:px-40 py-8 border-t border-white/5">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-8 max-w-[1100px] mx-auto">

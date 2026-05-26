@@ -39,10 +39,9 @@ export const AboutPage: GlobalConfig = {
         { value: '80+', label: 'Athletes Today' },
       ],
     },
-    // Legacy fields — kept so Drizzle push doesn't prompt rename. Not surfaced anywhere.
-    { name: 'missionEyebrow', type: 'text', admin: { hidden: true } },
-    { name: 'missionHeading', type: 'text', admin: { hidden: true } },
-    { name: 'missionBody', type: 'textarea', admin: { hidden: true } },
+    { name: 'missionEyebrow', type: 'text', defaultValue: 'Our Mission', admin: { description: 'Small label above the mission statement.' } },
+    { name: 'missionHeading', type: 'text', admin: { description: 'Optional larger heading. Leave blank to skip and only show the statement.' } },
+    { name: 'missionBody', type: 'textarea', defaultValue: 'To forge athletes of faith, discipline, and excellence — on the mat and in life.', admin: { description: 'The mission statement itself.' } },
     { name: 'storyEyebrow', type: 'text', defaultValue: 'Our Story' },
     { name: 'storyHeading', type: 'text', defaultValue: 'Built on the mat. Shaped by faith.' },
     {
