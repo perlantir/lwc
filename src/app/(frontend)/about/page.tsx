@@ -201,9 +201,11 @@ const AboutPage = async () => {
                   : 'sm:grid-cols-2 lg:grid-cols-3 max-w-[1100px]'
             }`}
           >
-            {coaches.docs.map((c) => (
+            {coaches.docs.map((c) => {
+              const photoUrl = mediaUrl(c.photo as MediaRef, '/images/mission-photo.jpg', 'feature');
+              return (
               <article key={c.id} className="rounded-xl overflow-hidden bg-white/[.04] border border-white/[.08]">
-                <div className="aspect-[3/2] bg-deep-navy bg-cover bg-center" style={{ backgroundImage: "url('/images/mission-photo.jpg')" }} />
+                <div className="aspect-[3/2] bg-deep-navy bg-cover bg-center" style={{ backgroundImage: `url('${photoUrl}')` }} />
                 <div className="p-5">
                   {c.role && <EditableText as="div" collectionSlug="coaches" docId={c.id} fieldPath="role" value={c.role} className="text-cyan text-[11px] font-bold tracking-widest uppercase block" />}
                   <EditableText as="h3" collectionSlug="coaches" docId={c.id} fieldPath="name" value={c.name} className="font-extrabold text-white text-[17px] mt-1 block" />
@@ -219,7 +221,8 @@ const AboutPage = async () => {
                   )}
                 </div>
               </article>
-            ))}
+              );
+            })}
           </div>
         )}
       </section>
