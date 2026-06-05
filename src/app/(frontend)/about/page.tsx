@@ -104,7 +104,17 @@ const AboutPage = async () => {
 
       {stats.length > 0 && (
         <section className="bg-navy text-white px-5 sm:px-8 md:px-14 lg:px-20 xl:px-28 2xl:px-40 py-8 border-t border-white/5">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-8 max-w-[1100px] mx-auto">
+          <div
+            className={`grid gap-6 sm:gap-8 mx-auto ${
+              stats.length === 1
+                ? 'grid-cols-1 max-w-[280px]'
+                : stats.length === 2
+                  ? 'grid-cols-2 max-w-[520px]'
+                  : stats.length === 3
+                    ? 'grid-cols-2 sm:grid-cols-3 max-w-[820px]'
+                    : 'grid-cols-2 sm:grid-cols-4 max-w-[1100px]'
+            }`}
+          >
             {stats.map((s, i) => (
               <div key={i} className="text-center">
                 <EditableText
