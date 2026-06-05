@@ -50,7 +50,8 @@ const HomePage = async () => {
               globalSlug="homepage"
               fieldPath="heroHeading"
               value={homepage.heroHeading ?? 'Lions Wrestling Club'}
-              className="font-extrabold tracking-tight"
+              multiline
+              className="font-extrabold tracking-tight whitespace-pre-line"
               style={{
                 fontSize: 'clamp(36px, 7vw, 60px)',
                 lineHeight: 'clamp(42px, 7.5vw, 70px)',
@@ -306,7 +307,7 @@ const HomePage = async () => {
         </section>
       )}
 
-      <CtaStrip heading="Join the Legacy." accent="Become a Lion." buttonLabel="Join the Lions" />
+      <CtaStrip heading="Join the Legacy." accent="Become a Lion." buttonLabel="Register here July 1" />
     </>
   );
 };

@@ -64,10 +64,9 @@ const run = async (): Promise<void> => {
     slug: 'homepage',
     data: {
       heroEyebrow: 'Des Moines Christian Wrestling',
-      heroHeading: 'Forge tough kids, faithful young men, and lifelong champions.',
-      heroSubheading:
-        'A K–12 wrestling program built on Christ-centered character, technical mastery, and the grit only the mat can teach.',
-      heroPrimaryCtaLabel: 'Register a Wrestler',
+      heroHeading: 'Iron\nSharpens\nIron',
+      heroSubheading: 'Christ-centered wrestling. Purpose-driven development.',
+      heroPrimaryCtaLabel: 'Register here July 1',
       heroPrimaryCtaHref: '/register',
       heroSecondaryCtaLabel: 'View Schedule',
       heroSecondaryCtaHref: '/schedule',
@@ -95,8 +94,9 @@ const run = async (): Promise<void> => {
         { label: 'Schedule', type: 'url', url: '/schedule' },
         { label: 'Contact', type: 'url', url: '/contact' },
       ],
-      ctaLabel: 'Join the Lions',
+      ctaLabel: 'Register here July 1',
       ctaHref: '/register',
+      instagramUrl: 'https://www.instagram.com/lionswrestlingclub',
     },
   });
   process.stdout.write('Seeded Header global\n');

@@ -21,22 +21,20 @@ export const AboutPage: GlobalConfig = {
   hooks: { afterChange: [revalidateGlobal(['/about'])] },
   fields: [
     { name: 'bannerEyebrow', type: 'text', defaultValue: 'About' },
-    { name: 'bannerTitle', type: 'text', defaultValue: 'More than a team. A brotherhood.' },
-    { name: 'bannerBody', type: 'textarea', defaultValue: 'For over two decades, Lions Wrestling has shaped student-athletes through faith, hard work, and discipline — building champions on the mat and leaders in life.' },
+    { name: 'bannerTitle', type: 'text', defaultValue: 'A Wrestling Family' },
+    { name: 'bannerBody', type: 'textarea', defaultValue: 'Faith. Discipline. Excellence.' },
     { name: 'bannerImage', type: 'upload', relationTo: 'media' },
     {
       name: 'stats',
       type: 'array',
       labels: { singular: 'Stat', plural: 'Highlight stats (under banner)' },
       fields: [
-        { name: 'value', type: 'text', required: true, admin: { description: 'e.g., 24 or 80+' } },
+        { name: 'value', type: 'text', required: true, admin: { description: 'e.g., 1 or 80+' } },
         { name: 'label', type: 'text', required: true },
       ],
       defaultValue: [
-        { value: '24', label: 'Years Strong' },
-        { value: '12', label: 'State Qualifiers' },
-        { value: '3', label: 'State Champions' },
-        { value: '80+', label: 'Athletes Today' },
+        { value: '1', label: 'Years Strong' },
+        { value: '80+', label: 'Athletes' },
       ],
     },
     { name: 'missionEyebrow', type: 'text', defaultValue: 'Our Mission', admin: { description: 'Small label above the mission statement.' } },

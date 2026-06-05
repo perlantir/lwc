@@ -25,7 +25,7 @@ export const ContactPage: GlobalConfig = {
       defaultValue: [
         { question: 'When does the season start?', answer: 'Practices begin in early November; first competitions are late November.' },
         { question: 'What does it cost?', answer: 'Registration fees vary by age group. See the /register page for the current season.' },
-        { question: 'Do I need wrestling experience?', answer: 'No. We welcome first-time wrestlers at every age group from K through 12th grade.' },
+        { question: 'Do I need wrestling experience?', answer: 'No. We welcome first-time wrestlers at every age group from K through 8th grade.' },
         { question: 'What equipment do I need?', answer: 'Wrestling shoes and headgear. We can help direct you to local sources.' },
       ],
     },

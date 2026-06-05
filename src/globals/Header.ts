@@ -27,9 +27,9 @@ export const Header: GlobalConfig = {
         { name: 'openInNewTab', type: 'checkbox', defaultValue: false },
       ],
     },
-    { name: 'ctaLabel', type: 'text', defaultValue: 'Join the Lions' },
+    { name: 'ctaLabel', type: 'text', defaultValue: 'Register here July 1' },
     { name: 'ctaHref', type: 'text', defaultValue: '/register' },
-    { name: 'instagramUrl', type: 'text', defaultValue: 'https://instagram.com/dmclionswrestling' },
+    { name: 'instagramUrl', type: 'text', defaultValue: 'https://www.instagram.com/lionswrestlingclub' },
     { name: 'facebookUrl', type: 'text', defaultValue: 'https://facebook.com/dmclionswrestling' },
   ],
 };

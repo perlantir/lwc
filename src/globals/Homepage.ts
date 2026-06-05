@@ -27,8 +27,9 @@ export const Homepage: GlobalConfig = {
             { name: 'heroEyebrow', type: 'text', defaultValue: 'Des Moines Christian Wrestling' },
             {
               name: 'heroHeading',
-              type: 'text',
-              defaultValue: 'Forge tough kids, faithful young men, and lifelong champions.',
+              type: 'textarea',
+              defaultValue: 'Iron\nSharpens\nIron',
+              admin: { description: 'Use line breaks to stack words vertically (e.g., "Iron / Sharpens / Iron" on three lines).' },
             },
             {
               name: 'heroAttribution',
@@ -38,11 +39,10 @@ export const Homepage: GlobalConfig = {
             {
               name: 'heroSubheading',
               type: 'textarea',
-              defaultValue:
-                'A K–12 wrestling program built on Christ-centered character, technical mastery, and the grit only the mat can teach.',
+              defaultValue: 'Christ-centered wrestling. Purpose-driven development.',
             },
             { name: 'heroBackgroundImage', type: 'upload', relationTo: 'media' },
-            { name: 'heroPrimaryCtaLabel', type: 'text', defaultValue: 'Register a Wrestler' },
+            { name: 'heroPrimaryCtaLabel', type: 'text', defaultValue: 'Register here July 1' },
             { name: 'heroPrimaryCtaHref', type: 'text', defaultValue: '/register' },
             { name: 'heroSecondaryCtaLabel', type: 'text', defaultValue: 'View Schedule' },
             { name: 'heroSecondaryCtaHref', type: 'text', defaultValue: '/schedule' },
