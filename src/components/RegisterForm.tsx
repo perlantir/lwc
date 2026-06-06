@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { registerSchema, type RegisterInput } from '@/lib/schemas';
@@ -7,9 +7,15 @@ import { registerSchema, type RegisterInput } from '@/lib/schemas';
 const STARTED_AT = Date.now();
 const GRADES = ['K', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
 
+const mkMath = (): { a: number; b: number } => ({
+  a: Math.floor(Math.random() * 9) + 1,
+  b: Math.floor(Math.random() * 9) + 1,
+});
+
 export const RegisterForm = () => {
   const [doneFor, setDoneFor] = useState<string | null>(null);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const math = useMemo(mkMath, []);
 
   const {
     register,
@@ -19,7 +25,14 @@ export const RegisterForm = () => {
     formState: { errors, isSubmitting },
   } = useForm<RegisterInput>({
     resolver: zodResolver(registerSchema),
-    defaultValues: { startedAt: STARTED_AT, website: '', updates: true },
+    defaultValues: {
+      startedAt: STARTED_AT,
+      website: '',
+      updates: true,
+      mathA: math.a,
+      mathB: math.b,
+      mathAnswer: '',
+    },
   });
 
   const selectedGrade = watch('grade');
@@ -171,6 +184,27 @@ export const RegisterForm = () => {
           Send me season updates and announcements.
         </label>
       </Section>
+
+      {/* Math challenge */}
+      <input type="hidden" {...register('mathA', { valueAsNumber: true })} />
+      <input type="hidden" {...register('mathB', { valueAsNumber: true })} />
+      <div className="bg-cyan/5 border border-cyan/30 rounded-lg p-3 sm:p-4 flex items-center gap-3 flex-wrap">
+        <span className="text-sm font-semibold text-navy">
+          Prove you&apos;re human: <span className="text-cyan font-extrabold">{math.a} + {math.b} =</span>
+        </span>
+        <input
+          {...register('mathAnswer')}
+          inputMode="numeric"
+          autoComplete="off"
+          className="form-input"
+          style={{ width: 80 }}
+          aria-label={`What is ${math.a} plus ${math.b}?`}
+          aria-invalid={Boolean(errors.mathAnswer)}
+        />
+        {errors.mathAnswer?.message && (
+          <span className="text-xs text-red-600">{errors.mathAnswer.message}</span>
+        )}
+      </div>
 
       {submitError && <div className="text-red-600 text-sm">{submitError}</div>}
 

@@ -44,6 +44,9 @@ export const registerSchema = z.object({
   website: z.string().max(0).optional().default(''),
   startedAt: z.number().int().nonnegative(),
   turnstileToken: z.string().optional(),
+  mathA: z.number().int().nonnegative(),
+  mathB: z.number().int().nonnegative(),
+  mathAnswer: z.string().trim().min(1, 'Answer the math question'),
 });
 export type RegisterInput = z.infer<typeof registerSchema>;
 
