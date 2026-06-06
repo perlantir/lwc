@@ -119,7 +119,7 @@ const run = async (): Promise<void> => {
   await payload.updateGlobal({
     slug: 'contact-config',
     data: {
-      recipientEmails: [{ email: 'lionswrestling@dmcschools.org' }],
+      recipientEmails: [{ email: 'Topher.ewing@dmcs.org' }],
       subjectPrefix: '[Lions Wrestling]',
       autoReplyEnabled: true,
       autoReplySubject: "We got your message — Lions Wrestling",

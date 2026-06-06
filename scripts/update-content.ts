@@ -55,6 +55,12 @@ const run = async (): Promise<void> => {
   process.stdout.write('Updated CTA strip button label\n');
 
   await payload.updateGlobal({
+    slug: 'contact-config',
+    data: { recipientEmails: [{ email: 'Topher.ewing@dmcs.org' }] },
+  });
+  process.stdout.write('Updated contact-config recipient (forms now route to Topher)\n');
+
+  await payload.updateGlobal({
     slug: 'about-page',
     data: {
       bannerTitle: 'A Wrestling Family',
