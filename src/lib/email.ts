@@ -204,7 +204,8 @@ export const renderRegistrationConfirmation = (input: {
         A coach will follow up within <strong>48 hours</strong> with practice times, gear info, and what to bring on day one.
       </p>
       <p style="margin:0 0 12px;color:${COLORS.textNavy};font-size:15px;line-height:1.55;">
-        Questions in the meantime? Just hit reply — this note routes straight to Coach Topher.
+        Questions in the meantime? Email Coach Topher directly at
+        <a href="mailto:${TOPHER_REPLY_TO}" style="color:${COLORS.cyanDark};text-decoration:none;font-weight:600;">${TOPHER_REPLY_TO}</a>.
       </p>
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:20px 0;border-left:4px solid ${COLORS.cyan};background:#F4F8FC;border-radius:6px;">
         <tr><td style="padding:14px 16px;">
@@ -281,7 +282,7 @@ export const renderContactAutoReply = (input: {
     preheader: `Thanks for reaching out — a coach will get back to you within 48 hours.`,
     eyebrow: 'Message Received',
     heading: `Thanks, ${input.firstName}!`,
-    intro: `We've received your message and a coach will get back to you within <strong>48 hours</strong>. In the meantime, feel free to reply to this email — it routes straight to Coach Topher.`,
+    intro: `We've received your message and a coach will get back to you within <strong>48 hours</strong>. Need to reach us sooner? Email Coach Topher directly at <a href="mailto:${TOPHER_REPLY_TO}" style="color:${COLORS.cyanDark};text-decoration:none;font-weight:600;">${TOPHER_REPLY_TO}</a>.`,
     bodyHtml: input.body
       ? `<p style="margin:0 0 12px;color:${COLORS.textNavy};font-size:15px;line-height:1.55;">${escapeHtml(input.body)}</p>`
       : `
