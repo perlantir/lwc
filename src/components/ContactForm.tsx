@@ -50,7 +50,7 @@ export const ContactForm = () => {
       <div className="bg-white border border-border rounded-2xl p-8 shadow-soft text-center">
         <h3 className="text-xl font-extrabold text-navy">Message received — thanks!</h3>
         <p className="mt-2 text-text-navy/80">
-          A coach will follow up within a few days. For urgent matters, call 515-844-3947.
+          A coach will follow up within a few days.
         </p>
       </div>
     );
