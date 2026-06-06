@@ -14,7 +14,7 @@ const envSchema = z.object({
 
   // Email (Resend)
   RESEND_API_KEY: z.string().optional(),
-  EMAIL_FROM: z.string().email().default('lionswrestling@dmcschools.org'),
+  EMAIL_FROM: z.string().email().default('noreply@lionswrestling.org'),
   EMAIL_REPLY_TO: z.string().email().default('Topher.ewing@dmcs.org'),
   SMTP_URL: z.string().optional(),
 
