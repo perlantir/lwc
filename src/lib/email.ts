@@ -134,7 +134,7 @@ const renderLayout = (input: {
                   <img src="${PROD_URL}/logos/lion-head-white-transparent.png" width="40" height="40" alt="Lions Wrestling Club" style="display:block;border:0;outline:none;text-decoration:none;width:40px;height:40px;" />
                 </td>
                 <td valign="middle">
-                  <div style="color:#ffffff;font-size:14px;font-weight:800;letter-spacing:.3px;line-height:1.2;">DMC LIONS WRESTLING CLUB</div>
+                  <div style="color:#ffffff;font-size:14px;font-weight:800;letter-spacing:.3px;line-height:1.2;">DMCS LIONS WRESTLING CLUB</div>
                   <div style="color:${COLORS.cyan};font-size:11px;font-weight:600;letter-spacing:2px;line-height:1.2;margin-top:3px;text-transform:uppercase;">Faith · Discipline · Excellence</div>
                 </td>
               </tr>
@@ -157,13 +157,13 @@ const renderLayout = (input: {
         <!-- Footer -->
         <tr>
           <td style="background:${COLORS.deepNavy};border-radius:0 0 12px 12px;padding:20px 24px;" align="center">
-            <div style="color:#ffffff;font-size:13px;font-weight:700;margin-bottom:6px;">DMC Lions Wrestling Club</div>
+            <div style="color:#ffffff;font-size:13px;font-weight:700;margin-bottom:6px;">DMCS Lions Wrestling Club</div>
             <div style="color:rgba(255,255,255,.65);font-size:12px;line-height:1.5;">13007 Douglas Pkwy, Urbandale, IA 50323</div>
             <div style="margin-top:12px;">
               <a href="https://www.instagram.com/lionswrestlingclub_" style="display:inline-block;padding:6px 12px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:6px;color:#ffffff;font-size:12px;font-weight:600;text-decoration:none;">@lionswrestlingclub_</a>
               <a href="${PROD_URL}" style="display:inline-block;margin-left:6px;padding:6px 12px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:6px;color:#ffffff;font-size:12px;font-weight:600;text-decoration:none;">Visit site</a>
             </div>
-            <div style="margin-top:14px;color:rgba(255,255,255,.45);font-size:11px;">© ${new Date().getFullYear()} DMC Lions Wrestling Club. All rights reserved.</div>
+            <div style="margin-top:14px;color:rgba(255,255,255,.45);font-size:11px;">© ${new Date().getFullYear()} DMCS Lions Wrestling Club. All rights reserved.</div>
           </td>
         </tr>
       </table>
@@ -198,7 +198,7 @@ export const renderRegistrationConfirmation = (input: {
     preheader: `We received ${input.wrestlerFirstName}'s registration — a coach will be in touch within 48 hours.`,
     eyebrow: 'Registration Received',
     heading: `Welcome to the Lions, ${input.wrestlerFirstName}!`,
-    intro: `Hi ${escapeHtml(input.parentName)}, thanks for registering ${escapeHtml(input.wrestlerFirstName)} with the DMC Lions Wrestling Club.`,
+    intro: `Hi ${escapeHtml(input.parentName)}, thanks for registering ${escapeHtml(input.wrestlerFirstName)} with the DMCS Lions Wrestling Club.`,
     bodyHtml: `
       <p style="margin:0 0 12px;color:${COLORS.textNavy};font-size:15px;line-height:1.55;">
         A coach will follow up within <strong>48 hours</strong> with practice times, gear info, and what to bring on day one.
