@@ -2,8 +2,8 @@
 
 A coach's reference for editing every part of the website. No code knowledge required.
 
-**Login URL:** https://lwc-theta.vercel.app/admin
-**Live site:** https://lwc-theta.vercel.app
+**Login URL:** https://www.lionswrestling.org/admin
+**Live site:** https://www.lionswrestling.org
 
 ---
 
@@ -31,7 +31,7 @@ A coach's reference for editing every part of the website. No code knowledge req
 
 ## 1. Logging in
 
-Visit **https://lwc-theta.vercel.app/admin** in your browser. You'll see this:
+Visit **https://www.lionswrestling.org/admin** in your browser. You'll see this:
 
 ![Admin login page](./screenshots/01-admin-dashboard.png)
 
@@ -207,7 +207,7 @@ The Schedule page expands this into individual occurrences automatically.
 
 For loading a full season at once.
 
-URL: **https://lwc-theta.vercel.app/admin-tools/import-events**
+URL: **https://www.lionswrestling.org/admin-tools/import-events**
 
 ![Bulk import UI](./screenshots/10-bulk-import-events.png)
 

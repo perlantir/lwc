@@ -79,7 +79,7 @@ export const TOPHER_REPLY_TO = 'Topher.ewing@dmcs.org';
 
 const PROD_URL = env.SITE_URL && !env.SITE_URL.includes('localhost')
   ? env.SITE_URL.replace(/\/$/, '')
-  : 'https://lwc-theta.vercel.app';
+  : 'https://www.lionswrestling.org';
 
 const COLORS = {
   navy: '#061B3A',
