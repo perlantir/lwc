@@ -1,9 +1,7 @@
 import { getPayload } from 'payload';
 import config from '@payload-config';
 import Link from 'next/link';
-import { RegisterForm } from '@/components/RegisterForm';
 import { mediaUrl, type MediaRef } from '@/lib/media';
-import { EditableText } from '@/components/inline/EditableText';
 import { EditableImage } from '@/components/inline/EditableImage';
 
 export const revalidate = 600;
@@ -12,7 +10,6 @@ export const metadata = { title: 'Register' };
 const RegisterPage = async () => {
   const payload = await getPayload({ config });
   const page = await payload.findGlobal({ slug: 'register-page' });
-  const requirements = (page.requirements ?? []) as Array<{ item?: string }>;
 
   return (
     <>
@@ -22,53 +19,32 @@ const RegisterPage = async () => {
           background: `linear-gradient(180deg, rgba(6,27,58,.6) 0%, rgba(6,27,58,.85) 100%), url('${mediaUrl(page.bannerImage as MediaRef, '/images/hero-bg.jpg', 'feature')}') center/cover no-repeat, #061B3A`,
         }}
       >
-        <div className="px-5 sm:px-8 md:px-14 lg:px-20 xl:px-28 2xl:px-40 py-12 sm:py-14 max-w-[820px]">
-          <div className="text-[12px] text-white/55 mb-4 tracking-wide">
+        <div className="px-5 sm:px-8 md:px-14 lg:px-20 xl:px-28 2xl:px-40 py-10 sm:py-12 max-w-[820px]">
+          <div className="text-[12px] text-white/55 tracking-wide">
             <Link href="/" className="text-cyan">Home</Link> <span className="text-white/30 mx-1.5">/</span> {page.bannerEyebrow ?? 'Register'}
           </div>
-          <EditableText as="h1" globalSlug="register-page" fieldPath="bannerTitle" value={page.bannerTitle ?? 'Join the Lions'} className="text-[34px] sm:text-[44px] md:text-[52px] font-extrabold leading-[1.05] tracking-tight block" style={{ textShadow: '0 4px 24px rgba(0,0,0,.4)' }} />
-          {page.bannerBody && (
-            <EditableText as="p" globalSlug="register-page" fieldPath="bannerBody" value={page.bannerBody ?? ''} multiline className="mt-4 max-w-[660px] text-white/80 text-[15px] sm:text-base leading-relaxed block" />
-          )}
         </div>
       </section></EditableImage>
 
-      <section className="bg-off-white px-5 sm:px-8 md:px-14 lg:px-20 xl:px-28 2xl:px-40 py-12 grid gap-8 md:gap-10 md:grid-cols-[1fr_320px] max-w-[1200px] mx-auto">
-        <div>
-          <div className="eyebrow">Step 1 of 1</div>
-          <EditableText as="h2" globalSlug="register-page" fieldPath="formHeading" value={page.formHeading ?? 'Wrestler Registration'} className="text-[22px] sm:text-[26px] font-extrabold text-navy mt-1 tracking-tight block" />
-          <p className="text-muted text-sm mt-1">Takes about 2 minutes. A coach replies within 3 business days.</p>
-          <div className="mt-6 bg-white rounded-xl border border-border p-5 sm:p-6 shadow-soft">
-            <RegisterForm />
-          </div>
+      <section className="bg-off-white px-5 sm:px-8 md:px-14 lg:px-20 xl:px-28 2xl:px-40 py-20 sm:py-28 md:py-32">
+        <div className="max-w-[920px] mx-auto text-center">
+          <div className="eyebrow">Coming Soon</div>
+          <h1
+            className="mt-4 font-extrabold tracking-tight text-navy"
+            style={{
+              fontSize: 'clamp(40px, 8vw, 88px)',
+              lineHeight: 1.05,
+            }}
+          >
+            Registrations begin <span className="text-cyan">July 1st</span>.
+          </h1>
+          <p
+            className="mt-6 text-text-navy/80 font-medium"
+            style={{ fontSize: 'clamp(18px, 2.4vw, 26px)', lineHeight: 1.4 }}
+          >
+            Please check back soon!
+          </p>
         </div>
-        <aside className="space-y-5">
-          {page.feesBody && (
-            <div className="bg-navy text-white rounded-xl p-5 shadow-card">
-              <h3 className="font-extrabold text-white text-[15px] inline-flex items-center gap-2">
-                <svg viewBox="0 0 24 24" width="14" height="14" className="text-cyan" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /><path d="M12 6v12M9 9.5h6M9 14.5h6" /></svg>
-                Fees
-              </h3>
-              <EditableText as="p" globalSlug="register-page" fieldPath="feesBody" value={page.feesBody} multiline className="text-[13px] text-white/85 mt-2 leading-6 block" />
-            </div>
-          )}
-          {requirements.length > 0 && (
-            <div className="bg-white border border-border rounded-xl p-5 shadow-soft">
-              <h3 className="font-extrabold text-navy text-[15px] inline-flex items-center gap-2">
-                <svg viewBox="0 0 24 24" width="14" height="14" className="text-cyan" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12l5 5L20 7" /></svg>
-                What to bring
-              </h3>
-              <ul className="text-[13px] text-text-navy/85 mt-3 space-y-1.5">
-                {requirements.map((r, i) => (
-                  <li key={i} className="flex items-start gap-2">
-                    <svg viewBox="0 0 24 24" width="12" height="12" className="text-cyan mt-1 shrink-0" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12l5 5L20 7" /></svg>
-                    <EditableText as="span" globalSlug="register-page" fieldPath={`requirements.${i}.item`} value={r.item} />
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </aside>
       </section>
     </>
   );
