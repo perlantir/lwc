@@ -195,13 +195,13 @@ export const renderRegistrationConfirmation = (input: {
 }): { subject: string; html: string } => {
   const subject = `Welcome to the Lions, ${input.wrestlerFirstName}!`;
   const html = renderLayout({
-    preheader: `We received ${input.wrestlerFirstName}'s registration — a coach will be in touch within 3 business days.`,
+    preheader: `We received ${input.wrestlerFirstName}'s registration — a coach will be in touch within 48 hours.`,
     eyebrow: 'Registration Received',
     heading: `Welcome to the Lions, ${input.wrestlerFirstName}!`,
     intro: `Hi ${escapeHtml(input.parentName)}, thanks for registering ${escapeHtml(input.wrestlerFirstName)} with the DMC Lions Wrestling Club.`,
     bodyHtml: `
       <p style="margin:0 0 12px;color:${COLORS.textNavy};font-size:15px;line-height:1.55;">
-        A coach will follow up within <strong>3 business days</strong> with practice times, gear info, and what to bring on day one.
+        A coach will follow up within <strong>48 hours</strong> with practice times, gear info, and what to bring on day one.
       </p>
       <p style="margin:0 0 12px;color:${COLORS.textNavy};font-size:15px;line-height:1.55;">
         Questions in the meantime? Just hit reply — this note routes straight to Coach Topher.
@@ -278,17 +278,17 @@ export const renderContactAutoReply = (input: {
 }): { subject: string; html: string } => {
   const subject = `We got your message — Lions Wrestling`;
   const html = renderLayout({
-    preheader: `Thanks for reaching out — a coach will get back to you within a few days.`,
+    preheader: `Thanks for reaching out — a coach will get back to you within 48 hours.`,
     eyebrow: 'Message Received',
     heading: `Thanks, ${input.firstName}!`,
-    intro: `We've received your note and a coach will get back to you within a few days. In the meantime, feel free to reply to this email — it routes straight to Coach Topher.`,
+    intro: `We've received your message and a coach will get back to you within <strong>48 hours</strong>. In the meantime, feel free to reply to this email — it routes straight to Coach Topher.`,
     bodyHtml: input.body
       ? `<p style="margin:0 0 12px;color:${COLORS.textNavy};font-size:15px;line-height:1.55;">${escapeHtml(input.body)}</p>`
       : `
         <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:20px 0;border-left:4px solid ${COLORS.cyan};background:#F4F8FC;border-radius:6px;">
           <tr><td style="padding:14px 16px;">
             <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:${COLORS.cyan};text-transform:uppercase;margin:0 0 6px;">What's Next</div>
-            <div style="font-size:14px;color:${COLORS.textNavy};line-height:1.55;">A coach will review your message and respond directly. Most replies go out within 1–2 business days.</div>
+            <div style="font-size:14px;color:${COLORS.textNavy};line-height:1.55;">A coach will review your message and respond directly within 48 hours.</div>
           </td></tr>
         </table>
       `,

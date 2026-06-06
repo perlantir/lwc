@@ -50,7 +50,7 @@ export const ContactForm = () => {
       <div className="bg-white border border-border rounded-2xl p-8 shadow-soft text-center">
         <h3 className="text-xl font-extrabold text-navy">Message received — thanks!</h3>
         <p className="mt-2 text-text-navy/80">
-          A coach will follow up within a few days.
+          We sent a confirmation email — a coach will follow up within 48 hours.
         </p>
       </div>
     );

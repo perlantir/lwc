@@ -58,8 +58,8 @@ export const RegisterForm = () => {
       <div className="bg-white border border-border rounded-2xl p-8 shadow-card text-center">
         <h2 className="text-2xl font-extrabold text-navy">Thank you for registering, {doneFor}!</h2>
         <p className="mt-3 text-text-navy/80">
-          We sent a confirmation email to the parent address. A coach will reach out within 3 business
-          days with practice times, what to bring, and your welcome packet.
+          We sent a confirmation email to the parent address. A coach will reach out within 48 hours
+          with practice times, what to bring, and your welcome packet.
         </p>
       </div>
     );
