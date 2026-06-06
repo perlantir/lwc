@@ -227,7 +227,7 @@ export const renderRegistrationNotification = (input: {
   parentEmail: string;
   parentPhone: string;
 }): { subject: string; html: string } => {
-  const subject = `[Lions Wrestling] New registration — ${input.wrestlerFirstName} ${input.wrestlerLastName}`;
+  const subject = `New registration — ${input.wrestlerFirstName} ${input.wrestlerLastName}`;
   const html = renderLayout({
     preheader: `${input.wrestlerFirstName} ${input.wrestlerLastName} (${input.grade}) just registered. Parent: ${input.parentName}.`,
     eyebrow: 'New Registration',
@@ -252,7 +252,7 @@ export const renderContactNotification = (input: {
   email: string;
   message: string;
 }): { subject: string; html: string } => {
-  const subject = `[Lions Wrestling] Contact from ${input.firstName} ${input.lastName}`;
+  const subject = `Contact from ${input.firstName} ${input.lastName}`;
   const html = renderLayout({
     preheader: `${input.firstName} ${input.lastName} sent a message through the contact form.`,
     eyebrow: 'New Contact Message',

@@ -99,7 +99,7 @@ export const POST = async (req: NextRequest): Promise<NextResponse> => {
     });
     await sendEmail({
       to: recipients,
-      subject: notif.subject,
+      subject: `${cfg.subjectPrefix ?? ''} ${notif.subject}`.trim(),
       html: notif.html,
       replyTo: data.parentEmail,
     });
