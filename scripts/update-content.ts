@@ -30,7 +30,7 @@ const run = async (): Promise<void> => {
     slug: 'header',
     data: {
       ctaLabel: 'Register here July 1',
-      instagramUrl: 'https://www.instagram.com/lionswrestlingclub',
+      instagramUrl: 'https://www.instagram.com/lionswrestlingclub_',
     },
   });
   process.stdout.write('Updated header CTA + Instagram\n');
@@ -41,7 +41,7 @@ const run = async (): Promise<void> => {
       address: '13007 Douglas Pkwy, Urbandale, IA 50323',
       phone: '',
       email: 'Topher.ewing@dmcs.org',
-      instagramUrl: 'https://www.instagram.com/lionswrestlingclub',
+      instagramUrl: 'https://www.instagram.com/lionswrestlingclub_',
     },
   });
   process.stdout.write('Updated footer contact + Instagram\n');

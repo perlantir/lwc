@@ -19,7 +19,7 @@ export const Footer: GlobalConfig = {
     { name: 'address', type: 'text', defaultValue: '13007 Douglas Pkwy, Urbandale, IA 50323' },
     { name: 'phone', type: 'text', defaultValue: '' },
     { name: 'email', type: 'email', defaultValue: 'Topher.ewing@dmcs.org' },
-    { name: 'instagramUrl', type: 'text', defaultValue: 'https://www.instagram.com/lionswrestlingclub' },
+    { name: 'instagramUrl', type: 'text', defaultValue: 'https://www.instagram.com/lionswrestlingclub_' },
     { name: 'facebookUrl', type: 'text', defaultValue: 'https://facebook.com/dmclionswrestling' },
     {
       name: 'copyrightText',

@@ -96,7 +96,7 @@ const run = async (): Promise<void> => {
       ],
       ctaLabel: 'Register here July 1',
       ctaHref: '/register',
-      instagramUrl: 'https://www.instagram.com/lionswrestlingclub',
+      instagramUrl: 'https://www.instagram.com/lionswrestlingclub_',
     },
   });
   process.stdout.write('Seeded Header global\n');
