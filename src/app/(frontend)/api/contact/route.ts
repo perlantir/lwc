@@ -5,7 +5,7 @@ import { contactSchema, MIN_FORM_DURATION_MS, verifyMathChallenge } from '@/lib/
 import { limitContact } from '@/lib/rate-limit';
 import { verifyTurnstile } from '@/lib/turnstile';
 import { hashIp, ipFromHeaders } from '@/lib/ip';
-import { sendEmail, renderContactAutoReply, renderContactNotification } from '@/lib/email';
+import { sendEmail, renderContactAutoReply, renderContactNotification, TOPHER_REPLY_TO } from '@/lib/email';
 
 export const POST = async (req: NextRequest): Promise<NextResponse> => {
   const json = (await req.json().catch(() => null)) as unknown;
@@ -78,12 +78,17 @@ export const POST = async (req: NextRequest): Promise<NextResponse> => {
       email: data.email,
       message: data.message,
     });
-    await sendEmail({ to: recipients, subject: `${cfg.subjectPrefix ?? ''} ${subject}`.trim(), html });
+    await sendEmail({
+      to: recipients,
+      subject: `${cfg.subjectPrefix ?? ''} ${subject}`.trim(),
+      html,
+      replyTo: data.email,
+    });
   }
 
   if (cfg.autoReplyEnabled) {
     const { subject, html } = renderContactAutoReply({ firstName: data.firstName });
-    await sendEmail({ to: data.email, subject, html });
+    await sendEmail({ to: data.email, subject, html, replyTo: TOPHER_REPLY_TO });
   }
 
   return NextResponse.json({ ok: true });

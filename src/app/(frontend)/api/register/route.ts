@@ -9,6 +9,7 @@ import {
   renderRegistrationConfirmation,
   renderRegistrationNotification,
   sendEmail,
+  TOPHER_REPLY_TO,
 } from '@/lib/email';
 
 export const POST = async (req: NextRequest): Promise<NextResponse> => {
@@ -68,14 +69,19 @@ export const POST = async (req: NextRequest): Promise<NextResponse> => {
     },
   });
 
-  // Send confirmation to parent
+  // Send confirmation to parent — replies route to Topher
   const confirm = renderRegistrationConfirmation({
     wrestlerFirstName: data.wFirst,
     parentName: data.parentName,
   });
-  await sendEmail({ to: data.parentEmail, subject: confirm.subject, html: confirm.html });
+  await sendEmail({
+    to: data.parentEmail,
+    subject: confirm.subject,
+    html: confirm.html,
+    replyTo: TOPHER_REPLY_TO,
+  });
 
-  // Notify coaches
+  // Notify coaches — replies route to the parent for direct response
   const recipients = ((cfg.recipientEmails ?? []) as Array<{ email?: string | null }>)
     .map((r) => r.email)
     .filter((e): e is string => Boolean(e));
@@ -88,7 +94,12 @@ export const POST = async (req: NextRequest): Promise<NextResponse> => {
       parentEmail: data.parentEmail,
       parentPhone: data.parentPhone,
     });
-    await sendEmail({ to: recipients, subject: notif.subject, html: notif.html });
+    await sendEmail({
+      to: recipients,
+      subject: notif.subject,
+      html: notif.html,
+      replyTo: data.parentEmail,
+    });
   }
 
   return NextResponse.json({ ok: true });
