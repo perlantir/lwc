@@ -72,7 +72,7 @@ export const SiteFooter = ({ cfg, logoUrl }: { cfg: Footer; logoUrl?: string }) 
         </div>
       </div>
       <div className="mt-7 pt-4 border-t border-white/10 text-center text-xs text-white/50">
-        {cfg.copyrightText ?? `© ${new Date().getFullYear()} DMC Lions Wrestling Club.`}
+        {cfg.copyrightText ?? `© ${new Date().getFullYear()} DMCS Lions Wrestling Club.`}
       </div>
     </footer>
   );

@@ -33,7 +33,7 @@ export const GET = async (): Promise<Response> => {
     updatedAt: d.updatedAt,
   }));
 
-  const ics = buildCalendarFeed(events, 'DMC Lions Wrestling');
+  const ics = buildCalendarFeed(events, 'DMCS Lions Wrestling');
   return new Response(ics, {
     headers: {
       'Content-Type': 'text/calendar; charset=utf-8',

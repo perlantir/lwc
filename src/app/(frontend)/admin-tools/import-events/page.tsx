@@ -49,7 +49,7 @@ const ImportEventsPage = async () => {
           <li><strong>date</strong> — YYYY-MM-DD. e.g., <em>2026-11-15</em></li>
           <li><strong>kind</strong> — One of <code>home</code>, <code>away</code>, <code>tour</code>, <code>prac</code></li>
           <li><strong>time</strong> — Display string. e.g., <em>5:30 PM</em> or <em>All Day</em></li>
-          <li><strong>location</strong> — e.g., <em>Lions Gym, DMC</em></li>
+          <li><strong>location</strong> — e.g., <em>Lions Gym, DMCS</em></li>
           <li><strong>notes</strong> — Free-form. e.g., <em>Senior Night</em></li>
           <li>
             <strong>recurring</strong> — <code>true</code> / <code>false</code>. Only set true for repeating events.
@@ -65,7 +65,7 @@ const ImportEventsPage = async () => {
           <pre className="mt-3 bg-deep-navy text-white/90 text-[12px] p-4 rounded-lg overflow-x-auto leading-5">
 {`title,date,time,kind,location,notes,recurring,recurrenceDays,recurrenceEnd
 Mid-Iowa Open,2026-11-07,All Day,tour,Indianola HS,16 schools,false,,
-Dual vs. Johnston Dragons,2026-11-15,5:30 PM,home,"Lions Gym, DMC",Senior Night,false,,
+Dual vs. Johnston Dragons,2026-11-15,5:30 PM,home,"Lions Gym, DMCS",Senior Night,false,,
 Varsity Practice,2026-11-03,3:45 PM,prac,Wrestling Room,,true,tue;thu,2027-02-28
 Sectional Tournament,2027-02-19,10:00 AM,tour,TBD,State qualifier,false,,`}
           </pre>

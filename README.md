@@ -1,4 +1,4 @@
-# DMC Lions Wrestling Club
+# DMCS Lions Wrestling Club
 
 Production website and admin panel for the **Des Moines Christian Lions Wrestling Club**.
 

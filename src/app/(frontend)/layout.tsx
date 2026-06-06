@@ -25,13 +25,13 @@ export const generateMetadata = async (): Promise<Metadata> => {
   const ogImageUrl = mediaUrl((settings as { defaultOgImage?: MediaRef }).defaultOgImage, undefined, 'feature');
   return {
     title: {
-      default: settings.siteName ?? 'DMC Lions Wrestling Club',
-      template: `%s — ${settings.siteName ?? 'DMC Lions Wrestling Club'}`,
+      default: settings.siteName ?? 'DMCS Lions Wrestling Club',
+      template: `%s — ${settings.siteName ?? 'DMCS Lions Wrestling Club'}`,
     },
     description: settings.tagline ?? 'Christ-centered wrestling, K–12 — Des Moines Christian.',
     openGraph: {
       type: 'website',
-      siteName: settings.siteName ?? 'DMC Lions Wrestling Club',
+      siteName: settings.siteName ?? 'DMCS Lions Wrestling Club',
       images: ogImageUrl ? [{ url: ogImageUrl }] : undefined,
     },
     icons: { icon: faviconUrl },

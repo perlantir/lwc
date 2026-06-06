@@ -163,7 +163,7 @@ export const eventToICS = (e: CalendarEvent): string => {
   return lines.join('\r\n');
 };
 
-export const buildCalendarFeed = (events: CalendarEvent[], calName = 'DMC Lions Wrestling'): string => {
+export const buildCalendarFeed = (events: CalendarEvent[], calName = 'DMCS Lions Wrestling'): string => {
   const header = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
@@ -215,10 +215,10 @@ export const SEED_EVENTS: CalendarEvent[] = [
   { id: 1, date: '2026-01-03', time: 'All Day', title: 'Mid-Iowa Open', kind: 'tour', location: 'Indianola HS', notes: '18 schools' },
   { id: 2, date: '2026-01-08', time: '6:00 PM', title: '@ Valley Tigers', kind: 'away', location: 'Valley HS', notes: 'CIML matchup' },
   { id: 3, date: '2026-01-10', time: 'All Day', title: 'Cedar Falls Invite', kind: 'tour', location: 'Cedar Falls HS', notes: '' },
-  { id: 4, date: '2026-01-15', time: '5:30 PM', title: 'Dual vs. Johnston', kind: 'home', location: 'Lions Gym, DMC', notes: 'Senior Night' },
+  { id: 4, date: '2026-01-15', time: '5:30 PM', title: 'Dual vs. Johnston', kind: 'home', location: 'Lions Gym, DMCS', notes: 'Senior Night' },
   { id: 5, date: '2026-01-22', time: 'All Day', title: 'Tournament @ Waukee', kind: 'tour', location: 'Waukee HS', notes: '14 schools' },
   { id: 6, date: '2026-01-23', time: 'All Day', title: 'Waukee Day 2 — Finals', kind: 'tour', location: 'Waukee HS', notes: '' },
-  { id: 7, date: '2026-01-29', time: '5:30 PM', title: 'Home Match vs. Ankeny', kind: 'home', location: 'Lions Gym, DMC', notes: 'Youth Night' },
+  { id: 7, date: '2026-01-29', time: '5:30 PM', title: 'Home Match vs. Ankeny', kind: 'home', location: 'Lions Gym, DMCS', notes: 'Youth Night' },
   { id: 8, date: '2026-01-31', time: '10:00 AM', title: 'Sectional Prep Tournament', kind: 'tour', location: 'TBD', notes: '' },
   { id: 9, date: '2026-02-05', time: '6:00 PM', title: 'Tri @ Valley', kind: 'away', location: 'Valley HS', notes: 'vs. Lions · Lewis Central' },
   { id: 10, date: '2026-02-12', time: '9:00 AM', title: 'CIML Conference Duals', kind: 'tour', location: 'Hosted by SE Polk', notes: '' },

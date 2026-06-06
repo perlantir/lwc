@@ -8,7 +8,7 @@ export const SiteSettings: GlobalConfig = {
   access: { read: isPublic, update: isAdmin },
   hooks: { afterChange: [revalidateGlobal(['/', '/about', '/schedule', '/contact', '/register'])] },
   fields: [
-    { name: 'siteName', type: 'text', defaultValue: 'DMC Lions Wrestling Club' },
+    { name: 'siteName', type: 'text', defaultValue: 'DMCS Lions Wrestling Club' },
     { name: 'tagline', type: 'text' },
     { name: 'siteLogo', type: 'upload', relationTo: 'media', admin: { description: 'Lion logo used in the site header. Recommended: transparent PNG, square.' } },
     { name: 'footerLogo', type: 'upload', relationTo: 'media', admin: { description: 'Logo used in the footer. Defaults to siteLogo if unset.' } },

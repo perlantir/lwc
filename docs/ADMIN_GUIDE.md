@@ -221,7 +221,7 @@ First row is headers. **Required columns:** `title`, `date`, `kind`.
 | date | yes | YYYY-MM-DD | `2026-11-15` |
 | kind | yes | `home` / `away` / `tour` / `prac` | `home` |
 | time | no | display text | `5:30 PM` or `All Day` |
-| location | no | text | `Lions Gym, DMC` |
+| location | no | text | `Lions Gym, DMCS` |
 | notes | no | text | `Senior Night` |
 | recurring | no | `true` / `false` | `true` |
 | recurrenceDays | no | days separated by `;` or `\|` | `tue;thu` |
@@ -234,12 +234,12 @@ Allowed `recurrenceDays` (3-letter lower-case): `mon`, `tue`, `wed`, `thu`, `fri
 ```csv
 title,date,time,kind,location,notes,recurring,recurrenceDays,recurrenceEnd
 Mid-Iowa Open,2026-11-07,All Day,tour,Indianola HS,16 schools,false,,
-Dual vs. Johnston Dragons,2026-11-15,5:30 PM,home,"Lions Gym, DMC",Senior Night,false,,
+Dual vs. Johnston Dragons,2026-11-15,5:30 PM,home,"Lions Gym, DMCS",Senior Night,false,,
 Varsity Practice,2026-11-03,3:45 PM,prac,Wrestling Room,,true,tue;thu,2027-02-28
 Sectional Tournament,2027-02-19,10:00 AM,tour,TBD,State qualifier,false,,
 ```
 
-> ⚠️ **Notes with commas or quotes:** wrap the cell in double-quotes (`"Lions Gym, DMC"`). A double-quote inside a quoted cell is written `""`.
+> ⚠️ **Notes with commas or quotes:** wrap the cell in double-quotes (`"Lions Gym, DMCS"`). A double-quote inside a quoted cell is written `""`.
 
 ### Upload steps
 

@@ -77,7 +77,7 @@ const run = async (): Promise<void> => {
         { title: 'Middle & High School', ageRange: '7th – 12th', body: 'Conditioning, technique, dual + tournament season.' },
       ],
       testimonialQuote:
-        'Wrestling at DMC stretched our son in every way — body, mind, and faith. He came home tougher and more humble.',
+        'Wrestling at DMCS stretched our son in every way — body, mind, and faith. He came home tougher and more humble.',
       testimonialAuthor: 'Parent of a 7th-grade wrestler',
       testimonialRole: '2024–25 season',
     },
@@ -132,7 +132,7 @@ const run = async (): Promise<void> => {
   await payload.updateGlobal({
     slug: 'site-settings',
     data: {
-      siteName: 'DMC Lions Wrestling Club',
+      siteName: 'DMCS Lions Wrestling Club',
       tagline: 'Christ-centered wrestling, K–12.',
       maintenanceMode: false,
     },

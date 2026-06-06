@@ -24,7 +24,7 @@ export const Footer: GlobalConfig = {
     {
       name: 'copyrightText',
       type: 'text',
-      defaultValue: '© DMC Lions Wrestling Club. All rights reserved.',
+      defaultValue: '© DMCS Lions Wrestling Club. All rights reserved.',
     },
   ],
 };
