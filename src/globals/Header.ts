@@ -28,7 +28,7 @@ export const Header: GlobalConfig = {
       ],
     },
     { name: 'ctaLabel', type: 'text', defaultValue: 'Register here July 1' },
-    { name: 'ctaHref', type: 'text', defaultValue: '/register' },
+    { name: 'ctaHref', type: 'text', defaultValue: 'https://www.dmcsevents.com' },
     { name: 'instagramUrl', type: 'text', defaultValue: 'https://www.instagram.com/lionswrestlingclub_' },
     { name: 'facebookUrl', type: 'text', defaultValue: 'https://facebook.com/dmclionswrestling' },
   ],

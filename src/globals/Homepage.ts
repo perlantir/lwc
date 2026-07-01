@@ -43,7 +43,7 @@ export const Homepage: GlobalConfig = {
             },
             { name: 'heroBackgroundImage', type: 'upload', relationTo: 'media' },
             { name: 'heroPrimaryCtaLabel', type: 'text', defaultValue: 'Register here July 1' },
-            { name: 'heroPrimaryCtaHref', type: 'text', defaultValue: '/register' },
+            { name: 'heroPrimaryCtaHref', type: 'text', defaultValue: 'https://www.dmcsevents.com' },
             { name: 'heroSecondaryCtaLabel', type: 'text', defaultValue: 'View Schedule' },
             { name: 'heroSecondaryCtaHref', type: 'text', defaultValue: '/schedule' },
           ],

@@ -22,7 +22,7 @@ export const SchedulePage: GlobalConfig = {
   fields: [
     { name: 'bannerEyebrow', type: 'text', defaultValue: 'Schedule' },
     { name: 'bannerTitle', type: 'text', defaultValue: '2025-26 Season' },
-    { name: 'bannerBody', type: 'textarea', defaultValue: 'All home matches at the Lions Gym. Subscribe to the calendar to never miss a meet.' },
+    { name: 'bannerBody', type: 'textarea', defaultValue: 'Practices held Monday & Thursdays at the NEW Des Moines Christian Early Education Building Gymnasium' },
     { name: 'bannerImage', type: 'upload', relationTo: 'media' },
     { name: 'subscribeLabel', type: 'text', defaultValue: 'Subscribe to Calendar' },
     { name: 'subscribeDescription', type: 'textarea', defaultValue: 'Add to your phone or computer so updates appear automatically.' },

@@ -67,7 +67,7 @@ const run = async (): Promise<void> => {
       heroHeading: 'Iron\nSharpens\nIron',
       heroSubheading: 'Christ-centered wrestling. Purpose-driven development.',
       heroPrimaryCtaLabel: 'Register here July 1',
-      heroPrimaryCtaHref: '/register',
+      heroPrimaryCtaHref: 'https://www.dmcsevents.com',
       heroSecondaryCtaLabel: 'View Schedule',
       heroSecondaryCtaHref: '/schedule',
       missionHeading: 'Built for the long match',
@@ -95,7 +95,7 @@ const run = async (): Promise<void> => {
         { label: 'Contact', type: 'url', url: '/contact' },
       ],
       ctaLabel: 'Register here July 1',
-      ctaHref: '/register',
+      ctaHref: 'https://www.dmcsevents.com',
       instagramUrl: 'https://www.instagram.com/lionswrestlingclub_',
     },
   });

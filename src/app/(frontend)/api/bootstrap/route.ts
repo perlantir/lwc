@@ -85,7 +85,7 @@ export async function POST(req: NextRequest) {
         heroHeading: 'Forge tough kids, faithful young men, and lifelong champions.',
         heroSubheading: 'A K–12 wrestling program built on Christ-centered character, technical mastery, and the grit only the mat can teach.',
         heroPrimaryCtaLabel: 'Register a Wrestler',
-        heroPrimaryCtaHref: '/register',
+        heroPrimaryCtaHref: 'https://www.dmcsevents.com',
         heroSecondaryCtaLabel: 'View Schedule',
         heroSecondaryCtaHref: '/schedule',
         missionHeading: 'Built for the long match',
@@ -111,7 +111,7 @@ export async function POST(req: NextRequest) {
           { label: 'Contact', type: 'url', url: '/contact' },
         ],
         ctaLabel: 'Join the Lions',
-        ctaHref: '/register',
+        ctaHref: 'https://www.dmcsevents.com',
       },
     });
     steps.push('header: seeded');
@@ -150,6 +150,30 @@ export async function POST(req: NextRequest) {
       },
     });
     steps.push('site-settings: seeded');
+
+    // Partial updates: only these specific fields, preserving any other CMS edits.
+    try {
+      await payload.updateGlobal({
+        slug: 'cta-strip',
+        data: { buttonHref: 'https://www.dmcsevents.com' },
+      });
+      steps.push('cta-strip.buttonHref: updated');
+    } catch (e) {
+      errors.push(`cta-strip: ${(e as Error).message}`);
+    }
+
+    try {
+      await payload.updateGlobal({
+        slug: 'schedule-page',
+        data: {
+          bannerBody:
+            'Practices held Monday & Thursdays at the NEW Des Moines Christian Early Education Building Gymnasium',
+        },
+      });
+      steps.push('schedule-page.bannerBody: updated');
+    } catch (e) {
+      errors.push(`schedule-page: ${(e as Error).message}`);
+    }
 
     return NextResponse.json({ ok: errors.length === 0, steps, errors });
   } catch (e) {

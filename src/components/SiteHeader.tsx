@@ -105,7 +105,7 @@ export const SiteHeader = ({ cfg, logoUrl }: { cfg: Header; logoUrl?: string }) 
             </>
           )}
           <Link
-            href={cfg.ctaHref ?? '/register'}
+            href={cfg.ctaHref ?? 'https://www.dmcsevents.com'}
             className="btn btn-cyan text-xs sm:text-sm font-semibold px-3 sm:px-[22px] py-2 sm:py-[11px] rounded-lg ml-1 sm:ml-2 md:ml-[14px] whitespace-nowrap"
           >
             {cfg.ctaLabel ?? 'Join the Lions'}

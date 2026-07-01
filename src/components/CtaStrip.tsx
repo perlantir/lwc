@@ -22,7 +22,7 @@ export const CtaStrip = async ({ heading, accent, body, buttonLabel, buttonHref 
   const a = accent ?? cfg.accent ?? "Let's get on the mat.";
   const b = body ?? cfg.body ?? 'Registration is open year-round for all grade levels. Coaches reach out within 3 business days.';
   const btnLabel = buttonLabel ?? cfg.buttonLabel ?? 'Register Now';
-  const btnHref = buttonHref ?? cfg.buttonHref ?? '/register';
+  const btnHref = buttonHref ?? cfg.buttonHref ?? 'https://www.dmcsevents.com';
   const bgUrl = mediaUrl((cfg as { backgroundImage?: MediaRef }).backgroundImage, '/images/cta-bg.jpg', 'feature');
 
   return (

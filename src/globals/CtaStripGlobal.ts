@@ -24,7 +24,7 @@ export const CtaStripGlobal: GlobalConfig = {
     { name: 'accent', type: 'text', defaultValue: "Let's get on the mat." },
     { name: 'body', type: 'textarea', defaultValue: 'Registration is open year-round for all grade levels. Coaches reach out within 3 business days.' },
     { name: 'buttonLabel', type: 'text', defaultValue: 'Register here July 1' },
-    { name: 'buttonHref', type: 'text', defaultValue: '/register' },
+    { name: 'buttonHref', type: 'text', defaultValue: 'https://www.dmcsevents.com' },
     { name: 'backgroundImage', type: 'upload', relationTo: 'media', admin: { description: 'Optional image that sits behind the dark navy overlay.' } },
   ],
 };

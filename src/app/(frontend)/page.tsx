@@ -85,7 +85,7 @@ const HomePage = async () => {
             )}
           {homepage.heroPrimaryCtaLabel && (
             <div className="mt-6">
-              <ButtonLink href={homepage.heroPrimaryCtaHref ?? '/register'} variant="cyan" size="lg">
+              <ButtonLink href={homepage.heroPrimaryCtaHref ?? 'https://www.dmcsevents.com'} variant="cyan" size="lg">
                 {homepage.heroPrimaryCtaLabel} <span aria-hidden>→</span>
               </ButtonLink>
             </div>
