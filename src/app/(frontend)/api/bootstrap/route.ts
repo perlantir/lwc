@@ -78,43 +78,25 @@ export async function POST(req: NextRequest) {
       steps.push(`events: ${existingEvents.totalDocs} already present`);
     }
 
+    // Partial update: only the fields we need to restore/enforce.
+    // Never full-replace — that would wipe custom CMS edits.
     await payload.updateGlobal({
       slug: 'homepage',
       data: {
-        heroEyebrow: 'Des Moines Christian Wrestling',
-        heroHeading: 'Forge tough kids, faithful young men, and lifelong champions.',
-        heroSubheading: 'A K–12 wrestling program built on Christ-centered character, technical mastery, and the grit only the mat can teach.',
-        heroPrimaryCtaLabel: 'Register a Wrestler',
+        heroHeading: 'Iron\nSharpens\nIron',
+        heroSubheading: 'Christ-centered wrestling. Purpose-driven development.',
         heroPrimaryCtaHref: 'https://www.dmcsevents.com',
-        heroSecondaryCtaLabel: 'View Schedule',
-        heroSecondaryCtaHref: '/schedule',
-        missionHeading: 'Built for the long match',
-        programCards: [
-          { title: 'Mini Lions (K–2)', ageRange: 'K – 2', body: 'Fundamentals through play. Mat awareness, position, fall safely.' },
-          { title: 'Youth (3–6)', ageRange: '3rd – 6th', body: 'Real technique, real competition. Local tournaments optional.' },
-          { title: 'Middle & High School', ageRange: '7th – 12th', body: 'Conditioning, technique, dual + tournament season.' },
-        ],
-        testimonialQuote: 'Wrestling at DMCS stretched our son in every way — body, mind, and faith. He came home tougher and more humble.',
-        testimonialAuthor: 'Parent of a 7th-grade wrestler',
-        testimonialRole: '2024–25 season',
       },
     });
-    steps.push('homepage: seeded');
+    steps.push('homepage: restored hero + register href');
 
     await payload.updateGlobal({
       slug: 'header',
       data: {
-        navItems: [
-          { label: 'Home', type: 'url', url: '/' },
-          { label: 'About', type: 'url', url: '/about' },
-          { label: 'Schedule', type: 'url', url: '/schedule' },
-          { label: 'Contact', type: 'url', url: '/contact' },
-        ],
-        ctaLabel: 'Join the Lions',
         ctaHref: 'https://www.dmcsevents.com',
       },
     });
-    steps.push('header: seeded');
+    steps.push('header: register href updated');
 
     await payload.updateGlobal({
       slug: 'footer',
