@@ -30,3 +30,7 @@ test-results
 .env*.local
 .gstack/
 .env*
+
+# Working files / temp assets
+unnamed*.jpg
+LWC-*.pdf
