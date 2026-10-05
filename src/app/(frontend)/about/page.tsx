@@ -3,7 +3,7 @@ import config from '@payload-config';
 import Link from 'next/link';
 import { RichText } from '@payloadcms/richtext-lexical/react';
 import { CtaStrip } from '@/components/CtaStrip';
-import { mediaUrl, mediaFocalPoint, type MediaRef } from '@/lib/media';
+import { mediaUrl, type MediaRef } from '@/lib/media';
 import { EditableText } from '@/components/inline/EditableText';
 import { EditableImage } from '@/components/inline/EditableImage';
 
@@ -35,6 +35,14 @@ const AboutPage = async () => {
     payload.findGlobal({ slug: 'about-page' }),
     payload.find({ collection: 'coaches', sort: 'order', limit: 50 }),
   ]);
+
+  const paidStaff = coaches.docs.filter(
+    (c) => !c.role?.includes('Volunteer') && c.role !== 'Operations Director',
+  );
+  const supportStaff = [
+    ...coaches.docs.filter((c) => c.role?.includes('Volunteer')),
+    ...coaches.docs.filter((c) => c.role === 'Operations Director'),
+  ];
 
   const stats = (page.stats ?? []) as Array<{ value?: string; label?: string }>;
   const storyParas = (page.storyParagraphs ?? []) as Array<{ text?: string }>;
@@ -193,60 +201,72 @@ const AboutPage = async () => {
         </div>
       </section>
 
-      {/* COACHING STAFF — dark navy */}
+      {/* COACHING STAFF */}
       <section className="bg-navy text-white px-5 sm:px-8 md:px-14 lg:px-20 xl:px-28 2xl:px-40 py-14">
         <div className="text-center">
           <EditableText as="div" globalSlug="about-page" fieldPath="staffEyebrow" value={page.staffEyebrow ?? 'Coaching Staff'} className="eyebrow" />
           <EditableText as="h2" globalSlug="about-page" fieldPath="staffHeading" value={page.staffHeading ?? 'The men in the corner'} className="text-[26px] sm:text-[30px] font-extrabold mt-2 tracking-tight block" />
         </div>
-        {coaches.docs.length === 0 ? (
-          <p className="mt-8 text-white/65 text-center">{page.staffEmptyMessage}</p>
-        ) : (
-          <div
-            className={`grid gap-5 mt-8 mx-auto ${
-              coaches.docs.length === 1
-                ? 'max-w-[420px]'
-                : coaches.docs.length === 2
-                  ? 'sm:grid-cols-2 max-w-[820px]'
-                  : 'sm:grid-cols-2 lg:grid-cols-3 max-w-[1100px]'
-            }`}
-          >
-            {coaches.docs.map((c) => {
+
+        {/* Paid staff — photos, 3-col */}
+        {paidStaff.length > 0 && (
+          <div className="grid gap-5 mt-8 mx-auto sm:grid-cols-3 max-w-[1100px]">
+            {paidStaff.map((c) => {
               const photoUrl = mediaUrl(c.photo as MediaRef, '/images/mission-photo.jpg', 'feature');
-              const focal = mediaFocalPoint(c.photo as MediaRef);
               return (
-              <article key={c.id} className="rounded-xl overflow-hidden bg-white/[.04] border border-white/[.08]">
-                <div className="aspect-[3/2] bg-deep-navy overflow-hidden">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={photoUrl}
-                    alt={c.name}
-                    className="w-full h-full object-cover"
-                    style={{ objectPosition: focal }}
-                  />
-                </div>
-                <div className="p-5">
-                  {c.role && <EditableText as="div" collectionSlug="coaches" docId={c.id} fieldPath="role" value={c.role} className="text-cyan text-[11px] font-bold tracking-widest uppercase block" />}
-                  <EditableText as="h3" collectionSlug="coaches" docId={c.id} fieldPath="name" value={c.name} className="font-extrabold text-white text-[17px] mt-1 block" />
-                  {c.bio && (
-                    <div className="text-white/75 text-[13px] mt-2 leading-5 prose prose-sm prose-invert max-w-none">
-                      <RichText data={c.bio as Parameters<typeof RichText>[0]['data']} />
-                    </div>
-                  )}
-                  {c.email && (
-                    <a href={`mailto:${c.email}`} className="text-cyan text-[13px] mt-3 inline-block">
-                      <EditableText as="span" collectionSlug="coaches" docId={c.id} fieldPath="email" value={c.email} />
-                    </a>
-                  )}
-                </div>
-              </article>
+                <article key={c.id} className="rounded-xl overflow-hidden bg-white/[.04] border border-white/[.08]">
+                  <div className="aspect-square bg-deep-navy overflow-hidden flex items-center justify-center">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={photoUrl}
+                      alt={c.name}
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                  <div className="p-5">
+                    {c.role && <EditableText as="div" collectionSlug="coaches" docId={c.id} fieldPath="role" value={c.role} className="text-cyan text-[11px] font-bold tracking-widest uppercase block" />}
+                    <EditableText as="h3" collectionSlug="coaches" docId={c.id} fieldPath="name" value={c.name} className="font-extrabold text-white text-[17px] mt-1 block" />
+                    {c.bio && (
+                      <div className="text-white/75 text-[13px] mt-2 leading-5 prose prose-sm prose-invert max-w-none">
+                        <RichText data={c.bio as Parameters<typeof RichText>[0]['data']} />
+                      </div>
+                    )}
+                    {c.email && (
+                      <a href={`mailto:${c.email}`} className="text-cyan text-[13px] mt-3 inline-block">
+                        <EditableText as="span" collectionSlug="coaches" docId={c.id} fieldPath="email" value={c.email} />
+                      </a>
+                    )}
+                  </div>
+                </article>
               );
             })}
           </div>
         )}
+
+        {/* Support staff — text only */}
+        {supportStaff.length > 0 && (
+          <div className="grid gap-4 mt-6 mx-auto sm:grid-cols-3 max-w-[1100px]">
+            {supportStaff.map((c) => (
+              <div key={c.id} className="rounded-xl p-5 bg-white/[.04] border border-white/[.08]">
+                {c.role && <EditableText as="div" collectionSlug="coaches" docId={c.id} fieldPath="role" value={c.role} className="text-cyan text-[11px] font-bold tracking-widest uppercase block" />}
+                <EditableText as="h3" collectionSlug="coaches" docId={c.id} fieldPath="name" value={c.name} className="font-extrabold text-white text-[17px] mt-1 block" />
+                {c.bio && (
+                  <div className="text-white/75 text-[13px] mt-2 leading-5 prose prose-sm prose-invert max-w-none">
+                    <RichText data={c.bio as Parameters<typeof RichText>[0]['data']} />
+                  </div>
+                )}
+                {c.email && (
+                  <a href={`mailto:${c.email}`} className="text-cyan text-[13px] mt-3 inline-block">
+                    <EditableText as="span" collectionSlug="coaches" docId={c.id} fieldPath="email" value={c.email} />
+                  </a>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
       </section>
 
-      <CtaStrip />
+      <CtaStrip buttonLabel="Register Here" />
     </>
   );
 };

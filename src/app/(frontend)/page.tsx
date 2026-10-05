@@ -3,7 +3,6 @@ import { getPayload } from 'payload';
 import config from '@payload-config';
 import { CtaStrip } from '@/components/CtaStrip';
 import { ButtonLink } from '@/components/Button';
-import { parseDate, shortMo, pad } from '@/lib/calendar';
 import { mediaUrl, type MediaRef } from '@/lib/media';
 import { EditableText } from '@/components/inline/EditableText';
 import { EditableImage } from '@/components/inline/EditableImage';
@@ -13,19 +12,6 @@ export const revalidate = 600;
 const HomePage = async () => {
   const payload = await getPayload({ config });
   const homepage = await payload.findGlobal({ slug: 'homepage' });
-  const today = new Date().toISOString().slice(0, 10);
-  const events = await payload.find({
-    collection: 'events',
-    where: {
-      and: [
-        { date: { greater_than_equal: today } },
-        { status: { equals: 'published' } },
-        { kind: { not_equals: 'prac' } },
-      ],
-    },
-    sort: 'date',
-    limit: 3,
-  });
   const heroBgUrl = mediaUrl(homepage.heroBackgroundImage as MediaRef, '/images/hero-bg.jpg', 'feature');
   const missionPhotoUrl = mediaUrl(homepage.missionPhoto as MediaRef, '/images/mission-photo.jpg', 'feature');
 
@@ -161,7 +147,7 @@ const HomePage = async () => {
       </section>
 
       {/* PROGRAM — dark navy */}
-      <section className="relative bg-navy text-white px-5 sm:px-8 md:px-14 lg:px-20 xl:px-28 2xl:px-40 pt-12 pb-24 sm:pb-28 overflow-hidden">
+      <section className="relative bg-navy text-white px-5 sm:px-8 md:px-14 lg:px-20 xl:px-28 2xl:px-40 pt-12 pb-16 overflow-hidden">
         <div
           aria-hidden
           className="absolute left-[-60px] top-1/2 -translate-y-1/2 w-[220px] h-[280px] pointer-events-none"
@@ -233,47 +219,8 @@ const HomePage = async () => {
           ))}
         </div>
 
-        {/* SCHEDULE CARD — overlaps program/gallery */}
-        <div className="relative z-10 mx-auto mt-9 max-w-[600px] -mb-12 sm:-mb-14">
-          <div className="bg-white rounded-xl shadow-card p-5 sm:p-[22px_26px]">
-            <div className="eyebrow mb-3 block">Upcoming Schedule</div>
-            {events.docs.length === 0 ? (
-              <p className="text-muted text-sm">No upcoming matches scheduled yet. Check back soon.</p>
-            ) : (
-              <ul>
-                {events.docs.map((e, idx) => {
-                  const d = parseDate(e.date.slice(0, 10));
-                  return (
-                    <li
-                      key={e.id}
-                      className={`grid grid-cols-[32px_auto_1fr_auto] sm:grid-cols-[32px_60px_1fr_auto_auto] items-center gap-3 sm:gap-3.5 py-2.5 text-text-navy ${idx > 0 ? 'border-t border-[#EEF2F7]' : ''}`}
-                    >
-                      <div className="w-8 h-8 rounded-full bg-cyan text-white flex items-center justify-center">
-                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
-                          <rect x="3" y="5" width="18" height="16" rx="2" /><path d="M16 3v4M8 3v4M3 11h18" />
-                        </svg>
-                      </div>
-                      <div className="text-[15px] font-bold">{shortMo(d.getMonth())} {pad(d.getDate())}</div>
-                      <div className="min-w-0">
-                        <div className="text-[14px] truncate">{e.title}</div>
-                        {e.location && (
-                          <div className="text-[12px] text-muted inline-flex items-center gap-1.5 mt-0.5">
-                            <svg viewBox="0 0 24 24" width="11" height="11" className="text-cyan shrink-0" fill="currentColor"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z" /></svg>
-                            <span className="truncate">{e.location}</span>
-                          </div>
-                        )}
-                      </div>
-                      <span className="hidden sm:inline text-[13px] text-text-navy font-medium text-right">{e.time}</span>
-                      <span className="hidden sm:inline text-[#B7C2D2] text-base text-center">›</span>
-                    </li>
-                  );
-                })}
-              </ul>
-            )}
-            <div className="flex justify-center mt-5">
-              <ButtonLink href="/schedule" variant="cyan">View Full Schedule →</ButtonLink>
-            </div>
-          </div>
+        <div className="relative z-10 flex justify-center mt-9">
+          <ButtonLink href="/schedule" variant="cyan">View Full Schedule →</ButtonLink>
         </div>
       </section>
 
@@ -307,7 +254,7 @@ const HomePage = async () => {
         </section>
       )}
 
-      <CtaStrip heading="Join the Legacy." accent="Become a Lion." buttonLabel="Register here July 1" />
+      <CtaStrip heading="Join the Legacy." accent="Become a Lion." buttonLabel="Register Here" />
     </>
   );
 };
