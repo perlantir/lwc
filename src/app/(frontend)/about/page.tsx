@@ -215,12 +215,12 @@ const AboutPage = async () => {
               const photoUrl = mediaUrl(c.photo as MediaRef, '/images/mission-photo.jpg', 'feature');
               return (
                 <article key={c.id} className="rounded-xl overflow-hidden bg-white/[.04] border border-white/[.08]">
-                  <div className="aspect-square bg-deep-navy overflow-hidden flex items-center justify-center">
+                  <div className="aspect-[3/4] bg-deep-navy overflow-hidden">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={photoUrl}
                       alt={c.name}
-                      className="w-full h-full object-contain"
+                      className="w-full h-full object-cover object-top"
                     />
                   </div>
                   <div className="p-5">
