@@ -57,7 +57,7 @@ const SchedulePage = async () => {
             <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" className="text-cyan shrink-0">
               <circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" />
             </svg>
-            Practice Time: <span className="text-cyan ml-1">6:00 – 7:30 PM</span>
+            Practice Days: <span className="text-cyan ml-1">Monday &amp; Thursday · 6:00 – 7:30 PM</span>
           </span>
           <a
             href="/LWC-2026-27-Season-Calendar.pdf"
