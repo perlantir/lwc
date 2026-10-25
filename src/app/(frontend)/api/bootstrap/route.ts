@@ -149,7 +149,7 @@ export async function POST(req: NextRequest) {
         slug: 'schedule-page',
         data: {
           bannerBody:
-            'Practices held Monday & Thursdays at the NEW Des Moines Christian Early Education Building Gymnasium',
+            'Practices held Monday & Thursday at the DMC Early Education Center · Cubs 6:00–7:00 PM · Lions 7:00–8:00 PM',
         },
       });
       steps.push('schedule-page.bannerBody: updated');
